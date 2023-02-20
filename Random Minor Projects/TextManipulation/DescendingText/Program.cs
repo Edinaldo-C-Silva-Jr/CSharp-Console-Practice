@@ -4,6 +4,7 @@
  */
 using System;
 using System.Threading;
+using InputValidation;
 
 namespace DescendingText
 {
@@ -14,12 +15,10 @@ namespace DescendingText
 			string textToDescend = "";
 			int cursorX = 0, descendValue = 0;
 			
-			Console.WriteLine("Digite um texto qualquer: ");
-			//Input method (1 a 80)
-			textToDescend = Console.ReadLine();
-			Console.WriteLine("Digite a distância que o texto irá cair: ");
-			//Input method (1 a 23)
-			descendValue = int.Parse(Console.ReadLine());
+			Console.WriteLine("Digite um texto qualquer (No máximo do tamanho da tela): ");
+			textToDescend = ValidateInput.ValidInputSize(0, 80); // Only accept input with 0 to 80 characters in length
+			Console.WriteLine("Digite a distância que o texto irá cair (De 1 a 23): ");
+			descendValue = (int)ValidateInput.ValidNumericValue(1, 23); // Only accept values from 1 to 23
 			
 			if (textToDescend == "") // Easter Egg condition to not allow a blank text to be entered
 			{

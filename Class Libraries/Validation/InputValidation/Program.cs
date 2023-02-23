@@ -10,9 +10,12 @@ namespace InputValidation
 	// These methods ensure the inputted value will be in the desired format in order to avoid parsing errors or unintended behaviors
 	public class ValidateInput
 	{
-		private static string[] validValues = new string[] {}; // String that contains the values which are considered valid - Used in the method ValidInput()
 		private static int cursorX = 0, cursorY = 0; // Cursor position values - Used in the method ClearPreviousLine()
-		private static string inputToTest = ""; 
+		
+		private static string[] validValues = new string[] {}; // String that contains the values which are considered valid - Used in the method ValidInput()
+		private static string inputToTest = "";
+		private static double numberToTest = 0;
+		private static int integerToTest = 0;
 		
 		// Method that clears the previous line of the console.
 		// Intended to be used with the validation methods to keep the cursor in place while repeatedly asking for inputs
@@ -60,7 +63,6 @@ namespace InputValidation
 		// Method that repeatedly asks for an input until the inputted value is an int
 		public static int ValidInt()
 		{
-			int valid = 0; // Value to be returned as a valid int
 			bool isValid = false;
 			
 			do
@@ -69,7 +71,7 @@ namespace InputValidation
 				cursorY = Console.CursorTop;
 				
 				inputToTest = Console.ReadLine();
-				isValid = int.TryParse(inputToTest, out valid); // Tests if the value is an int (also returns the value itself to the variable "valid")
+				isValid = int.TryParse(inputToTest, out integerToTest); // Tests if the value is an int (also returns the value itself to the variable "valid")
 				
 				if (!(isValid))
 				{
@@ -82,13 +84,12 @@ namespace InputValidation
 			}
 			while(true);
 			
-			return valid;
+			return integerToTest;
 		}
 		
 		// Method that repeatedly asks for an input until the inputted value is a double
 		public static double ValidDouble()
 		{
-			double valid = 0; // Value to be returned as a valid double
 			bool isValid = false;
 			
 			do
@@ -97,7 +98,7 @@ namespace InputValidation
 				cursorY = Console.CursorTop;
 				
 				inputToTest = Console.ReadLine();
-				isValid = double.TryParse(inputToTest, out valid); // Tests if the value is a double (and returns the value into the variale "valid")
+				isValid = double.TryParse(inputToTest, out numberToTest); // Tests if the value is a double (and returns the value into the variale "valid")
 				
 				if (!(isValid))
 				{
@@ -110,7 +111,7 @@ namespace InputValidation
 			}
 			while(true);
 			
-			return valid;
+			return numberToTest;
 		}
 		
 		// Method that repeatedly asks for inputs until the inputted value has the desired length, which is defined by the parameters minBound and maxBound
@@ -150,14 +151,12 @@ namespace InputValidation
 		
 		// Method that repeatedly asks for numeric inputs until the inputted number is within a specified range of values, defined by the parameters minValue and maxValue
 		public static double ValidNumericValue(double minValue, double maxValue)
-		{
-			double value = 0;
-			
+		{	
 			do
 			{
-				value = ValidDouble(); // First checks if the inputted value is a numeric value (double)
+				numberToTest = ValidDouble(); // First checks if the inputted value is a numeric value (double)
 				
-				if ((value < minValue) || (value > maxValue)) // Checks if the value is within the defined boundaries
+				if ((numberToTest < minValue) || (numberToTest > maxValue)) // Checks if the value is within the defined boundaries
 				{
 					ClearPreviousLine(inputToTest.Length); // If value is not valid, clear input and go back
 				}
@@ -168,7 +167,27 @@ namespace InputValidation
 			}
 			while (true);
 			
-			return value; 
+			return numberToTest; 
+		}
+		
+		public static double ValidPositiveNumber (bool positiveNumber)
+		{
+			do
+			{
+				numberToTest = ValidDouble();
+				
+				if (numberToTest <= 0)
+				{
+					ClearPreviousLine(inputToTest.Length);
+				}
+				else
+				{
+					break;
+				}
+			}
+			while (true);
+			
+			return numberToTest;
 		}
 	}
 }

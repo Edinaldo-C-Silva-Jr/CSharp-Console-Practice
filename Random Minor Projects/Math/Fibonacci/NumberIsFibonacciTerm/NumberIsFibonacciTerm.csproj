@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="InputValidation">
-      <HintPath>..\..\C# Console Practice\Class Libraries\Validation\InputValidation\bin\Debug\InputValidation.dll</HintPath>
+      <HintPath>..\..\..\..\Class Libraries\Validation\InputValidation\bin\Debug\InputValidation.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">

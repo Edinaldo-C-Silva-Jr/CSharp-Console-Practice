@@ -12,25 +12,26 @@ namespace NumberIsFibonacciTerm
 		public static void Main(string[] args)
 		{
 			double numberToTest, term1 = 1, term2 = 1, auxiliaryTerm;
+			int termCounter = 2;
 			
-			Console.WriteLine("Digite o número para ver se é um termo de Fibonacci: ");
-			numberToTest = ValidateInput.ValidDouble();
+			Console.WriteLine("Digite um número positivo para ver se é um termo de Fibonacci: ");
+			numberToTest = ValidateInput.ValidPositiveNumber(true);
 			
-			do
+			while (numberToTest > term1)
 			{
 				auxiliaryTerm = term1;
 				term1 = term1 + term2;
 				term2 = auxiliaryTerm;
+				termCounter++;
 			}
-			while (numberToTest > term1);
 			
 			if (term1 == numberToTest || term2 == numberToTest)
 			{
-				Console.WriteLine("O número " + numberToTest + " faz parte da sequência de Fibonacci.");
+				Console.WriteLine("\nO número " + numberToTest + " faz parte da sequência de Fibonacci! \nEle é o termo número " + termCounter + " da sequência.");
 			}
 			else
 			{
-				Console.WriteLine("O número " + numberToTest + " não faz parte da sequência de Fibonacci.");				
+				Console.WriteLine("\nO número " + numberToTest + " não é um termo da sequência de Fibonacci...");				
 			}
 			Console.ReadKey();
 		}

@@ -4,6 +4,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # SharpDevelop 4.4
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NumberIsFibonacciTerm", "NumberIsFibonacciTerm\NumberIsFibonacciTerm.csproj", "{A058126B-0BBA-48B4-B9C1-6E677EEE3759}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FibonacciSequence", "FibonacciSequence\FibonacciSequence.csproj", "{47B4DC30-88D8-479A-A7DF-4AE22702BE68}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -14,5 +16,9 @@ Global
 		{A058126B-0BBA-48B4-B9C1-6E677EEE3759}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A058126B-0BBA-48B4-B9C1-6E677EEE3759}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A058126B-0BBA-48B4-B9C1-6E677EEE3759}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47B4DC30-88D8-479A-A7DF-4AE22702BE68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47B4DC30-88D8-479A-A7DF-4AE22702BE68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47B4DC30-88D8-479A-A7DF-4AE22702BE68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47B4DC30-88D8-479A-A7DF-4AE22702BE68}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 EndGlobal

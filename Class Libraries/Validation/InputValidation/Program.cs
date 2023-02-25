@@ -17,9 +17,17 @@ namespace InputValidation
 		private static double numberToTest = 0;
 		private static int integerToTest = 0;
 		
-		// Method that clears the previous line of the console.
-		// Intended to be used with the validation methods to keep the cursor in place while repeatedly asking for inputs
-		public static void ClearPreviousLine(int inputLength)
+		// Method that gets the current cursor position in the console window
+		// Used by the method below to know the position the cursor should return to
+		private static void GetCursorPosition()
+		{
+				cursorX = Console.CursorLeft;
+				cursorY = Console.CursorTop;
+		}
+		
+		// Method that clears the previous line of the console
+		// Intended to be used with the validation methods to restore the cursor to its original position in case an input was invalid
+		private static void ClearPreviousLine(int inputLength)
 		{
 			Console.SetCursorPosition(cursorX, cursorY); // Sets the cursor back to the position recorded before the input
  			Console.Write(new string(' ', inputLength)); // Builds a string of blank spaces to erase previous input
@@ -40,8 +48,7 @@ namespace InputValidation
 		{	
 			do
 			{
-				cursorX = Console.CursorLeft; // Records cursor's current position
-				cursorY = Console.CursorTop;
+				GetCursorPosition();
 				
 				inputToTest = Console.ReadLine(); 
 				
@@ -67,8 +74,7 @@ namespace InputValidation
 			
 			do
 			{
-				cursorX = Console.CursorLeft; // Records cursor's current position
-				cursorY = Console.CursorTop;
+				GetCursorPosition();
 				
 				inputToTest = Console.ReadLine();
 				isValid = int.TryParse(inputToTest, out integerToTest); // Tests if the value is an int (also returns the value itself to the variable "valid")
@@ -94,8 +100,7 @@ namespace InputValidation
 			
 			do
 			{
-				cursorX = Console.CursorLeft; // Records cursor's current position
-				cursorY = Console.CursorTop;
+				GetCursorPosition();
 				
 				inputToTest = Console.ReadLine();
 				isValid = double.TryParse(inputToTest, out numberToTest); // Tests if the value is a double (and returns the value into the variale "valid")
@@ -119,10 +124,9 @@ namespace InputValidation
 		{
 			do
 			{
-				cursorX = Console.CursorLeft; // Records cursor's current position
-				cursorY = Console.CursorTop;
+				GetCursorPosition();
 				
-				if (minBound > 200) // Makes sure the minimum accepted input size isn't higher than 200 (arbitrarily chosen value. However, this would have to be lower than 254 anyway, otherwise no input would be accepted from a ReadLine, which can only accept up to 254 characters)
+				if (minBound > 200) // Makes sure the minimum accepted input size isn't higher than 200 arbitrarily chosen value. However, this would have to be lower than 254 anyway, otherwise no input would be accepted from a ReadLine, which can only accept up to 254 characters)
 				{
 					minBound = 200;
 				}
@@ -170,19 +174,35 @@ namespace InputValidation
 			return numberToTest; 
 		}
 		
-		public static double ValidPositiveNumber (bool positiveNumber)
+		// Method that repeatedly asks for input until the number entered has the correct sign
+		// The bool parameter controls the sign required. If the parameter is true, only positive numbers are valid, if it's false, only negative numbers are valid
+		public static double ValidNumberSign (bool positiveNumber)
 		{
 			do
 			{
-				numberToTest = ValidDouble();
+				numberToTest = ValidDouble(); // First checks if the inputted value is a numeric value (double)
 				
-				if (numberToTest <= 0)
+				if (positiveNumber) // Checks if the validation should be made for positive numbers (true) or negative numbers (false)
 				{
-					ClearPreviousLine(inputToTest.Length);
+					if (numberToTest < 0)
+					{
+						ClearPreviousLine(inputToTest.Length); // If value is not valid, clear input and go back
+					}
+					else
+					{
+						break; // If value is valid, get out of the loop
+					}
 				}
 				else
 				{
-					break;
+					if (numberToTest > 0)
+					{
+						ClearPreviousLine(inputToTest.Length); // If value is not valid, clear input and go back
+					}
+					else
+					{
+						break; // If value is valid, get out of the loop
+					}
 				}
 			}
 			while (true);

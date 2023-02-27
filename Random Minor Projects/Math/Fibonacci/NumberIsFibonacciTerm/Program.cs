@@ -9,6 +9,7 @@ namespace NumberIsFibonacciTerm
 {
 	public class Program
 	{
+		// Receives a number and tells if it's a part of the Fibonacci Sequence. If yes, also tells what term of the sequence it is
 		public static void Main(string[] args)
 		{
 			double numberToTest, term1 = 1, term2 = 1, auxiliaryTerm;
@@ -22,7 +23,7 @@ namespace NumberIsFibonacciTerm
 				auxiliaryTerm = term1; // Building Fibonacci sequence. Term 1 is the higher term, and Term 2 is the lower
 				term1 = term1 + term2;
 				term2 = auxiliaryTerm;
-				termCounter++; // Counts the number of terms as sequence is built. Used to show the the number's position in the sequence
+				termCounter++; // Counts the number of terms as the sequence is built. Used to show the number's position in the sequence
 			}
 			
 			if (term1 == numberToTest || term2 == numberToTest)

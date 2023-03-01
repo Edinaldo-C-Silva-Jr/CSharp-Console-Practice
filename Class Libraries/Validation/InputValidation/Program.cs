@@ -120,21 +120,30 @@ namespace InputValidation
 		}
 		
 		// Method that repeatedly asks for inputs until the inputted value has the desired length, which is defined by the parameters minBound and maxBound
+		// The method is set to swap the bounds in case the minBound is actually bigger than the maxBound, to prevent getting stuck in an impossible validation
+		// It also has a limit to the bounds, maxBound cannot be lower than 1 and minBound cannot be higher than 200
 		public static string ValidInputSize (int minBound, int maxBound)
 		{
+			if (minBound > maxBound) // Checks if the minBound is bigger than the maxBound. If it is, swap them around to prevent the method from breaking (since it's impossible for a number to be within the range if the minimum is higher than the maximum)
+			{
+				int auxBound = minBound;
+				minBound = maxBound;
+				maxBound = auxBound;
+			}
+			
+			if (minBound > 200) // Makes sure the minimum accepted input size isn't higher than 200. This is an arbitrarily chosen value, but it would have to be lower than 254 anyway, since a Console.ReadLine can only accept up to 254 characters)
+			{
+				minBound = 200;
+			}
+			
+			if (maxBound < 1) // Makes sure the maximum accepted input size isn't lower than 1 (which would prevent any kind of input to be made)
+			{
+				maxBound = 1;
+			}
+			
 			do
 			{
 				GetCursorPosition();
-				
-				if (minBound > 200) // Makes sure the minimum accepted input size isn't higher than 200 arbitrarily chosen value. However, this would have to be lower than 254 anyway, otherwise no input would be accepted from a ReadLine, which can only accept up to 254 characters)
-				{
-					minBound = 200;
-				}
-				
-				if (maxBound < 1) // Makes sure the maximum accepted input size isn't lower than 1 (which would prevent any kind of input to be made)
-				{
-					maxBound = 1;
-				}
 				
 				inputToTest = Console.ReadLine().Trim(); // Removes spaces on beginning and end before validation
 				
@@ -154,8 +163,16 @@ namespace InputValidation
 		}
 		
 		// Method that repeatedly asks for numeric inputs until the inputted number is within a specified range of values, defined by the parameters minValue and maxValue
+		// The method is set to swap the values in case the minValue is bigger than the maxValue, to prevent getting stuck in an impossible validation
 		public static double ValidNumericValue(double minValue, double maxValue)
 		{	
+			if (minValue > maxValue) // Checks if the minValue is actually bigger than the maxValue. If it is, swap them around to prevent the method from breaking (since it's impossible for a number to be within the range if the minimum is bigger than the maximum)
+			{
+				double auxValue = minValue;
+				minValue = maxValue;
+				maxValue = auxValue;
+			}
+			
 			do
 			{
 				numberToTest = ValidDouble(); // First checks if the inputted value is a numeric value (double)

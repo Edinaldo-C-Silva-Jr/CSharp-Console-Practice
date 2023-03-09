@@ -22,11 +22,7 @@ namespace CalculatorV1
 			if (operationChosen == 'd')
 			{
 				Console.WriteLine("Digite o segundo numero, ele deve ser diferente de 0: ");
-				do
-				{
-					number2 = ValidateInput.ValidDouble();
-				}
-				while (number2 == 0);
+				number2 = ValidateInput.ValidDoublenotZero();
 			}
 			else
 			{

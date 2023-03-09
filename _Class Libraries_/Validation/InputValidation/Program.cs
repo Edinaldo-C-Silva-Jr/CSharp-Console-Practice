@@ -3,6 +3,7 @@
  * Time: 01:17
 */
 using System;
+using System.Media;
 
 namespace InputValidation
 {
@@ -32,6 +33,7 @@ namespace InputValidation
 			Console.SetCursorPosition(cursorX, cursorY); // Sets the cursor back to the position recorded before the input
  			Console.Write(new string(' ', inputLength)); // Builds a string of blank spaces to erase previous input
  			Console.SetCursorPosition(cursorX, cursorY);
+ 			SystemSounds.Beep.Play(); // Plays a sound to warn the user that the input is invalid
 		}
 		
 		// Sets the valid value for the method validValues (directly below)
@@ -93,6 +95,26 @@ namespace InputValidation
 			return integerToTest;
 		}
 		
+		// Method that repeatedly asks for an input until the inputted value is an int and not 0
+		public static int ValidIntNotZero()
+		{
+			do
+			{
+				integerToTest = ValidInt();
+				if (integerToTest == 0)
+				{
+					ClearPreviousLine(inputToTest.Length); // If value is not valid, clear input and goes back
+				}
+				else
+				{
+					break; // If valid, get out of the loop
+				}
+			}
+			while (true);
+				
+			return integerToTest;
+		}
+		
 		// Method that repeatedly asks for an input until the inputted value is a double
 		public static double ValidDouble()
 		{
@@ -106,6 +128,27 @@ namespace InputValidation
 				isValid = double.TryParse(inputToTest, out numberToTest); // Tests if the value is a double (and returns the value into the variale "valid")
 				
 				if (!(isValid))
+				{
+					ClearPreviousLine(inputToTest.Length); // If value is not valid, clear input and go back
+				}
+				else
+				{
+					break; // If value is valid, get out of the loop
+				}
+			}
+			while(true);
+			
+			return numberToTest;
+		}
+		
+		// Method that repeatedly asks for an input until the inputted value is a double and not 0
+		public static double ValidDoublenotZero()
+		{
+			do
+			{
+				numberToTest = ValidDouble();
+				
+				if (numberToTest == 0)
 				{
 					ClearPreviousLine(inputToTest.Length); // If value is not valid, clear input and go back
 				}

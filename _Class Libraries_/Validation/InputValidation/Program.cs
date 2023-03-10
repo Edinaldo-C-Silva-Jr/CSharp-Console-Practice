@@ -142,7 +142,7 @@ namespace InputValidation
 		}
 		
 		// Method that repeatedly asks for an input until the inputted value is a double and not 0
-		public static double ValidDoublenotZero()
+		public static double ValidDoubleNotZero()
 		{
 			do
 			{

@@ -22,7 +22,7 @@ namespace CalculatorV1
 			if (operationChosen == 'd')
 			{
 				Console.WriteLine("Digite o segundo numero, ele deve ser diferente de 0: ");
-				number2 = ValidateInput.ValidDoublenotZero();
+				number2 = ValidateInput.ValidDoubleNotZero();
 			}
 			else
 			{
@@ -37,7 +37,7 @@ namespace CalculatorV1
 			{
 				Console.Clear();
 				ValidateInput.SetValidValues(new string[] {"a", "s", "m", "d"});
-				Console.WriteLine("Digite a operação desejada.\na = Adição, \ns = Subtração, \nm = Multipliacação, \nd = Divisão." );
+				Console.WriteLine("Digite a operação desejada.\nA = Adição, \nS = Subtração, \nM = Multipliacação, \nD = Divisão." );
 				Console.WriteLine("Operação: ");
 				operationChosen = char.Parse(ValidateInput.ValidInput());
 				

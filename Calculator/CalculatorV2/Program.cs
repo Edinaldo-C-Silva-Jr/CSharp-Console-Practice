@@ -5,6 +5,10 @@
 using System;
 using InputValidation;
 
+// A second version of the simple "Calculator" program i made when getting back to C# development
+// Similarly simple, however, this one allows doing the same operation multiple times (but only the same operation). It also keeps track of all values entered, so it can show them on screen as they're entered.
+// This wasn't a good implementation, most notably for the subtraction and division operations. But it was an attempt before i got to the V3 of the application, so it is being kept as it was made.
+// Like the first one, this is kept for archiving purposes. It also has some polishing compared to the original implementation.
 namespace CalculatorV2
 {
 	class Program
@@ -14,18 +18,22 @@ namespace CalculatorV2
 		private static int quantity;
 		private static char operationChosen = ' ', continueYesNo = 's';
 		
+		// Method to ask for and receive an input
 		private static void Input(int i)
 		{
 			Console.WriteLine("\nDigite o " + (i+1) + "º numero: ");
 			numbers[i] = ValidateInput.ValidDouble();
 		}
 		
+		// Method that asks and receives an input for the division operation. It doesn't accept 0 as an input
 		private static void InputDivision(int i)
 		{
 			Console.WriteLine("\nDigite o " + (i+1) + "º numero. Deve ser diferente de 0: ");
 			numbers[i] = ValidateInput.ValidDoubleNotZero();
 		}
 		
+		// Method that receives the initial input for division and subtraction
+		// These 2 operations need a different treatment because the subsequent values are subtracted/divide the first one
 		private static void InputInitial (string operation, string action)
 		{
 			Console.Clear();
@@ -34,6 +42,7 @@ namespace CalculatorV2
 			result = numbers[0] = ValidateInput.ValidDouble();
 		}
 		
+		// Method that shows all previous inputs during a set of operations
 		private static void ShowInputs(string operation, int i)
 		{
 			Console.Clear();
@@ -46,22 +55,22 @@ namespace CalculatorV2
 		
 		public static void Main()
 		{
-			while(continueYesNo == 's')
+			while(continueYesNo == 's') // Program will keep running while this variable stays as "yes" ("sim"). If the variable is "no" ("não") the program will end.
 			{
 				Console.Clear();
-				ValidateInput.SetValidValues(new string[] {"a", "s", "m", "d"});
+				ValidateInput.SetValidValues(new string[] {"a", "s", "m", "d"}); // Sets the strings considered valid inputs
 				Console.WriteLine("Digite a operação desejada.\nA = Adição, \nS = Subtração, \nM = Multipliacação, \nD = Divisão."); Console.WriteLine("Operação: ");
-				operationChosen = char.Parse(ValidateInput.ValidInput());
+				operationChosen = char.Parse(ValidateInput.ValidInput()); // Validates if the input is within the array of values considered valid, which were defined above
 					
 				Console.Clear();
-				Console.WriteLine("Digite a quantidade de entradas de dados. Ao menos 2 entradas são necessárias. \nEntradas: ");
-				quantity = (int)ValidateInput.ValidNumericValue(2, 10);
+				Console.WriteLine("Digite a quantidade de entradas de dados. \nAo menos 2 entradas são necessárias, e um máximo de 20 serão aceitas. \nEntradas: "); // Asks for the amount of inputs that will be entered for this set of operations. 
+				quantity = (int)ValidateInput.ValidNumericValue(2, 20); // 2 inputs are minimum in order to make at least one operation. 20 inputs has been arbitrarily defined as a maximum value to keep the program reasonable
 				
-				numbers = new double[quantity];
+				numbers = new double[quantity]; // Creates an array to receive the amount of inpus defined above
 				
 				switch(operationChosen)
 				{
-					case 'a':
+					case 'a': // Addition
 						{
 							result = 0;
 							for (int i = 0; i < quantity; i++)
@@ -74,7 +83,7 @@ namespace CalculatorV2
 							Console.WriteLine("\nO valor da adição é: " + result);
 							break;
 						}
-					case 's':
+					case 's': // Subtraction
 						{
 							InputInitial("Subtração", "subtraídos");
 							
@@ -88,7 +97,7 @@ namespace CalculatorV2
 							Console.WriteLine("\nO valor da subtração é: " + result);
 							break;
 						}
-					case 'm':
+					case 'm': // Multiplication
 						{
 							result = 1;
 							for (int i = 0; i < quantity; i++)
@@ -101,7 +110,7 @@ namespace CalculatorV2
 							Console.WriteLine("\nO valor da multiplicação é: " + result);
 							break;
 						}
-					case 'd':
+					case 'd': // Division
 						{
 							InputInitial("Divisão", "divididos");
 							
@@ -117,7 +126,8 @@ namespace CalculatorV2
 						}
 				}
 				
-				Console.WriteLine("\nDeseja realizar outra operação? s/n");
+				ValidateInput.SetValidValues(new string[] {"s", "n"}); // Sets a new array of values considered valid for input
+				Console.WriteLine("\nDeseja realizar outra operação? s/n"); // Asks if the user wants to do another operation
 				continueYesNo = char.Parse(Console.ReadLine());
 			}
 		}

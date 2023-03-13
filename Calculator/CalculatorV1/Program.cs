@@ -14,38 +14,39 @@ namespace CalculatorV1
 		private static double number1, number2, result;
 		private static char operationChosen = ' ', continueYesNo = 's';
 		
+		// Method that receives the inputs for the calculator
 		private static void Input()
 		{
-			Console.WriteLine("Digite o primeiro numero: ");
+			Console.WriteLine("Digite o primeiro numero: "); // Asks for the first input and validates if it is a number
 			number1 = ValidateInput.ValidDouble();
 			
-			if (operationChosen == 'd')
+			if (operationChosen == 'd') // Checks whether the operation is division
 			{
-				Console.WriteLine("Digite o segundo numero, ele deve ser diferente de 0: ");
+				Console.WriteLine("Digite o segundo numero, ele deve ser diferente de 0: "); // If operation is division, then ask for a number that's not 0
 				number2 = ValidateInput.ValidDoubleNotZero();
 			}
 			else
 			{
-				Console.WriteLine("Digite o segundo numero: ");
+				Console.WriteLine("Digite o segundo numero: "); // If not division, then receive any number
 				number2 = ValidateInput.ValidDouble();
 			}
 		}
 		
 		public static void Main()
 		{	
-			while(continueYesNo == 's')
+			while(continueYesNo == 's') // Program will keep running while this variable stays as "yes" ("sim"). If the variable is "no" ("não") the program will end.
 			{
 				Console.Clear();
-				ValidateInput.SetValidValues(new string[] {"a", "s", "m", "d"});
+				ValidateInput.SetValidValues(new string[] {"a", "s", "m", "d"}); // Sets the strings considered valid inputs
 				Console.WriteLine("Digite a operação desejada.\nA = Adição, \nS = Subtração, \nM = Multipliacação, \nD = Divisão." );
 				Console.WriteLine("Operação: ");
-				operationChosen = char.Parse(ValidateInput.ValidInput());
+				operationChosen = char.Parse(ValidateInput.ValidInput()); // Validates if the input is within the array of values considered valid, which were defined above
 				
 				Console.Clear();
 				
 				switch(operationChosen)
 				{
-					case 'a':
+					case 'a': // Addition
 						{
 							Console.WriteLine("Operação Escolhida: Adição. \n");
 							Input();
@@ -53,7 +54,7 @@ namespace CalculatorV1
 							Console.WriteLine("\nO valor da adição é: " + result);
 							break;
 						}
-					case 's':
+					case 's': // Subtraction
 						{
 							Console.WriteLine("Operação Escolhida: Subtração. \n");
 							Input();
@@ -61,7 +62,7 @@ namespace CalculatorV1
 							Console.WriteLine("\nO valor da subtração é: " + result);
 							break;
 						}
-					case 'm':
+					case 'm': // Multiplication
 						{
 							Console.WriteLine("Operação Escolhida: Multiplicação. \n");
 							Input();
@@ -69,7 +70,7 @@ namespace CalculatorV1
 							Console.WriteLine("\nO valor da multiplicação é: " + result);
 							break;
 						}
-					case 'd':
+					case 'd': // Division
 						{
 							Console.WriteLine("Operação Escolhida: Divisão. \n");
 							Input();
@@ -79,8 +80,8 @@ namespace CalculatorV1
 						}
 				}
 				
-				ValidateInput.SetValidValues(new string[] {"s", "n"});
-				Console.WriteLine("\nDeseja realizar outra operação? s/n");
+				ValidateInput.SetValidValues(new string[] {"s", "n"}); // Sets a new array of values considered valid for input
+				Console.WriteLine("\nDeseja realizar outra operação? s/n"); // Asks if the user wants to do another operation
 				continueYesNo = char.Parse(ValidateInput.ValidInput());
 			}
 		}

@@ -18,7 +18,8 @@ namespace TestInputValidation
 			string text;
 			
 			// Testing the validation of a string value, matching it with an array of expected inputs
-			// The array of expected inputs has to be set (with the SetValidValues method) before the ValidInput method can be used. Otherwise it will work exactly like a Console.ReadLine() and allow any input
+			// The array of expected inputs has to be set (with the SetValidValues method) before the ValidInput method can be used. Otherwise it will work exactly like a Console.ReadLine() and allow any input.
+			// The method SetValieValues is not case sensitive
 			Console.WriteLine("Digite 'sim' ou 'nao' (pode utilizar apenas as iniciais): ");
 			ValidateInput.SetValidValues(new string[] {"sim", "s", "nao", "não", "n"}); // Sets the ValidValues array to the values considered valid for this test
 			text = ValidateInput.ValidInput(); // Asks for an input and keeps trying until the text entered corresponds to one of the values decided above
@@ -27,7 +28,7 @@ namespace TestInputValidation
 			
 			// Testing the validation of a specific string value
 			Console.WriteLine("\nDigite a frase 'O rato roeu a roupa do rei de Roma':");
-			ValidateInput.SetValidValues(new string[] {"o rato roeu a roupa do rei de roma"}); // Sets the ValidValues array with a new (and very specific) value for this test
+			ValidateInput.SetValidValues(new string[] {"O rato roeu a roupa do rei de Roma"}); // Sets the ValidValues array with a new (and very specific) value for this test
 			text = ValidateInput.ValidInput();
 			Console.WriteLine("Valor válido: " + text);
 			Thread.Sleep(1000);
@@ -38,9 +39,21 @@ namespace TestInputValidation
 			Console.WriteLine("Valor válido: " + integer);
 			Thread.Sleep(1000);
 			
+			// Testing the validation of an integer value that cannot be 0
+			Console.WriteLine("\nDigite um número inteiro (int 32 bit). Deve ser diferente de 0:");
+			integer = ValidateInput.ValidIntNotZero(); // Asks for an input and keeps trying until a 32 bit integer is entered
+			Console.WriteLine("Valor válido: " + integer);
+			Thread.Sleep(1000);
+			
 			// Testing the validation of a double value
 			Console.WriteLine("\nDigite um número qualquer: ");
 			number = ValidateInput.ValidDouble(); // Asks for an input and keeps trying until a numeric (double) value is entered
+			Console.WriteLine("Valor válido: " + number);
+			Thread.Sleep(1000);
+			
+			// Testing the validation of a double value that cannot be 0
+			Console.WriteLine("\nDigite um número qualquer. Deve ser diferente de 0: ");
+			number = ValidateInput.ValidDoubleNotZero(); // Asks for an input and keeps trying until a numeric (double) value is entered
 			Console.WriteLine("Valor válido: " + number);
 			Thread.Sleep(1000);
 			

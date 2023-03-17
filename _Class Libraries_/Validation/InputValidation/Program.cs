@@ -37,10 +37,10 @@ namespace InputValidation
 		}
 		
 		// Sets the valid value for the method validValues (directly below)
-		// Note: Since ValidInput sets the inputted value to lowercase, the values inserted into this should also be lowercase, otherwise the comparison will fail
+		// Converts the received string to lowercase, so the ValidInput method works regardless of case
 		public static void SetValidValues(string[] valid)
 		{
-			validValues = valid;
+			validValues = Array.ConvertAll(valid, individualValue => individualValue.ToLower());
 		}
 		
 		// Method that repeatedly asks for an input until the inputted value is contained in the "validValues" array. Intended to use in specific situations that only accept specific values

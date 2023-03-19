@@ -32,7 +32,7 @@ namespace YouCanMoveIt
 		{
 			WriteText(); // Writes the text once the program starts. The starting cursor position values make it centered on the screen
 			
-			Console.SetCursorPosition(9, 24); // Writes this text at the bottom of the screen. horizontally centered on the screen
+			Console.SetCursorPosition(9, 24); // Writes this text at the bottom of the screen. Horizontally centered on the screen
 			Console.Write("Use the arrow keys to move the text around. Press Esc to exit.");
 			
 			while (command != ConsoleKey.Escape) // Keep running until the user presses the Esc key
@@ -81,9 +81,9 @@ namespace YouCanMoveIt
 							}
 							break;
 						}
-					case ConsoleKey.Escape: // If the Ecs key is pressed...
+					case ConsoleKey.Escape: // If the Esc key is pressed...
 						{
-							Console.SetCursorPosition(9, 24); // Places cursor at the bottom to inform that the program is being exited
+							Console.SetCursorPosition(9, 24); // Places cursor at the bottom to inform that the program is being exited, overwriting the instructions
 							Console.Write("                    Exiting the Program...                    ");
 							Thread.Sleep(1000);
 							break;

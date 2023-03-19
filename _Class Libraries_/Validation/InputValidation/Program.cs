@@ -13,8 +13,10 @@ namespace InputValidation
 	{
 		private static int cursorX = 0, cursorY = 0; // Cursor position values - Used in the method ClearPreviousLine()
 		
-		private static string[] validValues = new string[] {}; // String that contains the values which are considered valid - Used in the method ValidInput()
+		private static string[] validStrings = new string[] {}; // String that contains the values which are considered valid - Used in the method ValidInput()
+		private static char[] validChars = new char[] {}; // Array that contains the char values that are considered valid - Used in the method ValidChar()
 		private static string inputToTest = "";
+		private static char charToTest = ' ';
 		private static double numberToTest = 0;
 		private static int integerToTest = 0;
 		
@@ -36,16 +38,16 @@ namespace InputValidation
  			SystemSounds.Beep.Play(); // Plays a sound to warn the user that the input is invalid
 		}
 		
-		// Sets the valid value for the method validValues (directly below)
+		// Sets the valid values for the method ValidInput
 		// Converts the received string to lowercase, so the ValidInput method works regardless of case
-		public static void SetValidValues(string[] valid)
+		public static void SetValidStrings(string[] valid)
 		{
-			validValues = Array.ConvertAll(valid, individualValue => individualValue.ToLower());
+			validStrings = Array.ConvertAll(valid, individualValue => individualValue.ToLower());
 		}
 		
-		// Method that repeatedly asks for an input until the inputted value is contained in the "validValues" array. Intended to use in specific situations that only accept specific values
-		// Example: The user has to answer a question with only "yes" or "no", thus the "validValues" array would be set to {"yes", "no"}
-		// Note: If ValidValues is empty, the method will consider any input to be valid (essentially the same as just using a Console.ReadLine())
+		// Method that repeatedly asks for an input until the inputted value is contained in the "validStrings" array. Intended to use in specific situations where the program should only only accept specific values
+		// Example: The user has to answer a question with only "yes" or "no", thus the "validStrings" array would be set to {"yes", "no"}
+		// Note: If ValidStrings is empty, the method will consider any input to be valid (essentially the same as just using a Console.ReadLine())
 		public static string ValidInput()
 		{	
 			do
@@ -54,19 +56,51 @@ namespace InputValidation
 				
 				inputToTest = Console.ReadLine(); 
 				
-				if (!(Array.Exists(validValues, element => element == inputToTest.ToLower().Trim())) && (validValues.Length > 0)) // Checks if the input exists within the array of ValidValues and if the array has values
+				if (!(Array.Exists(validStrings, element => element == inputToTest.ToLower().Trim())) && (validStrings.Length > 0)) // Checks if the input exists within the array of ValidStrings and if the array has values
 				// Also makes sure the inputted string is set to lowercase and has no extra spaces in the beginning and end before checking
 				{
 					ClearPreviousLine(inputToTest.Length); // If input is not valid, clear input and go back
 				}
 				else
 				{
-					break; // If input is valid or if ValidValues is empty, get out of the loop
+					break; // If input is valid or if ValidStrings is empty, get out of the loop
 				}
 			}
 			while(true);
 			
 			return inputToTest.Trim(); // Returns the value without the spaces, but with the proper case
+		}
+		
+		// Sets the valid values for the method ValidCharInput
+		// Converts the received chars to lowercase, so the ValidCharInput method works regardless of case
+		public static void SetValidChars(char[] valid)
+		{
+			validChars = Array.ConvertAll(valid, individualValue => Char.ToLower(individualValue));
+		}
+		
+		// Method that repeatedly asks for a char input until the inputted value is contained in the "validChars" array. Intended to be used in situations where the program should only accept specific values in a single character input (Using a Console.ReadKey())
+		// Example: The user has to answer with 'y' or 'n', for "yes" and "no", thus the "validChars" array would be set to {'y', 'n'}
+		// Note: If valdChars is empty, the method will consider any input to be valid (essentially the same as just using a Console.ReadKey())
+		public static char ValidCharInput ()
+		{
+			do
+			{
+				GetCursorPosition();
+				
+				charToTest = Console.ReadKey(true).KeyChar;
+				
+				if (!(Array.Exists(validChars, element => element == Char.ToLower(charToTest)) && (validChars.Length > 0)))
+				{
+				    	ClearPreviousLine(1);
+				}
+				else
+				{
+					break; // If input is valid or if ValidChars is empty, get out of the loop
+				}
+			}
+			while (true);
+			
+			return charToTest;
 		}
 		
 		// Method that repeatedly asks for an input until the inputted value is an int
@@ -174,12 +208,12 @@ namespace InputValidation
 				maxBound = auxBound;
 			}
 			
-			if (minBound > 200) // Makes sure the minimum accepted input size isn't higher than 200. This is an arbitrarily chosen value, but it would have to be lower than 254 anyway, since a Console.ReadLine can only accept up to 254 characters)
+			if (minBound > 253) // Makes sure the minimum accepted input size isn't higher than 253. This value was chosen because a Console.ReadLine only accepts up to 254 characters by default, so if the minimum value was higher than 254, it would prevent any input from being made
 			{
-				minBound = 200;
+				minBound = 253;
 			}
 			
-			if (maxBound < 1) // Makes sure the maximum accepted input size isn't lower than 1 (which would prevent any kind of input to be made)
+			if (maxBound < 1) // Makes sure the maximum accepted input size isn't lower than 1, as that would prevent any kind of input to be made
 			{
 				maxBound = 1;
 			}

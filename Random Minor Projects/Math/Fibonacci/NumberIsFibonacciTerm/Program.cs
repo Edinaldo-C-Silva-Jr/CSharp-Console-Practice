@@ -15,8 +15,10 @@ namespace NumberIsFibonacciTerm
 			double numberToTest, term1 = 1, term2 = 1, auxiliaryTerm;
 			int termCounter = 2;
 			
+			ValidateInput validation = new ValidateInput();
+			
 			Console.WriteLine("Digite um número positivo para ver se é um termo de Fibonacci: ");
-			numberToTest = ValidateInput.ValidNumberSign(true); // Only accept input if it is a positive number
+			numberToTest = validation.ValidateNumberSign(true); // Only accept input if it is a positive number
 			
 			while (numberToTest > term1) // Check to know when to stop building the Fibonacci sequence
 			{

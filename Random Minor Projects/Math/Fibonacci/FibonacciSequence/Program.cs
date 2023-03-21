@@ -16,8 +16,10 @@ namespace FibonacciSequence
 			double term1 = 1, term2 = 0, auxiliaryTerm = 0;
 			int numberOfTerms;
 			
+			ValidateInput validation = new ValidateInput();
+			
 			Console.WriteLine("Digite a quantidade de termos para montar a sequência de Fibonacci. \nQuantidade máxima: 1476.");
-			numberOfTerms = (int)ValidateInput.ValidNumericValue(1, 1476); // Guarantees the inputted number is valid. (Less than 1 would lead to no terms being built in the sequence, meanwhile more than 1476 would overflow the size of a double variable and return infinity as a result)
+			numberOfTerms = (int)validation.ValidateNumericValue(1, 1476); // Guarantees the inputted number is valid. (Less than 1 would lead to no terms being built in the sequence, meanwhile more than 1476 would overflow the size of a double variable and return infinity as a result)
 			
 			if (numberOfTerms > 295) // Checks if the amount of terms will lead to the sequence exceeding the console buffer height
 			{

@@ -81,13 +81,13 @@ namespace InputValidation
 		// Method that repeatedly asks for a char input until the inputted value is contained in the "validChars" array. Intended to be used in situations where the program should only accept specific values in a single character input (Using a Console.ReadKey(), as opposed to a Console.ReadLine() used in the previous method)
 		// Example: The user has to answer with 'y' or 'n', for "yes" and "no", thus the "validChars" array would be set to {'y', 'n'}
 		// Note: If validChars is empty, the method will accept any input (essentially the same as just using a Console.ReadKey())
-		public char ValidateChar()
+		public char ValidateChar(bool hideChar)
 		{
 			do
 			{
 				GetCursorPosition();
 				
-				charToTest = Console.ReadKey(true).KeyChar;
+				charToTest = Console.ReadKey(hideChar).KeyChar; // The method receives a bool parameter that controls whether to hide the input or not. If the parameter is passed as "true", then the char input is hidden. If it's passed as "false", the char input will be shown
 				
 				if (!(Array.Exists(validChars, element => element == Char.ToLower(charToTest)) && (validChars.Length > 0))) // Checks if the input exists within the array of validChars and  if the validChars is empty
 				// Also makes sure to convert the input to lowercase

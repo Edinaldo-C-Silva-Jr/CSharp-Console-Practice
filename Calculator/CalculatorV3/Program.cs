@@ -3,6 +3,7 @@
  * Time: 20:48
  */
 using System;
+using System.Threading;
 using InputValidation;
 
 // Third and final version of the simple Calculator application i made when getting back to C# development
@@ -13,22 +14,22 @@ namespace CalculatorV3
 	class Program
 	{
 		private static double numberForOperation, currentNumber;
-		private static string commandEntered = "";
-		private static string[] validCommands = {"+", "-", "*", "/", "?", "s", "e"}; // Commands accepted by the program
+		private static char commandEntered = ' ';
+		private static char[] validCommands = {'+', '-', '*', '/', '?', 'S', 'E'}; // Commands accepted by the program
 		
 		// Method that receives an input. It displays a dynamic message that can be defined as a parameter
-		private static double Input(string messageToDisplay)
+		private static double Input(string messageToDisplay, ValidateInput validation)
 		{
 			Console.WriteLine("\n" + messageToDisplay);
-			return ValidateInput.ValidDouble();
+			return validation.ValidateDouble();
 		}
 		
 		// Method that receives an input for the division operation. It does not accept 0 as an input
 		// It displays a dynamic message that can be defined as a parameter
-		public static void InputDivision(string messageToDislpay)
+		public static void InputDivision(string messageToDislpay, ValidateInput validation)
 		{
 			Console.WriteLine("\n" + messageToDislpay);
-			numberForOperation = ValidateInput.ValidDoubleNotZero();
+			numberForOperation = validation.ValidateDoubleNotZero();
 		}
 		
 		// Method that redraws the main screen after each operation is done
@@ -47,61 +48,64 @@ namespace CalculatorV3
 		{
 			Console.Clear();
 			Console.WriteLine("-------------------------     CALCULADORA     -------------------------");
-			Console.WriteLine("(S) - Permite digitar o primeiro número que será utilizado nas operações. Caso este comando não seja utilizado, o número utilizado será o resultado da operação anterior.");
-			Console.WriteLine("(+) - Realiza uma operação de adição, onde o primeiro número é o 'valor atual', e o segundo número deve ser digitado.");
-			Console.WriteLine("(-) - Realiza uma operação de subtração, onde o primeiro número é o 'valor atual', e o segundo número deve ser digitado.");
-			Console.WriteLine("(*) - Realiza uma operação de multiplicação, onde o primeiro número é o 'valor atual', e o segundo número deve ser digitado.");
-			Console.WriteLine("(/) - Realiza uma operação de divisão, onde o primeiro número é o 'valor atual', e o segundo número deve ser digitado.");
-			Console.WriteLine("(E) - Finaliza o programa.");
+			Console.WriteLine("\n(S) - Permite digitar o primeiro número que será utilizado nas operações. Caso este comando não seja utilizado, o número utilizado será o resultado da operação anterior.");
+			Console.WriteLine("\n(+) - Realiza uma operação de adição, onde o primeiro número é o 'valor atual', e o segundo número deve ser digitado.");
+			Console.WriteLine("\n(-) - Realiza uma operação de subtração, onde o primeiro número é o 'valor atual', e o segundo número deve ser digitado.");
+			Console.WriteLine("\n(*) - Realiza uma operação de multiplicação, onde o primeiro número é o 'valor atual', e o segundo número deve ser digitado.");
+			Console.WriteLine("\n(/) - Realiza uma operação de divisão, onde o primeiro número é o 'valor atual', e o segundo número deve ser digitado.");
+			Console.WriteLine("\n(E) - Finaliza o programa.");
 			Console.ReadKey();
 		}
 		
 		public static void Main()
 		{
-			while(commandEntered != "e") // While the command is not "e", the program will keep running
+			ValidateInput validationMain = new ValidateInput();
+			
+			while(commandEntered != 'e') // While the command is not "e" (for Exit), the program will keep running
 			{
 				DrawMainScreen();
 				Console.Write("Comando: ");
-				ValidateInput.SetValidValues(validCommands); // Sets the values considered valid commands for the program
-				commandEntered = ValidateInput.ValidInput();
+				validationMain.SetValidChars(validCommands); // Sets the characters considered valid commands for the program
+				commandEntered = Char.ToLower(validationMain.ValidateChar(false));
+				Thread.Sleep(600);
 				
 				switch(commandEntered)
 				{
-					case "s": // Starting value: receives the first value to start an operation
+					case 's': // Starting value: receives the first value to start an operation
 						{
-							currentNumber = Input("Número Inicial: ");
+							currentNumber = Input("\nNúmero Inicial: ", validationMain);
 							break;
 						}
-					case "?": // Help: Shows the available commands
+					case '?': // Help: Shows the available commands
 						{
 							ShowHelp();
 							break;
 						}
-					case "+": // Addition
+					case '+': // Addition
 						{
-							Console.WriteLine("\nAdição");
-							numberForOperation = Input("Digite o segundo termo: ");
+							Console.WriteLine("\n\nAdição");
+							numberForOperation = Input("Digite o segundo termo: ", validationMain);
 							currentNumber += numberForOperation;
 							break;
 						}
-					case "-": // Subtraction
+					case '-': // Subtraction
 						{
-							Console.WriteLine("\nSubtração");
-							numberForOperation = Input("Digite o segundo termo: ");
+							Console.WriteLine("\n\nSubtração");
+							numberForOperation = Input("Digite o segundo termo: ", validationMain);
 							currentNumber -= numberForOperation;
 							break;
 						}
-					case "*": // Multiplication
+					case '*': // Multiplication
 						{
-							Console.WriteLine("\nMultiplicação");
-							numberForOperation = Input("Digite o segundo termo: ");
+							Console.WriteLine("\n\nMultiplicação");
+							numberForOperation = Input("Digite o segundo termo: ", validationMain);
 							currentNumber *= numberForOperation;
 							break;
 						}
-					case "/": // Division
+					case '/': // Division
 						{
-							Console.WriteLine("\nDivisão");
-							InputDivision("Digite o segundo termo. Deve ser diferente de 0: ");
+							Console.WriteLine("\n\nDivisão");
+							InputDivision("Digite o segundo termo. Deve ser diferente de 0: ", validationMain);
 							currentNumber /= numberForOperation;
 							break;
 						}

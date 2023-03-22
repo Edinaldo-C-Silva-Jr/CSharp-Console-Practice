@@ -3,6 +3,7 @@
  * Time: 19:09
  */
 using System;
+using System.Threading;
 using InputValidation;
 
 // A second version of the simple "Calculator" program i made when getting back to C# development
@@ -19,27 +20,27 @@ namespace CalculatorV2
 		private static char operationChosen = ' ', continueYesNo = 's';
 		
 		// Method to ask for and receive an input
-		private static void Input(int i)
+		private static void Input(int i, ValidateInput validation)
 		{
 			Console.WriteLine("\nDigite o " + (i+1) + "º numero: ");
-			numbers[i] = ValidateInput.ValidDouble();
+			numbers[i] = validation.ValidateDouble();
 		}
 		
 		// Method that asks and receives an input for the division operation. It doesn't accept 0 as an input
-		private static void InputDivision(int i)
+		private static void InputDivision(int i, ValidateInput validation)
 		{
 			Console.WriteLine("\nDigite o " + (i+1) + "º numero. Deve ser diferente de 0: ");
-			numbers[i] = ValidateInput.ValidDoubleNotZero();
+			numbers[i] = validation.ValidateDoubleNotZero();
 		}
 		
 		// Method that receives the initial input for division and subtraction
-		// These 2 operations need a different treatment because the subsequent values are subtracted/divide the first one
-		private static void InputInitial (string operation, string action)
+		// These 2 operations need a different treatment because the subsequent values are subtracted from/divide the first one
+		private static void InputInitial (string operation, string action, ValidateInput validation)
 		{
 			Console.Clear();
 			Console.WriteLine("Operação Escolhida: " + operation);
 			Console.WriteLine("Digite o valor inicial, os restantes serão " + action + " dele.");
-			result = numbers[0] = ValidateInput.ValidDouble();
+			result = numbers[0] = validation.ValidateDouble();
 		}
 		
 		// Method that shows all previous inputs during a set of operations
@@ -55,16 +56,20 @@ namespace CalculatorV2
 		
 		public static void Main()
 		{
-			while(continueYesNo == 's') // Program will keep running while this variable stays as "yes" ("sim"). If the variable is "no" ("não") the program will end.
+			ValidateInput validationMain = new ValidateInput();
+			
+			while(continueYesNo == 's') // Program will keep running while this variable stays as 's' (short for "sim", which means yes). If the variable is 'n' (short for "não", which means no) the program will end.
 			{
 				Console.Clear();
-				ValidateInput.SetValidValues(new string[] {"a", "s", "m", "d"}); // Sets the strings considered valid inputs
+				validationMain.SetValidChars(new char[] {'a', 's', 'm', 'd'}); // Sets the characters considered valid inputs
 				Console.WriteLine("Digite a operação desejada.\nA = Adição, \nS = Subtração, \nM = Multipliacação, \nD = Divisão."); Console.WriteLine("Operação: ");
-				operationChosen = char.Parse(ValidateInput.ValidInput()); // Validates if the input is within the array of values considered valid, which were defined above
+				operationChosen = Char.ToLower(validationMain.ValidateChar(false)); // Validates if the input is within the array of values considered valid, which were defined above
+				Thread.Sleep(600);
 					
 				Console.Clear();
+				
 				Console.WriteLine("Digite a quantidade de entradas de dados. \nAo menos 2 entradas são necessárias, e um máximo de 20 serão aceitas. \nEntradas: "); // Asks for the amount of inputs that will be entered for this set of operations. 
-				quantity = (int)ValidateInput.ValidNumericValue(2, 20); // 2 inputs are minimum in order to make at least one operation. 20 inputs has been arbitrarily defined as a maximum value to keep the program reasonable
+				quantity = (int)validationMain.ValidateNumericValue(2, 20); // 2 inputs are minimum in order to make at least one operation. 20 inputs has been arbitrarily defined as a maximum value to keep the program reasonable
 				
 				numbers = new double[quantity]; // Creates an array to receive the amount of inpus defined above
 				
@@ -76,7 +81,7 @@ namespace CalculatorV2
 							for (int i = 0; i < quantity; i++)
 							{
 								ShowInputs("Adição", i);
-								Input(i);
+								Input(i, validationMain);
 								result = result + numbers[i];
 							}
 							ShowInputs("Adição", quantity);
@@ -85,12 +90,12 @@ namespace CalculatorV2
 						}
 					case 's': // Subtraction
 						{
-							InputInitial("Subtração", "subtraídos");
+							InputInitial("Subtração", "subtraídos", validationMain);
 							
 							for (int i = 1; i < quantity; i++)
 							{
 								ShowInputs("Subtração", i);
-								Input(i);
+								Input(i, validationMain);
 								result = result - numbers[i];
 							}
 							ShowInputs("Subtração", quantity);
@@ -103,7 +108,7 @@ namespace CalculatorV2
 							for (int i = 0; i < quantity; i++)
 							{
 								ShowInputs("Multiplicação", i);
-								Input(i);
+								Input(i, validationMain);
 								result = result * numbers[i];
 							}
 							ShowInputs("Multiplicação", quantity);
@@ -112,12 +117,12 @@ namespace CalculatorV2
 						}
 					case 'd': // Division
 						{
-							InputInitial("Divisão", "divididos");
+							InputInitial("Divisão", "divididos", validationMain);
 							
 							for (int i = 1; i < quantity; i++)
 							{
 								ShowInputs("Divisão", i);
-								InputDivision(i);
+								InputDivision(i, validationMain);
 								result = result / numbers[i];
 							}
 							ShowInputs("Divisão", quantity);
@@ -126,9 +131,10 @@ namespace CalculatorV2
 						}
 				}
 				
-				ValidateInput.SetValidValues(new string[] {"s", "n"}); // Sets a new array of values considered valid for input
-				Console.WriteLine("\nDeseja realizar outra operação? s/n"); // Asks if the user wants to do another operation
-				continueYesNo = char.Parse(Console.ReadLine());
+				validationMain.SetValidChars(new char[] {'s', 'n'}); // Sets a new array of characters considered valid for input
+				Console.WriteLine("\nDeseja realizar outra operação? S/N"); // Asks if the user wants to do another operation
+				continueYesNo = Char.ToLower(validationMain.ValidateChar(false));
+				Thread.Sleep(600);
 			}
 		}
 	}

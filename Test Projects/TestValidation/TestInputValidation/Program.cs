@@ -41,8 +41,8 @@ namespace TestInputValidation
 			// The method SetValidChars is not case sensitive 
 			Console.WriteLine("\nDigite uma vogal (A, E, I, O ou U):");
 			validation.SetValidChars(new char[] {'a', 'e', 'i', 'o', 'u'}); // Sets the ValidChars array with the values considered valid for this test
-			character = validation.ValidateChar();
-			Console.WriteLine("Valor válido: " + character);
+			character = validation.ValidateChar(false);
+			Console.WriteLine("\nValor válido: " + character);
 			Thread.Sleep(1000);
 			
 			// Testing the validation of a 32-bit integer value

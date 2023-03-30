@@ -16,12 +16,11 @@ namespace TicTacToe
 			
 			do
 			{
+				Console.Clear();
 				Console.WriteLine("---------- Jogo da Velha ----------");
 				Console.WriteLine("Escolha o número de jogadores (1 ou 2): ");
 				
-				game.SetOpponentMode(); // Will be changed to validation class
-				game.ResetGame();
-				game.DrawPlayField();
+				game.SetOpponentMode();
 				
 				game.PlayGame();
 				

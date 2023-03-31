@@ -37,11 +37,12 @@ namespace TestInputValidation
 			Thread.Sleep(1000);
 			
 			// Testing the validation of a single character
-			// The array of expected inputs has to eb set (with the SetValidChars method) before the ValidateChar method can be used. Otherwise it will work exactly like a Console.ReadKey() and allow any input
-			// The method SetValidChars is not case sensitive 
+			// The array of expected inputs has to be set (with the SetValidChars method) before the ValidateChar method can be used. Otherwise it will work exactly like a Console.ReadKey() and allow any input
+			// The bool parameter defines whether to hide the input on screen (true hides the input, false shows it)
+			// The method SetValidChars is not case sensitive
 			Console.WriteLine("\nDigite uma vogal (A, E, I, O ou U):");
 			validation.SetValidChars(new char[] {'a', 'e', 'i', 'o', 'u'}); // Sets the ValidChars array with the values considered valid for this test
-			character = validation.ValidateChar(false);
+			character = validation.ValidateChar(false); // Asks for an input and keeps trying until the character corresponds to one of the values decided above
 			Console.WriteLine("\nValor válido: " + character);
 			Thread.Sleep(1000);
 			

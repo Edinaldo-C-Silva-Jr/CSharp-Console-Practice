@@ -36,7 +36,7 @@ namespace DescendingText
 			
 			for(int i = 0; i < textToDescend.Length; i++) // Each iteration refers to one character of the text
 			{
-				if (textToDescend.Substring(i, 1) != " ") // Skips descending process if the character
+				if (textToDescend.Substring(i, 1) != " ") // Skips descending process if the character is blank (it won't show up anyway)
 				{
 					for(int j = 0; j < descendValue; j++) // Each iteration refers to one line of text descending
 					{

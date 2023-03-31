@@ -12,7 +12,6 @@ namespace YouCanMoveIt
 	class Program
 	{
 		private static int cursorX = 34, cursorY = 11; // Variables that record the cursor position. Started at specific values that ensure the text will be centered on the screen
-		private static ConsoleKey command;
 		
 		// Method that erases the text by writing spaces in the current cursor position
 		public static void EraseText ()
@@ -30,12 +29,14 @@ namespace YouCanMoveIt
 		
 		public static void Main ()
 		{
+			ConsoleKey command;
+			
 			WriteText(); // Writes the text once the program starts. The starting cursor position values make it centered on the screen
 			
 			Console.SetCursorPosition(9, 24); // Writes this text at the bottom of the screen. Horizontally centered on the screen
 			Console.Write("Use the arrow keys to move the text around. Press Esc to exit.");
 			
-			while (command != ConsoleKey.Escape) // Keep running until the user presses the Esc key
+			do
 			{
 				command = Console.ReadKey(true).Key;
 				
@@ -45,9 +46,9 @@ namespace YouCanMoveIt
 						{
 							if (cursorX < Console.BufferWidth - 12) // Makes sure the text cannot go past the right side of the screen, to prevent it from looping and to prevent a crash from the cursor position overflowing the buffer
 							{
-								EraseText(); // Erases the current text
+								EraseText(); 
 								cursorX++; // Moves the cursor one space to the right
-								WriteText(); // Writes it in the new position
+								WriteText(); 
 							}
 							break;
 						}
@@ -55,9 +56,9 @@ namespace YouCanMoveIt
 						{
 							if (cursorX > 0) // Makes sure the text cannot go past the left side of the screen, to prevent a crash from invalid cursor position
 							{
-								EraseText(); // Erases the current text
+								EraseText(); 
 								cursorX--; // Moves the cursor one space to the left
-								WriteText(); // Writes it in the new position
+								WriteText(); 
 							}
 							break;
 						}
@@ -65,9 +66,9 @@ namespace YouCanMoveIt
 						{
 							if (cursorY > 0) // Makes sure the text cannot go past the top of the screen, to prevent a crash from invalid cursor position
 							{
-								EraseText(); // Erases the current text
+								EraseText(); 
 								cursorY--; // Moves the cursor one space up
-								WriteText(); // Writes it in the new position
+								WriteText(); 
 							}
 							break;
 						}
@@ -75,9 +76,9 @@ namespace YouCanMoveIt
 						{
 							if (cursorY < 23) // Makes sure the text cannot go into the bottom of the screen, to prevent it from overwriting the instructions at the bottom
 							{
-								EraseText(); // Erases the current text
+								EraseText(); 
 								cursorY++; // Moves the cursor one space down
-								WriteText(); // Writes it in the new position
+								WriteText(); 
 							}
 							break;
 						}
@@ -95,6 +96,7 @@ namespace YouCanMoveIt
 						}
 				}
 			}
+			while (command != ConsoleKey.Escape); // Keep running until the user presses the Esc key
 		}
 	}
 }

@@ -13,15 +13,14 @@ namespace CalculatorV1
 	class Program
 	{
 		private static double number1, number2, result;
-		private static char operationChosen = ' ', continueYesNo = 's';
 		
 		// Method that receives the inputs for the calculator
-		private static void Input(ValidateInput validation)
+		private static void Input(ValidateInput validation, char operation)
 		{
 			Console.WriteLine("Digite o primeiro numero: "); // Asks for the first input and validates if it is a number
 			number1 = validation.ValidateDouble();
 			
-			if (operationChosen == 'd') // Checks whether the operation is division
+			if (operation == 'd') // Checks whether the operation is division
 			{
 				Console.WriteLine("Digite o segundo numero, ele deve ser diferente de 0: "); // If operation is division, then ask for a number that's not 0
 				number2 = validation.ValidateDoubleNotZero();
@@ -35,6 +34,8 @@ namespace CalculatorV1
 		
 		public static void Main()
 		{
+			char operationChosen = ' ', continueYesNo = 's';
+			
 			ValidateInput validationMain = new ValidateInput();
 			
 			while(continueYesNo == 's') // Program will keep running while this variable stays as 's' (short for "sim", which means yes). If the variable is 'n' (short for "não", which means no) the program will end.
@@ -53,7 +54,7 @@ namespace CalculatorV1
 					case 'a': // Addition
 						{
 							Console.WriteLine("Operação Escolhida: Adição. \n");
-							Input(validationMain);
+							Input(validationMain, operationChosen);
 							result = number1 + number2;
 							Console.WriteLine("\nO valor da adição é: " + result);
 							break;
@@ -61,7 +62,7 @@ namespace CalculatorV1
 					case 's': // Subtraction
 						{
 							Console.WriteLine("Operação Escolhida: Subtração. \n");
-							Input(validationMain);
+							Input(validationMain, operationChosen);
 							result = number1 - number2;
 							Console.WriteLine("\nO valor da subtração é: " + result);
 							break;
@@ -69,7 +70,7 @@ namespace CalculatorV1
 					case 'm': // Multiplication
 						{
 							Console.WriteLine("Operação Escolhida: Multiplicação. \n");
-							Input(validationMain);
+							Input(validationMain, operationChosen);
 							result = number1 * number2;
 							Console.WriteLine("\nO valor da multiplicação é: " + result);
 							break;
@@ -77,7 +78,7 @@ namespace CalculatorV1
 					case 'd': // Division
 						{
 							Console.WriteLine("Operação Escolhida: Divisão. \n");
-							Input(validationMain);
+							Input(validationMain, operationChosen);
 							result = number1 / number2;
 							Console.WriteLine("\nO valor da divisão é: " + result);
 							break;

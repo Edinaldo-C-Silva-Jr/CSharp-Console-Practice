@@ -13,10 +13,6 @@ namespace CalculatorV3
 {
 	class Program
 	{
-		private static double numberForOperation, currentNumber;
-		private static char commandEntered = ' ';
-		private static char[] validCommands = {'+', '-', '*', '/', '?', 'S', 'E'}; // Commands accepted by the program
-		
 		// Method that receives an input. It displays a dynamic message that can be defined as a parameter
 		private static double Input(string messageToDisplay, ValidateInput validation)
 		{
@@ -26,21 +22,21 @@ namespace CalculatorV3
 		
 		// Method that receives an input for the division operation. It does not accept 0 as an input
 		// It displays a dynamic message that can be defined as a parameter
-		public static void InputDivision(string messageToDislpay, ValidateInput validation)
+		public static double InputDivision(string messageToDislpay, ValidateInput validation)
 		{
 			Console.WriteLine("\n" + messageToDislpay);
-			numberForOperation = validation.ValidateDoubleNotZero();
+			return validation.ValidateDoubleNotZero();
 		}
 		
 		// Method that redraws the main screen after each operation is done
-		public static void DrawMainScreen()
+		public static void DrawMainScreen(double number)
 		{
 			Console.Clear();
 			Console.WriteLine("-----------------     CALCULADORA     -----------------");
 			Console.WriteLine("Digite um comando válido para iniciar as operações."); 
 			Console.WriteLine("Para saber os comandos válidos, digite '?'");
 			Console.WriteLine("As operações serão realizadas com o valor abaixo.");
-			Console.WriteLine("Valor atual: " + currentNumber);
+			Console.WriteLine("Valor atual: " + number);
 		}
 		
 		// Method that shows the help option, informing what are the valid commands and what they do
@@ -59,11 +55,15 @@ namespace CalculatorV3
 		
 		public static void Main()
 		{
+			double numberForOperation = 0, currentNumber = 0;
+			char[] validCommands = {'+', '-', '*', '/', '?', 'S', 'E'}; // Commands accepted by the program
+			char commandEntered = ' ';
+			
 			ValidateInput validationMain = new ValidateInput();
 			
 			while(commandEntered != 'e') // While the command is not "e" (for Exit), the program will keep running
 			{
-				DrawMainScreen();
+				DrawMainScreen(currentNumber);
 				Console.Write("Comando: ");
 				validationMain.SetValidChars(validCommands); // Sets the characters considered valid commands for the program
 				commandEntered = Char.ToLower(validationMain.ValidateChar(false));
@@ -105,7 +105,7 @@ namespace CalculatorV3
 					case '/': // Division
 						{
 							Console.WriteLine("\n\nDivisão");
-							InputDivision("Digite o segundo termo. Deve ser diferente de 0: ", validationMain);
+							numberForOperation = InputDivision("Digite o segundo termo. Deve ser diferente de 0: ", validationMain);
 							currentNumber /= numberForOperation;
 							break;
 						}

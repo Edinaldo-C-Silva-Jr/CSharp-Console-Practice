@@ -16,8 +16,6 @@ namespace CalculatorV2
 	{
 		private static double[] numbers;
 		private static double result;
-		private static int quantity;
-		private static char operationChosen = ' ', continueYesNo = 's';
 		
 		// Method to ask for and receive an input
 		private static void Input(int i, ValidateInput validation)
@@ -56,6 +54,9 @@ namespace CalculatorV2
 		
 		public static void Main()
 		{
+			int quantity;
+			char operationChosen = ' ', continueYesNo = 's';
+			
 			ValidateInput validationMain = new ValidateInput();
 			
 			while(continueYesNo == 's') // Program will keep running while this variable stays as 's' (short for "sim", which means yes). If the variable is 'n' (short for "não", which means no) the program will end.

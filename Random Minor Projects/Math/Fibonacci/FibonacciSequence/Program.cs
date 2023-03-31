@@ -30,7 +30,7 @@ namespace FibonacciSequence
 			
 			for (int i = 1; i < numberOfTerms; i++)
 			{
-				Thread.Sleep(500 / (numberOfTerms * 2)); // Calculates the wait time between showing each ter. The more terms there are, the faster it shows them (maximum speed is reached by 251 terms)
+				Thread.Sleep(500 / (numberOfTerms * 2)); // Calculates the wait time between showing each term. The more terms there are, the faster it shows them (maximum speed is reached by 251 terms)
 				
 				auxiliaryTerm = term1 + term2; // Builds the Fibonacci Sequence. Term 1 is the bigger term, Term 2 is the smaller one
 				term2 = term1;

@@ -9,74 +9,127 @@ using System.Collections.Generic;
 
 namespace InputLimitator
 {
-	/// <summary>
-	/// Description of MyClass.
-	/// </summary>
 	public class LimitInput
 	{
-		private string fullInput = "";
 		private ConsoleKeyInfo currentCharInput;
-		private int inputAscii, cursorX, cursorY;
+		private int inputAscii, cursorX, cursorY, maximumInputSize, minimumInputSize;
 		
-		public double LimitInputNumberOnly (int maxInputSize, int minInputSize)
-		{	
+		private void GetCursorPosition()
+		{
 			cursorX = Console.CursorLeft;
 			cursorY = Console.CursorTop;
-			
-			if (maxInputSize < minInputSize)
+		}
+		
+		private void AssignInputSizes(int max, int min)
+		{
+			if (max < min)
 			{
-				int auxInput = minInputSize;
-				minInputSize = maxInputSize;
-				maxInputSize = auxInput;
+				maximumInputSize = min;
+				minimumInputSize = max;
 			}
+			else
+			{
+				maximumInputSize = max;
+				minimumInputSize = min;
+			}
+		}
+		
+		private bool TestEnter(string full)
+		{
+			if (inputAscii == 13)
+			{
+				if (full.Length > minimumInputSize)
+				{
+					return true;
+				}
+				else
+				{
+					SystemSounds.Beep.Play();
+				}
+			}
+			return false;
+		}
+		
+		private string TestBackspace(string full)
+		{
+			if (inputAscii == 8)
+			{
+				if (full.Length > 0)
+				{
+					full = full.Substring(0, full.Length - 1);
+					Console.SetCursorPosition(cursorX, cursorY);
+					Console.Write(new String(' ', full.Length + 1));
+				}
+				else
+				{
+					SystemSounds.Beep.Play();
+				}
+			}
+			
+			return full;
+		}
+		
+		public string LimitInputAll(int minInputSize, int maxInputSize)
+		{
+			GetCursorPosition();
+			AssignInputSizes(maxInputSize, minInputSize);
+			
+			string fullInput = "";
+			bool enterPressed = false;
 			
 			do
 			{
 				currentCharInput = Console.ReadKey(true);
 				inputAscii = (int)currentCharInput.KeyChar;
 				
-				if (inputAscii == 13)
+				enterPressed = TestEnter(fullInput);
+				fullInput = TestBackspace(fullInput);
+				
+				if ((inputAscii > 31 && inputAscii < 127) && (fullInput.Length < maximumInputSize))
 				{
-					if (fullInput.Length < minInputSize)
-					{
-						SystemSounds.Beep.Play();
-					}
-				}
-				else
-				{
-					if (inputAscii == 8)
-					{
-						if (fullInput.Length > 0)
-						{
-							fullInput = fullInput.Substring(0, fullInput.Length - 1);
-							Console.SetCursorPosition(cursorX, cursorY);
-							Console.Write(new String(' ', fullInput.Length + 1));
-						}
-						else
-						{
-							SystemSounds.Beep.Play();
-						}
-					}
-					else
-					{
-						if ((inputAscii > 47 && inputAscii < 58) && (fullInput.Length < maxInputSize))
-						{
-							fullInput += currentCharInput.KeyChar;
-						}
-						else
-						{
-							SystemSounds.Beep.Play();
-						}
-					}
+					fullInput += currentCharInput.KeyChar;
 				}
 				
 				Console.SetCursorPosition(cursorX, cursorY);
 				Console.Write(fullInput);
 			}
-			while ((currentCharInput.Key != ConsoleKey.Enter) || (fullInput.Length < minInputSize));
+			while(!(enterPressed));
+			
+			return fullInput;
+		}
+		
+		public double LimitInputNumberOnly (int minInputSize, int maxInputSize)
+		{
+			GetCursorPosition();
+			AssignInputSizes(maxInputSize, minInputSize);
+			
+			string fullInput = "";
+			bool enterPressed = false;
+			
+			do
+			{
+				currentCharInput = Console.ReadKey(true);
+				inputAscii = (int)currentCharInput.KeyChar;
+				
+				enterPressed = TestEnter(fullInput);
+				fullInput = TestBackspace(fullInput);
+				
+				if ((inputAscii > 47 && inputAscii < 58) && (fullInput.Length < maximumInputSize))
+				{
+					fullInput += currentCharInput.KeyChar;
+				}
+				
+				Console.SetCursorPosition(cursorX, cursorY);
+				Console.Write(fullInput);
+			}
+			while (!(enterPressed));
 			
 			return double.Parse(fullInput);
 		}
 		
+		public double LimitInputNumberOnly (int maxInputSize)
+		{
+			return LimitInputNumberOnly(maxInputSize, 0);
+		}
 	}
 }

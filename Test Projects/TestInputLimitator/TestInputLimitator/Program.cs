@@ -9,6 +9,9 @@ namespace TestInputLimitator
 {
 	class Program
 	{
+		// Tests the methods implemented by the InputLimitator class
+		// They limit the input based on a desired maximum and minimum amount of characters accepted
+		// They're also set to only allow specific characters to be accepted as input
 		public static void Main(string[] args)
 		{
 			double number;
@@ -16,34 +19,64 @@ namespace TestInputLimitator
 			
 			LimitInput limitator = new LimitInput();
 			
+			// Asks for a text input, with a minimum accepted size of 10 characters, and a maximum of 100
+			// This method accepts any non-control character as input
 			Console.WriteLine("Digite um texto qualquer (10 a 100 caracteres): ");
 			text = limitator.LimitInputAll(10, 100);
-			Console.WriteLine("\n" + text);
+			Console.WriteLine("\nTexto: " + text + "\n");
 			Console.ReadKey();
 			
+			// Tests the way the method handles when the sizes are switched (That is. the minimum is bigger than the maximum)
+			Console.WriteLine("Digite um texto qualquer (20 a 50 caracteres): ");
+			text = limitator.LimitInputAll(50, 20);
+			Console.WriteLine("\nTexto: " + text + "\n");
+			Console.ReadKey();
+			
+			// Testing the overloaded method that only receives one parameter
+			// The maximum amount of characters is 80, and there's no minimum
 			Console.WriteLine("Digite um texto qualquer (máximo 80 caracteres): ");
 			text = limitator.LimitInputAll(80);
-			Console.WriteLine("\n" + text);
+			Console.WriteLine("\nTexto: " + text + "\n");
 			Console.ReadKey();
 			
+			
+			// Asks for a numeric input, with a minimum accepted size of 10 characters, and a maximum of 30
+			// This method accepts only number characters as input
 			Console.WriteLine("Digite um número (10 a 30 caracteres): ");
 			number = limitator.LimitInputNumberOnly(10, 30);
-			Console.WriteLine("\n" + number);
+			Console.WriteLine("\nNúmero: " + number + "\n");
 			Console.ReadKey();
 			
+			// Tests the way the method handles when the sizes are switched
+			Console.WriteLine("Digite um número (15 a 40 caracteres): ");
+			number = limitator.LimitInputNumberOnly(40, 15);
+			Console.WriteLine("\nNúmero: " + number + "\n");
+			Console.ReadKey();
+			
+			// Testing the overloaded method that only receives one parameter
 			Console.WriteLine("Digite um número (máximo 50 caracteres): ");
 			number = limitator.LimitInputNumberOnly(50);
-			Console.WriteLine("\n" + number);
+			Console.WriteLine("\nNúmero: " + number + "\n");
 			Console.ReadKey();
 			
+			
+			// Asks for a text input, with a minimum accepted size of 20 characters, and a maximum of 120
+			// This method accepts only letters, either lowercase or uppercase, as input
 			Console.WriteLine("Digite um texto, somente letras (20 a 120 caracteres): ");
 			text = limitator.LimitInputLetterOnly(20, 120);
-			Console.WriteLine("\n" + text);
+			Console.WriteLine("\nTexto: " + text + "\n");
 			Console.ReadKey();
 			
+			// Tests the way the method handles when the sizes are switched
+			Console.WriteLine("Digite um texto, somente letras (10 a 70 caracteres): ");
+			text = limitator.LimitInputLetterOnly(70, 10);
+			Console.WriteLine("\nTexto: " + text + "\n");
+			Console.ReadKey();
+			
+			// Testing the overloaded method that only receives one parameter
 			Console.WriteLine("Digite um texto, somente letras (máximo 60 caracteres): ");
 			text = limitator.LimitInputLetterOnly(60);
-			Console.WriteLine("\n" + text);
+			Console.WriteLine("\nTexto: " + text + "\n");
 			Console.ReadKey();
 		}
 	}

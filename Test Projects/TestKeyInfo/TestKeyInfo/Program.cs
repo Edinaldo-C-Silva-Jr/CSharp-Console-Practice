@@ -17,11 +17,12 @@ namespace TestKeyInfo
 			
 			while (true) {
 				keyInfo = Console.ReadKey(true);
-				asciiValue = (int)keyInfo.KeyChar;
+				asciiValue = (int)keyInfo.KeyChar; // Converts the entered character into its ascii value
 				
 				Console.SetCursorPosition(0, 2);
-				Console.Write(new String(' ', 320));
+				Console.Write(new String(' ', 320)); // Erases previous input
 				Console.SetCursorPosition(0, 2);
+				// Shows: The key pressed. The character produced by it. The modifiers that affect it. The character's ascii value
 				Console.Write("Key: " + keyInfo.Key + "\nCharacter: " + keyInfo.KeyChar + "\nModifier: " +  keyInfo.Modifiers + "\nValue: " + asciiValue);
 			}
 		}

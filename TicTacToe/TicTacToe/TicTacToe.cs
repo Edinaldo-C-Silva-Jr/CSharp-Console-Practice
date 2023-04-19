@@ -14,23 +14,24 @@ namespace TicTacToe
 	{
 		private char[] gameFields = new char[9]; // Variable that keeps track of what was played on each field (X or O)
 		private string[] drawnFields = new string[9]; // Variable that is used to draw the game fields on the screen
-		private bool againstComputer, isPlayerOneTurn, winnerFound;
+		private bool againstComputer = true, isPlayerOneTurn, winnerFound;
 		private int positionPlayed, currentTurn;
 		
 		ValidateInput validation = new ValidateInput();
 		
-		// Resets all variables to the starting values. Used at the start of a game to make sure every variable has its default value
+		#region Game Setup
+		// Resets all match related variables to the starting values. Used at the start of a game to make sure every variable has its default value
 		private void ResetGame()
 		{
 			for (int i = 0; i < 9; i++) // Makes all fields blank spaces, which indicates they haven't been played yet
 			{
-				this.gameFields[i] = ' ';
-				this.drawnFields[i] = "         ";
+				gameFields[i] = ' ';
+				drawnFields[i] = "         ";
 			}
 			
-			this.currentTurn = 0;
-			this.winnerFound = false;
-			this.isPlayerOneTurn = false;
+			currentTurn = 0;
+			winnerFound = false;
+			isPlayerOneTurn = false;
 		}
 		
 		// Draws all the lines required to show the starting game board on the screen. Used only once at the start of a game
@@ -42,7 +43,6 @@ namespace TicTacToe
 			Console.SetCursorPosition(35, 19);
 			Console.Write("Versão 1.0");
 			
-			
 			RedrawGameBoard();
 		}
 		
@@ -51,21 +51,41 @@ namespace TicTacToe
 		{
 			Console.SetCursorPosition(0, 2);
 			Console.WriteLine("     ----------------------------------------");
-			Console.WriteLine("     |[1]" + this.drawnFields[0] + "|[2]" + this.drawnFields[1] + "|[3]" + this.drawnFields[2] + "|");
-			Console.WriteLine("     |[4]" + this.drawnFields[3] + "|[5]" + this.drawnFields[4] + "|[6]" + this.drawnFields[5] + "|");
-			Console.WriteLine("     |[7]" + this.drawnFields[6] + "|[8]" + this.drawnFields[7] + "|[9]" + this.drawnFields[8] + "|");
+			Console.WriteLine("     |[1]" + drawnFields[0] + "|[2]" + drawnFields[1] + "|[3]" + drawnFields[2] + "|");
+			Console.WriteLine("     |[4]" + drawnFields[3] + "|[5]" + drawnFields[4] + "|[6]" + drawnFields[5] + "|");
+			Console.WriteLine("     |[7]" + drawnFields[6] + "|[8]" + drawnFields[7] + "|[9]" + drawnFields[8] + "|");
 			Console.WriteLine("     ----------------------------------------\n");
+		}
+		#endregion
+		
+		#region Game Settings
+		// Returns a string containing the details of the current game settings. Used to display the settings in the menu
+		public string[] GetCurrentSettings()
+		{
+			string[] settings = new string[1];
+			
+			if (againstComputer)
+			{
+				settings[0] = "Computador";
+			}
+			else
+			{
+				settings[0] = "Humano";
+			}
+			
+			
+			return settings;
 		}
 		
 		// Sets whether the opponent will be a second human player or the computer
-		// It currently utilizes the amount of players to define the opponent
-		// If amount of players is 1, the opponent is a computer. If amount of players is 2, the opponent is a human
-		public void SetOpponentMode()
+		public bool SetOpponentMode()
 		{
-			int players = (int)validation.ValidateNumericValue(1, 2); // Ensures the input can only be '1' or '2'
-			this.againstComputer = (players == 1);
+			againstComputer = !(againstComputer);
+			return againstComputer;
 		}
+		#endregion
 		
+		#region Gameplay Methods
 		// Method that handles a single turn being played by a human player
 		private void PlayTurnHuman(string player, char shape)
 		{
@@ -173,7 +193,9 @@ namespace TicTacToe
 				}
 			}
 		}
+		#endregion
 		
+		#region Playing The Game
 		// Method that actually starts the game
 		public void PlayGame()
 		{
@@ -209,7 +231,7 @@ namespace TicTacToe
 					}
 				}
 				
-				if (currentTurn > 4) // Only checks for a winner from the 5th turn onwards (There can only be amatch if any player has played at least 3 times)
+				if (currentTurn > 4) // Only checks for a winner from the 5th turn onwards (There can only be a match if any player has played at least 3 times)
 				{
 					CheckForWinner();
 				}
@@ -239,5 +261,6 @@ namespace TicTacToe
 			
 			Console.ReadKey();
 		}
+		#endregion
 	}
 }

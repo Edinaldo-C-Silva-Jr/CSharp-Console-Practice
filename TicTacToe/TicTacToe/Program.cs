@@ -14,24 +14,12 @@ namespace TicTacToe
 	{
 		public static void Main(string[] args)
 		{
-			Console.SetWindowSize(49, 20); // Sets the window size to better fit the size of the game board
-			Console.SetBufferSize(49, 20);
-			TicTacToe game = new TicTacToe();
+			Console.SetWindowSize(59, 20); // Sets the window size to better fit the size of the game board
+			Console.SetBufferSize(59, 20);
 			
-			do
-			{
-				Console.Clear();
-				Console.SetCursorPosition(35, 19);
-				Console.Write("Versão 1.0");
-				Console.SetCursorPosition(0, 0);
-				Console.WriteLine("-------- Jogo da Velha --------");
-				Console.WriteLine("Escolha o número de jogadores (1 ou 2): ");
-				
-				game.SetOpponentMode(); // Asks for player amount and defines who the opponent will be
-				
-				game.PlayGame();
-			}
-			while (true); // TODO: Eventually will be "while input != esc"
+			Menu gameMenu = new Menu();
+			
+			gameMenu.StartMenu();
 		}
 	}
 }

@@ -14,7 +14,8 @@ namespace TicTacToe
 	{
 		private char[] gameFields = new char[9]; // Variable that keeps track of what was played on each field (X or O)
 		private string[] drawnFields = new string[9]; // Variable that is used to draw the game fields on the screen
-		private bool againstComputer = true, isPlayerOneTurn, winnerFound;
+		private bool againstComputer = true, playWithArrows = false; // Settings related variables
+		private bool isPlayerOneTurn, winnerFound; 
 		private int positionPlayed, currentTurn;
 		
 		ValidateInput validation = new ValidateInput();
@@ -26,7 +27,7 @@ namespace TicTacToe
 			for (int i = 0; i < 9; i++) // Makes all fields blank spaces, which indicates they haven't been played yet
 			{
 				gameFields[i] = ' ';
-				drawnFields[i] = "         ";
+				drawnFields[i] = "           ";
 			}
 			
 			currentTurn = 0;
@@ -40,7 +41,7 @@ namespace TicTacToe
 			Console.Clear();
 			Console.SetCursorPosition(12, 0);
 			Console.Write("----- Jogo da Velha -----");
-			Console.SetCursorPosition(35, 19);
+			Console.SetCursorPosition(47, 19);
 			Console.Write("Versão 1.0");
 			
 			RedrawGameBoard();
@@ -50,11 +51,11 @@ namespace TicTacToe
 		private void RedrawGameBoard()
 		{
 			Console.SetCursorPosition(0, 2);
-			Console.WriteLine("     ----------------------------------------");
-			Console.WriteLine("     |[1]" + drawnFields[0] + "|[2]" + drawnFields[1] + "|[3]" + drawnFields[2] + "|");
-			Console.WriteLine("     |[4]" + drawnFields[3] + "|[5]" + drawnFields[4] + "|[6]" + drawnFields[5] + "|");
-			Console.WriteLine("     |[7]" + drawnFields[6] + "|[8]" + drawnFields[7] + "|[9]" + drawnFields[8] + "|");
-			Console.WriteLine("     ----------------------------------------\n");
+			Console.WriteLine("       ---------------------------------------------");
+			Console.WriteLine("       [1]" + drawnFields[0] + "|[2]" + drawnFields[1] + "|[3]" + drawnFields[2] + "|");
+			Console.WriteLine("       [4]" + drawnFields[3] + "|[5]" + drawnFields[4] + "|[6]" + drawnFields[5] + "|");
+			Console.WriteLine("       [7]" + drawnFields[6] + "|[8]" + drawnFields[7] + "|[9]" + drawnFields[8] + "|");
+			Console.WriteLine("       ---------------------------------------------\n");
 		}
 		#endregion
 		
@@ -62,7 +63,7 @@ namespace TicTacToe
 		// Returns a string containing the details of the current game settings. Used to display the settings in the menu
 		public string[] GetCurrentSettings()
 		{
-			string[] settings = new string[1];
+			string[] settings = new string[2];
 			
 			if (againstComputer)
 			{
@@ -70,25 +71,38 @@ namespace TicTacToe
 			}
 			else
 			{
-				settings[0] = "Humano";
+				settings[0] = "Humano    ";
 			}
 			
+			if (playWithArrows)
+			{
+				settings[1] = "Setas  ";
+			}
+			else
+			{
+				settings[1] = "Digitar";
+			}
 			
 			return settings;
 		}
 		
 		// Sets whether the opponent will be a second human player or the computer
-		public bool SetOpponentMode()
+		public void SetOpponentMode()
 		{
 			againstComputer = !(againstComputer);
-			return againstComputer;
+		}
+		
+		public void SetControlType()
+		{
+			playWithArrows = !(playWithArrows);
 		}
 		#endregion
 		
 		#region Gameplay Methods
 		// Method that handles a single turn being played by a human player
-		private void PlayTurnHuman(string player, char shape)
+		private void PlayTurnHumanTyping(string player, char shape)
 		{
+			Console.CursorVisible = true;
 			Console.SetCursorPosition(0, 9);
 			Console.Write(player + ", escolha a posição para jogar: ");
 			
@@ -102,7 +116,88 @@ namespace TicTacToe
 			while (gameFields[positionPlayed] != ' '); // Only allows a certain field to be played if it's blank (that is, it wasn't already filled with X or O)
 			
 			gameFields[positionPlayed] = shape; // Fill the field with the character passed to the method (X if player 1, O if player 2)
-			drawnFields[positionPlayed] = "    " + gameFields[positionPlayed] + "    ";
+			drawnFields[positionPlayed] = "     " + gameFields[positionPlayed] + "     ";
+		}
+		
+		private void PlayTurnHumanArrows(string player, char shape)
+		{
+			positionPlayed = 0;
+			int previousPosition = 0;
+			ConsoleKey keyPressed;
+			bool validPosition;
+			
+			Console.CursorVisible = false;
+			Console.SetCursorPosition(0, 9);
+			Console.Write(player + ", use as setas e enter para jogar.");
+			
+			do
+			{
+				validPosition = false;
+				
+				Console.SetCursorPosition(10 + ((previousPosition % 3) * 15), 3 + (previousPosition / 3));
+				Console.Write(" ");
+				Console.SetCursorPosition(10 + ((positionPlayed % 3) * 15), 3 + (positionPlayed / 3));
+				Console.Write(">");
+				
+				Console.SetCursorPosition(0, 0);
+				keyPressed = Console.ReadKey(true).Key;
+				
+				switch(keyPressed)
+				{
+					case ConsoleKey.UpArrow:
+						{
+							if (positionPlayed > 2)
+							{
+								previousPosition = positionPlayed;
+								positionPlayed -= 3;
+							}
+							break;
+						}
+					case ConsoleKey.DownArrow:
+						{
+							if (positionPlayed < 6)
+							{
+								previousPosition = positionPlayed;
+								positionPlayed += 3;
+							}
+							break;
+						}
+					case ConsoleKey.LeftArrow:
+						{
+							if (!(positionPlayed == 0 || positionPlayed == 3 || positionPlayed == 6))
+							{
+								previousPosition = positionPlayed;
+								positionPlayed--;
+							}
+							break;
+						}
+					case ConsoleKey.RightArrow:
+						{
+							if (!(positionPlayed == 2 || positionPlayed == 5 || positionPlayed == 8))
+							{
+								previousPosition = positionPlayed;
+								positionPlayed++;
+							}
+							break;
+						}
+					case ConsoleKey.Enter:
+						{
+							if (gameFields[positionPlayed] == ' ')
+							{
+								validPosition = true;
+							}
+							break;
+						}
+					default:
+						{
+							break;
+						}
+				}
+			}
+			while (!validPosition);
+			
+			gameFields[positionPlayed] = shape; // Fill the field with the character passed to the method (X if player 1, O if player 2)
+			drawnFields[positionPlayed] = "     " + gameFields[positionPlayed] + "     ";
 		}
 		
 		// TODO: Try to make multiple difficulties
@@ -111,7 +206,7 @@ namespace TicTacToe
 		{
 			Console.SetCursorPosition(0, 9); // Erases the line that asks for player input, and informs it's the computer's turn
 			Console.Write("Jogada do computador." + new string(' ', 30));
-			Thread.Sleep(500);
+			Thread.Sleep(200);
 			
 			// Easy Difficulty
 			// The computer goes through all fields in ascending order, and plays the first position it finds available
@@ -124,7 +219,7 @@ namespace TicTacToe
 			while(gameFields[positionPlayed] != ' ');
 			
 			gameFields[positionPlayed] = 'O'; // Computer is always player 2, so it will always play O
-			drawnFields[positionPlayed] = "    " + gameFields[positionPlayed] + "    ";
+			drawnFields[positionPlayed] = "     " + gameFields[positionPlayed] + "     ";
 		}
 		
 		// Checks the game board to find if a winning line was found. Winning lines are straight lines where all 3 fields match
@@ -137,19 +232,19 @@ namespace TicTacToe
 				if ((gameFields[0] == gameFields[1]) && (gameFields[1] == gameFields[2]))
 				{
 					winnerFound = true;
-					drawnFields[0] = drawnFields[1] = drawnFields[2] = "<<<<" + gameFields[0] + ">>>>"; // Changes the drawn fields to show the winning lines differently
+					drawnFields[0] = drawnFields[1] = drawnFields[2] = "<<<<<" + gameFields[0] + ">>>>>"; // Changes the drawn fields to show the winning lines differently
 				}
 				
 				if ((gameFields[0] == gameFields[3]) && (gameFields[3] == gameFields[6]))
 				{
 					winnerFound = true;
-					drawnFields[0] = drawnFields[3] = drawnFields[6] = "<<<<" + gameFields[0] + ">>>>";
+					drawnFields[0] = drawnFields[3] = drawnFields[6] = "<<<<<" + gameFields[0] + ">>>>>";
 				}
 				
 				if ((gameFields[0] == gameFields[4]) && (gameFields[4] == gameFields[8]))
 				{
 					winnerFound = true;
-					drawnFields[0] = drawnFields[4] = drawnFields[8] = "<<<<" + gameFields[0] + ">>>>";
+					drawnFields[0] = drawnFields[4] = drawnFields[8] = "<<<<<" + gameFields[0] + ">>>>>";
 				}
 			}
 			
@@ -160,19 +255,19 @@ namespace TicTacToe
 				if ((gameFields[3] == gameFields[4]) && (gameFields[4] == gameFields[5]))
 				{
 					winnerFound = true;
-					drawnFields[3] = drawnFields[4] = drawnFields[5] = "<<<<" + gameFields[4] + ">>>>"; // Changes the drawn fields to show the winning lines differently
+					drawnFields[3] = drawnFields[4] = drawnFields[5] = "<<<<<" + gameFields[4] + ">>>>>"; // Changes the drawn fields to show the winning lines differently
 				}
 				
 				if ((gameFields[1] == gameFields[4]) && (gameFields[4] == gameFields[7]))
 				{
 					winnerFound = true;
-					drawnFields[1] = drawnFields[4] = drawnFields[7] = "<<<<" + gameFields[4] + ">>>>";
+					drawnFields[1] = drawnFields[4] = drawnFields[7] = "<<<<<" + gameFields[4] + ">>>>>";
 				}
 				
 				if ((gameFields[2] == gameFields[4]) && (gameFields[4] == gameFields[6]))
 				{
 					winnerFound = true;
-					drawnFields[2] = drawnFields[4] = drawnFields[6] = "<<<<" + gameFields[4] + ">>>>";
+					drawnFields[2] = drawnFields[4] = drawnFields[6] = "<<<<<" + gameFields[4] + ">>>>>";
 				}
 			}
 			
@@ -183,13 +278,13 @@ namespace TicTacToe
 				if ((gameFields[6] == gameFields[7]) && (gameFields[7] == gameFields[8]))
 				{
 					winnerFound = true;
-					drawnFields[6] = drawnFields[7] = drawnFields[8] = "<<<<" + gameFields[8] + ">>>>"; // Changes the drawn fields to show the winning lines differently
+					drawnFields[6] = drawnFields[7] = drawnFields[8] = "<<<<<" + gameFields[8] + ">>>>>"; // Changes the drawn fields to show the winning lines differently
 				}
 				
 				if ((gameFields[2] == gameFields[5]) && (gameFields[5] == gameFields[8]))
 				{
 					winnerFound = true;
-					drawnFields[2] = drawnFields[5] = drawnFields[8] = "<<<<" + gameFields[8] + ">>>>";
+					drawnFields[2] = drawnFields[5] = drawnFields[8] = "<<<<<" + gameFields[8] + ">>>>>";
 				}
 			}
 		}
@@ -217,7 +312,14 @@ namespace TicTacToe
 				
 				if (isPlayerOneTurn)
 				{
-					PlayTurnHuman("Jogador 1", 'X');
+					if (playWithArrows)
+					{
+						PlayTurnHumanArrows("Jogador 1", 'X');
+					}
+					else
+					{
+						PlayTurnHumanTyping("Jogador 1", 'X');
+					}
 				}
 				else
 				{
@@ -227,9 +329,17 @@ namespace TicTacToe
 					}
 					else
 					{
-						PlayTurnHuman("Jogador 2", 'O');
+						if (playWithArrows)
+						{
+							PlayTurnHumanArrows("Jogador 2", 'O');
+						}
+						else
+						{
+							PlayTurnHumanTyping("Jogador 2", 'O');
+						}
 					}
 				}
+				Thread.Sleep(200);
 				
 				if (currentTurn > 4) // Only checks for a winner from the 5th turn onwards (There can only be a match if any player has played at least 3 times)
 				{

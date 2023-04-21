@@ -14,7 +14,7 @@ namespace TicTacToe
 	{
 		private char[] gameFields = new char[9]; // Variable that keeps track of what was played on each field (X or O)
 		private string[] drawnFields = new string[9]; // Variable that is used to draw the game fields on the screen
-		private bool againstComputer = true, playWithArrows = false; // Settings related variables
+		private bool againstComputer = true, playWithArrows = false, playerOneGoesFirst = true; // Settings related variables
 		private bool isPlayerOneTurn, winnerFound; 
 		private int positionPlayed, currentTurn;
 		
@@ -27,12 +27,13 @@ namespace TicTacToe
 			for (int i = 0; i < 9; i++) // Makes all fields blank spaces, which indicates they haven't been played yet
 			{
 				gameFields[i] = ' ';
-				drawnFields[i] = "           ";
+				drawnFields[i] = new String(' ', 11);
 			}
 			
 			currentTurn = 0;
 			winnerFound = false;
-			isPlayerOneTurn = false;
+			
+			isPlayerOneTurn = !playerOneGoesFirst;
 		}
 		
 		// Draws all the lines required to show the starting game board on the screen. Used only once at the start of a game
@@ -63,7 +64,7 @@ namespace TicTacToe
 		// Returns a string containing the details of the current game settings. Used to display the settings in the menu
 		public string[] GetCurrentSettings()
 		{
-			string[] settings = new string[2];
+			string[] settings = new string[3];
 			
 			if (againstComputer)
 			{
@@ -83,18 +84,32 @@ namespace TicTacToe
 				settings[1] = "Digitar";
 			}
 			
+			if (playerOneGoesFirst)
+			{
+				settings[2] = "Jogador 1";
+			}
+			else
+			{
+				settings[2] = "Jogador 2";
+			}
+			
 			return settings;
 		}
 		
 		// Sets whether the opponent will be a second human player or the computer
 		public void SetOpponentMode()
 		{
-			againstComputer = !(againstComputer);
+			againstComputer = !againstComputer;
 		}
 		
 		public void SetControlType()
 		{
-			playWithArrows = !(playWithArrows);
+			playWithArrows = !playWithArrows;
+		}
+		
+		public void SetFirstPlayer()
+		{
+			playerOneGoesFirst = !playerOneGoesFirst;
 		}
 		#endregion
 		
@@ -303,7 +318,7 @@ namespace TicTacToe
 				
 				if (currentTurn > 9) // Declare a draw and leave if 9 turns have been played (Since that means every field is filled)
 				{
-					Console.SetCursorPosition(21, 14);
+					Console.SetCursorPosition(26, 14);
 					Console.Write("Empate!");
 					break;
 				}
@@ -351,7 +366,7 @@ namespace TicTacToe
 			
 			if (winnerFound) // Shows the winner, depending on whose turn the win was declared
 			{
-				Console.SetCursorPosition(16, 14);
+				Console.SetCursorPosition(21, 14);
 				if (isPlayerOneTurn)
 				{
 					Console.Write("Jogador 1 venceu!");
@@ -369,6 +384,7 @@ namespace TicTacToe
 				}
 			}
 			
+			Thread.Sleep(1000);
 			Console.ReadKey();
 		}
 		#endregion

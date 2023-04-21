@@ -1,7 +1,7 @@
 ﻿/*
  * Date: 19/04/2023
  * Time: 20:00
-*/
+ */
 using System;
 using System.Media;
 using System.Threading;
@@ -10,6 +10,8 @@ namespace TicTacToe
 {
 	public class Menu
 	{
+		#region Draw and Redraw Menu
+		
 		private void DrawMenu(string[] settings)
 		{
 			Console.Clear();
@@ -23,16 +25,18 @@ namespace TicTacToe
 			Console.Write("Setas: Mover     Enter: Selecionar     Esc: Sair");
 			
 			Console.SetCursorPosition(10, 2);
-			Console.Write("> Jogar");
+			Console.Write("> Iniciar Partida");
 			
 			Console.SetCursorPosition(10, 3);
 			Console.Write("  Oponente: " + settings[0]);
 			Console.SetCursorPosition(10, 4);
 			Console.Write("  Controles: " + settings[1]);
-			//Console.SetCursorPosition(10, 5);
-			//Console.Write("  Símbolo: X / O")
+			Console.SetCursorPosition(10, 5);
+			Console.Write("  Primeira jogada: " + settings[2]);
 			//Console.SetCursorPosition(10, 6);
 			//Console.Write("  Dificuldade (computador): Fácil");
+			
+			ExplainOption(0);
 		}
 		
 		private void RedrawCurrentSelection(string text, string setting, int current)
@@ -60,6 +64,45 @@ namespace TicTacToe
 			return currentSelection + 1;
 		}
 		
+		private void ExplainOption(int currentSelection)
+		{
+			Console.SetCursorPosition(0, 12);
+			Console.Write(new String(' ', 160));
+			
+			switch(currentSelection)
+			{
+				case 0:
+					{
+						Console.SetCursorPosition(6, 12);
+						Console.Write("Inicia uma partida com as configurações atuais.");
+						break;
+					}
+				case 1:
+					{
+						Console.SetCursorPosition(15, 12);
+						Console.Write("Define qual será o oponente.");
+						Console.SetCursorPosition(4, 13);
+						Console.Write("Pode ser um segundo jogador humano ou o computador.");
+						break;
+					}
+				case 2:
+					{
+						Console.SetCursorPosition(10, 12);
+						Console.Write("Define o tipo de controle usado no jogo.");
+						Console.SetCursorPosition(5, 13);
+						Console.Write("Pode ser digitando um número, ou usando as setas.");
+						break;
+					}
+				case 3:
+					{
+						Console.SetCursorPosition(7, 12);
+						Console.Write("Define quem faz a primeira jogada na partida.");
+						break;
+					}
+			}
+		}
+		#endregion
+		
 		public void StartMenu()
 		{
 			ConsoleKey menuInput;
@@ -86,18 +129,20 @@ namespace TicTacToe
 							else
 							{
 								currentOption = MoveSelectionUp(currentOption);
+								ExplainOption(currentOption);
 							}
 							break;
 						}
 					case ConsoleKey.DownArrow:
 						{
-							if (currentOption >= 2)
+							if (currentOption >= 3)
 							{
 								SystemSounds.Beep.Play();
 							}
 							else
 							{
 								currentOption = MoveSelectionDown(currentOption);
+								ExplainOption(currentOption);
 							}
 							break;
 						}
@@ -123,12 +168,20 @@ namespace TicTacToe
 										RedrawCurrentSelection("Controles: ", game.GetCurrentSettings()[1], 2);
 										break;
 									}
+								case 3:
+									{
+										game.SetFirstPlayer();
+										RedrawCurrentSelection("Primeira jogada: ", game.GetCurrentSettings()[2], 3);
+										break;
+									}
 							}
 							break;
 						}
 					case ConsoleKey.Escape:
 						{
-							Console.SetCursorPosition(20, 15);
+							Console.SetCursorPosition(0, 12);
+							Console.Write(new String(' ', 160));
+							Console.SetCursorPosition(20, 12);              
 							Console.Write("Obrigado por jogar!");
 							Thread.Sleep(1000);
 							break;

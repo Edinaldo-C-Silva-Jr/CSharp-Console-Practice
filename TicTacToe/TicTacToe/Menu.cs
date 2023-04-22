@@ -20,7 +20,7 @@ namespace TicTacToe
 			Console.Write("----- Jogo da Velha -----");
 			
 			Console.SetCursorPosition(47, 19);
-			Console.Write("Versão 1.0");
+			Console.Write("Versão 2.0");
 			Console.SetCursorPosition(5, 17);
 			Console.Write("Setas: Mover     Enter: Selecionar     Esc: Sair");
 			
@@ -69,37 +69,38 @@ namespace TicTacToe
 			Console.SetCursorPosition(0, 12);
 			Console.Write(new String(' ', 160));
 			
+			string explanation = "";
+			
 			switch(currentSelection)
 			{
 				case 0:
 					{
-						Console.SetCursorPosition(6, 12);
-						Console.Write("Inicia uma partida com as configurações atuais.");
+						explanation = "Inicia uma partida com as configurações atuais.";
 						break;
 					}
 				case 1:
 					{
-						Console.SetCursorPosition(15, 12);
-						Console.Write("Define qual será o oponente.");
+						explanation = "Define qual será o oponente.";
 						Console.SetCursorPosition(4, 13);
 						Console.Write("Pode ser um segundo jogador humano ou o computador.");
 						break;
 					}
 				case 2:
 					{
-						Console.SetCursorPosition(10, 12);
-						Console.Write("Define o tipo de controle usado no jogo.");
+						explanation = "Define o tipo de controle usado no jogo.";
 						Console.SetCursorPosition(5, 13);
 						Console.Write("Pode ser digitando um número, ou usando as setas.");
 						break;
 					}
 				case 3:
 					{
-						Console.SetCursorPosition(7, 12);
-						Console.Write("Define quem faz a primeira jogada na partida.");
+						explanation = "Define quem faz a primeira jogada na partida.";
 						break;
 					}
 			}
+			
+			Console.SetCursorPosition((59 - explanation.Length) / 2, 12);
+			Console.Write(explanation);
 		}
 		#endregion
 		

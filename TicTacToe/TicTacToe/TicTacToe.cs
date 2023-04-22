@@ -4,7 +4,7 @@
  */
 using System;
 using System.Threading;
-using InputValidation;
+using InputLimitator;
 
 namespace TicTacToe
 {
@@ -18,7 +18,7 @@ namespace TicTacToe
 		private bool isPlayerOneTurn, winnerFound; 
 		private int positionPlayed, currentTurn;
 		
-		ValidateInput validation = new ValidateInput();
+		LimitInput limitator = new LimitInput();
 		
 		#region Game Setup
 		// Resets all match related variables to the starting values. Used at the start of a game to make sure every variable has its default value
@@ -43,7 +43,7 @@ namespace TicTacToe
 			Console.SetCursorPosition(12, 0);
 			Console.Write("----- Jogo da Velha -----");
 			Console.SetCursorPosition(47, 19);
-			Console.Write("Versão 1.0");
+			Console.Write("Versão 2.0");
 			
 			RedrawGameBoard();
 		}
@@ -126,7 +126,7 @@ namespace TicTacToe
 				Console.SetCursorPosition(41, 9); // Resets the cursor to its original position if the game field chosen is already filled
 				Console.Write(" ");
 				Console.SetCursorPosition(41, 9);
-				positionPlayed = (int)validation.ValidateNumericValue(1, 9) - 1; // Ensures the input can only be from 0 to 9
+				positionPlayed = int.Parse(limitator.LimitInputDigitsOnlyNotZero(1, 1)) - 1; // Ensures the input can only be from 0 to 9
 			}
 			while (gameFields[positionPlayed] != ' '); // Only allows a certain field to be played if it's blank (that is, it wasn't already filled with X or O)
 			

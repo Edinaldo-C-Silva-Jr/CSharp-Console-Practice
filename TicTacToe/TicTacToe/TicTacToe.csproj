@@ -31,8 +31,8 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="InputValidation">
-      <HintPath>..\..\_Class Libraries_\Validation\InputValidation\bin\Debug\InputValidation.dll</HintPath>
+    <Reference Include="InputLimitator">
+      <HintPath>..\..\_Class Libraries_\InputLimitator\InputLimitator\bin\Debug\InputLimitator.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">

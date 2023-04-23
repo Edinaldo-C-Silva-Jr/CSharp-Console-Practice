@@ -8,8 +8,10 @@ namespace TicTacToe
 {
 	// An application that allows playing a game of Tic Tac Toe. Can be played by 2 humans, or by 1 human against a computer player.
 	
-	// Version 1.0: All basic features are finished. The game is fully functional and playable.
+	// Version 2.0: The game is fully functional and playable.
 	// Can be played by 2 humans, or against a computer player (with very basic AI)
+	// It has a main menu once the program starts, where the user can start a match or change the settings
+	// Settings include changing the opponent (human/computer), changing the controls (typing/arrow keys) and setting who plays first
 	class Program
 	{
 		public static void Main(string[] args)
@@ -19,7 +21,7 @@ namespace TicTacToe
 			
 			Menu gameMenu = new Menu();
 			
-			gameMenu.StartMenu();
+			gameMenu.StartMenu(); // Starts the main menu, which handles the entire game from here
 		}
 	}
 }

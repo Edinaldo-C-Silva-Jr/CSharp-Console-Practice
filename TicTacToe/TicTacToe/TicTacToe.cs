@@ -10,18 +10,21 @@ namespace TicTacToe
 {
 	// A class that implements a game of Tic Tac Toe
 	// It has all the methods for starting the game, playing it, ending the game (by either finding a winner or defining a draw) and showing the results
+	// It also has a bunch of variables that control settings: setting opponent, setting controls and setting who goes first
+	// There are 2 control modes: Typing and using the arrow keys
 	public class TicTacToe
 	{
 		private char[] gameFields = new char[9]; // Variable that keeps track of what was played on each field (X or O)
 		private string[] drawnFields = new string[9]; // Variable that is used to draw the game fields on the screen
-		private bool againstComputer = true, playWithArrows = false, playerOneGoesFirst = true; // Settings related variables
 		private bool isPlayerOneTurn, winnerFound; 
 		private int positionPlayed, currentTurn;
 		
+		private bool againstComputer = true, playWithArrows = false, playerOneGoesFirst = true; // Settings related variables
+		
 		LimitInput limitator = new LimitInput();
 		
-		#region Game Setup
-		// Resets all match related variables to the starting values. Used at the start of a game to make sure every variable has its default value
+		#region Game Setup and Drawing
+		// Resets all match related variables to the starting values. Used at the start of a match to make sure every variable has its default value
 		private void ResetGame()
 		{
 			for (int i = 0; i < 9; i++) // Makes all fields blank spaces, which indicates they haven't been played yet
@@ -33,16 +36,16 @@ namespace TicTacToe
 			currentTurn = 0;
 			winnerFound = false;
 			
-			isPlayerOneTurn = !playerOneGoesFirst;
+			isPlayerOneTurn = !playerOneGoesFirst; // Whether player 1 goes first depends on the current game setting for the first player. This variable is altered once the match starts, so if player 1 goes first, it is set to false (as it becomes true on the first turn), and vice-versa
 		}
 		
 		// Draws all the lines required to show the starting game board on the screen. Used only once at the start of a game
 		private void DrawGameBoard()
 		{
 			Console.Clear();
-			Console.SetCursorPosition(12, 0);
+			Console.SetCursorPosition(17, 0); // Centers the game title on the screen
 			Console.Write("----- Jogo da Velha -----");
-			Console.SetCursorPosition(47, 19);
+			Console.SetCursorPosition(47, 19); // Shows version at the corner of the screen
 			Console.Write("Versão 2.0");
 			
 			RedrawGameBoard();
@@ -52,7 +55,7 @@ namespace TicTacToe
 		private void RedrawGameBoard()
 		{
 			Console.SetCursorPosition(0, 2);
-			Console.WriteLine("       ---------------------------------------------");
+			Console.WriteLine("       ---------------------------------------------"); // Spaces are used to keep the board centered
 			Console.WriteLine("       [1]" + drawnFields[0] + "|[2]" + drawnFields[1] + "|[3]" + drawnFields[2] + "|");
 			Console.WriteLine("       [4]" + drawnFields[3] + "|[5]" + drawnFields[4] + "|[6]" + drawnFields[5] + "|");
 			Console.WriteLine("       [7]" + drawnFields[6] + "|[8]" + drawnFields[7] + "|[9]" + drawnFields[8] + "|");
@@ -102,11 +105,13 @@ namespace TicTacToe
 			againstComputer = !againstComputer;
 		}
 		
+		// Sets whether the game is playing by typing the numeric value of the field or with the arrow keys
 		public void SetControlType()
 		{
 			playWithArrows = !playWithArrows;
 		}
 		
+		// Sets whether Player 1 or Player 2 goes first
 		public void SetFirstPlayer()
 		{
 			playerOneGoesFirst = !playerOneGoesFirst;
@@ -114,7 +119,7 @@ namespace TicTacToe
 		#endregion
 		
 		#region Gameplay Methods
-		// Method that handles a single turn being played by a human player
+		// Method that handles a single turn being played by a human player, while using the typing method
 		private void PlayTurnHumanTyping(string player, char shape)
 		{
 			Console.CursorVisible = true;
@@ -126,14 +131,15 @@ namespace TicTacToe
 				Console.SetCursorPosition(41, 9); // Resets the cursor to its original position if the game field chosen is already filled
 				Console.Write(" ");
 				Console.SetCursorPosition(41, 9);
-				positionPlayed = int.Parse(limitator.LimitInputDigitsOnlyNotZero(1, 1)) - 1; // Ensures the input can only be from 0 to 9
+				positionPlayed = int.Parse(limitator.LimitInputDigitsOnlyNotZero(1, 1)) - 1; // Ensures the input can only be from 1 to 9
 			}
 			while (gameFields[positionPlayed] != ' '); // Only allows a certain field to be played if it's blank (that is, it wasn't already filled with X or O)
 			
 			gameFields[positionPlayed] = shape; // Fill the field with the character passed to the method (X if player 1, O if player 2)
-			drawnFields[positionPlayed] = "     " + gameFields[positionPlayed] + "     ";
+			drawnFields[positionPlayed] = "     " + gameFields[positionPlayed] + "     "; // Fills the drawn fields to draw them on screen
 		}
 		
+		// Method that handles a single turn being played by a human player, while using the arrow keys method
 		private void PlayTurnHumanArrows(string player, char shape)
 		{
 			positionPlayed = 0;
@@ -149,55 +155,56 @@ namespace TicTacToe
 			{
 				validPosition = false;
 				
-				Console.SetCursorPosition(10 + ((previousPosition % 3) * 15), 3 + (previousPosition / 3));
-				Console.Write(" ");
+				// The formula places the cursor at the left side of the currently selected game field
+				Console.SetCursorPosition(10 + ((previousPosition % 3) * 15), 3 + (previousPosition / 3)); 
+				Console.Write(" "); // Erases the "selection cursor" from the previous selection
 				Console.SetCursorPosition(10 + ((positionPlayed % 3) * 15), 3 + (positionPlayed / 3));
-				Console.Write(">");
+				Console.Write(">"); // Draws a new "selection cursor" for the current selection
 				
 				Console.SetCursorPosition(0, 0);
 				keyPressed = Console.ReadKey(true).Key;
 				
-				switch(keyPressed)
+				switch(keyPressed) // Handles the user input
 				{
-					case ConsoleKey.UpArrow:
+					case ConsoleKey.UpArrow: 
 						{
-							if (positionPlayed > 2)
+							if (positionPlayed > 2) // If position was 2 or less, it would already be the top row, so can't move up any further
 							{
-								previousPosition = positionPlayed;
-								positionPlayed -= 3;
+								previousPosition = positionPlayed; // Records previous position
+								positionPlayed -= 3; // Move cursor up
 							}
 							break;
 						}
 					case ConsoleKey.DownArrow:
 						{
-							if (positionPlayed < 6)
+							if (positionPlayed < 6) // If position is 6 or more, it would already be the bottom row, so can't move down any further
 							{
 								previousPosition = positionPlayed;
-								positionPlayed += 3;
+								positionPlayed += 3; // Move cursor down
 							}
 							break;
 						}
 					case ConsoleKey.LeftArrow:
 						{
-							if (!(positionPlayed == 0 || positionPlayed == 3 || positionPlayed == 6))
+							if (!(positionPlayed == 0 || positionPlayed == 3 || positionPlayed == 6)) // If position is 0, 3 or 6, it's already the left column, so can't move left any further
 							{
 								previousPosition = positionPlayed;
-								positionPlayed--;
+								positionPlayed--; // Move cursor left
 							}
 							break;
 						}
 					case ConsoleKey.RightArrow:
 						{
-							if (!(positionPlayed == 2 || positionPlayed == 5 || positionPlayed == 8))
+							if (!(positionPlayed == 2 || positionPlayed == 5 || positionPlayed == 8)) // If position is 2, 5 or 8, it's already the right column, so can't move right any further
 							{
 								previousPosition = positionPlayed;
-								positionPlayed++;
+								positionPlayed++; // Move cursor right
 							}
 							break;
 						}
 					case ConsoleKey.Enter:
 						{
-							if (gameFields[positionPlayed] == ' ')
+							if (gameFields[positionPlayed] == ' ') // If the currently chosen position is empty, then it's a valid play
 							{
 								validPosition = true;
 							}
@@ -209,10 +216,10 @@ namespace TicTacToe
 						}
 				}
 			}
-			while (!validPosition);
+			while (!validPosition); // Keep going while it's not valid
 			
-			gameFields[positionPlayed] = shape; // Fill the field with the character passed to the method (X if player 1, O if player 2)
-			drawnFields[positionPlayed] = "     " + gameFields[positionPlayed] + "     ";
+			gameFields[positionPlayed] = shape; // Fills the game field for the current player
+			drawnFields[positionPlayed] = "     " + gameFields[positionPlayed] + "     "; // Fills the drawn field
 		}
 		
 		// TODO: Try to make multiple difficulties
@@ -312,7 +319,7 @@ namespace TicTacToe
 			ResetGame();
 			DrawGameBoard();
 			
-			while(!(winnerFound)) // Keep playing until a winner is found
+			while(!winnerFound) // Keep playing until a winner is found
 			{
 				currentTurn++;
 				
@@ -323,7 +330,7 @@ namespace TicTacToe
 					break;
 				}
 				
-				isPlayerOneTurn = !isPlayerOneTurn;
+				isPlayerOneTurn = !isPlayerOneTurn; // Swaps the player before playing the turn (this means the variable should actually be set to "false" if player 1 is the one that starts the game)
 				
 				if (isPlayerOneTurn)
 				{
@@ -356,7 +363,7 @@ namespace TicTacToe
 				}
 				Thread.Sleep(200);
 				
-				if (currentTurn > 4) // Only checks for a winner from the 5th turn onwards (There can only be a match if any player has played at least 3 times)
+				if (currentTurn > 4) // Only checks for a winner from the 5th turn onwards (There can only be a line match if any player has played at least 3 times)
 				{
 					CheckForWinner();
 				}

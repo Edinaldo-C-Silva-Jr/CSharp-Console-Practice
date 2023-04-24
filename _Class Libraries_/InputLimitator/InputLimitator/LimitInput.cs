@@ -16,7 +16,7 @@ namespace InputLimitator
 	public class LimitInput
 	{
 		private ConsoleKeyInfo currentCharInput;
-		private int inputAscii, cursorX, cursorY;
+		private int currentInputAscii, cursorX, cursorY;
 		private bool validCharacter; // Flag that tells whether the current input is a valid character or not
 		
 		#region Meta Stuff
@@ -43,7 +43,7 @@ namespace InputLimitator
 		// Enter is used to exit the main loop and finish the input/validation process
 		private bool TestEnter(string full, int minimum)
 		{
-			if (inputAscii == 13) // If input's ascii value is 13 (enter key)
+			if (currentInputAscii == 13) // If input's ascii value is 13 (enter key)
 			{
 				if (full.Length >= minimum) // Checks whether the input string is bigger than the defined minimum input size. Enter will only be a valid input if the input string is equal or bigger than the minimum size.
 				{
@@ -58,7 +58,7 @@ namespace InputLimitator
 		// This method implements the normal backspace functionality of erasing the most recent character added to the input string
 		private string TestBackspace(string full)
 		{
-			if (inputAscii == 8) // If input's ascii value is 8 (backspace key)
+			if (currentInputAscii == 8) // If input's ascii value is 8 (backspace key)
 			{
 				if (full.Length > 0) // Checks whether the input string has characters in it. If it's empty, then nothing can be removed from it
 				{
@@ -73,54 +73,26 @@ namespace InputLimitator
 		}
 		#endregion
 		
-		#region Test Single Characters
-		private string TestSpace(string full, int maximum)
+		#region Test Characters
+		// Method that tests the validity of a single character
+		// It receives an accepted ascii value as a parameter, and then compares the current input to that ascii value
+		private string TestSingleCharacter(string full, int maximum, int validAscii)
 		{
-			if (inputAscii == 32 && full.Length < maximum)
+			if (currentInputAscii == validAscii && full.Length < maximum) // Checks if the current input is the same as the defined ascii value (Also checks if the string already has the maximum value, as then no more inputs would be accepted)
 			{
-				full += currentCharInput.KeyChar;
+				full += currentCharInput.KeyChar; // If it is valid, append the input into the string
 				validCharacter = true;
 			}
 			return full;
 		}
 		
-		private string TestZero (string full, int maximum)
+		// Method that tests the validity of multiple characters. Used to check many consecutive ascii values at once
+		// It receives a lower and an upper bound of ascii values, then checks if the current input is anywhere between these bounds
+		private string TestMultipleCharacters (string full, int maximum, int lowerValidAscii, int higherValidAscii)
 		{
-			if (inputAscii == 48 && full.Length < maximum)
+			if ((currentInputAscii > lowerValidAscii && currentInputAscii < higherValidAscii) && (full.Length < maximum)) // Tests if the current input is within the defined ascii boundaries (and if the string is full)
 			{
-				full += currentCharInput.KeyChar;
-				validCharacter = true;
-			}
-			return full;
-		}
-		#endregion
-		
-		#region Test Multiple Characters
-		private string TestDigitsOneNine (string full, int maximum)
-		{
-			if ((inputAscii > 48 && inputAscii < 58) && (full.Length < maximum))
-			{
-				full += currentCharInput.KeyChar;
-				validCharacter = true;
-			}
-			return full;
-		}
-		
-		private string TestUppercaseLetters (string full, int maximum)
-		{
-			if ((inputAscii > 65 && inputAscii < 91) && (full.Length < maximum))
-			{
-				full += currentCharInput.KeyChar;
-				validCharacter = true;
-			}
-			return full;
-		}
-		
-		private string TestLowercaseLetters (string full, int maximum)
-		{
-			if ((inputAscii > 96 && inputAscii < 124) && (full.Length < maximum))
-			{
-				full += currentCharInput.KeyChar;
+				full += currentCharInput.KeyChar; // If it's valid, append the input into the string
 				validCharacter = true;
 			}
 			return full;
@@ -135,7 +107,7 @@ namespace InputLimitator
 		{
 			GetCursorPosition();
 			
-			if (minInputSize > maxInputSize)
+			if (minInputSize > maxInputSize) // Swaps the sizes in case the minimum value is higher than the maixmum value
 			{
 				int auxSize = maxInputSize;
 				maxInputSize = minInputSize;
@@ -148,7 +120,7 @@ namespace InputLimitator
 			do
 			{
 				currentCharInput = Console.ReadKey(true);
-				inputAscii = (int)currentCharInput.KeyChar;
+				currentInputAscii = (int)currentCharInput.KeyChar;
 				
 				enterPressed = TestEnter(fullInput, minInputSize); // Tests if enter key is pressed
 				fullInput = TestBackspace(fullInput); // Tests if backspace key is pressed
@@ -176,8 +148,9 @@ namespace InputLimitator
 		}
 		#endregion
 		
+		#region Limit Input 0 to 9
 		// Limits the amount of characters that can be entered
-		// This method only accepts input if the character is a number
+		// This method only accepts input if the character is a number, but returns the input as a text
 		public string LimitInputDigitsOnly (int minInputSize, int maxInputSize)
 		{
 			GetCursorPosition();
@@ -195,13 +168,12 @@ namespace InputLimitator
 			do
 			{
 				currentCharInput = Console.ReadKey(true); // Converts the input character into an ascii value
-				inputAscii = (int)currentCharInput.KeyChar;
+				currentInputAscii = (int)currentCharInput.KeyChar;
 				
 				enterPressed = TestEnter(fullInput, minInputSize);
 				fullInput = TestBackspace(fullInput);
 				
-				fullInput = TestZero(fullInput, maxInputSize);
-				fullInput = TestDigitsOneNine(fullInput, maxInputSize);
+				fullInput = TestMultipleCharacters(fullInput, maxInputSize, 47, 58); // Checks whether the input is between the passed parameters (47 and 58). The values correspond to the numbers from 0 to 9
 				
 				BeepOnInvalidInput();
 				Console.SetCursorPosition(cursorX, cursorY);
@@ -209,21 +181,22 @@ namespace InputLimitator
 			}
 			while (!enterPressed);
 			
-			if (fullInput.Length == 0) // If input string is empty, append '0' to it, to prevent a parsing error (since the return type is a double)
+			if (fullInput.Length == 0) // If input string is empty, append '0' to it, to return that as an "empty input"
 			{
 				fullInput += "0";
 			}
 			
-			return fullInput; // Returns the input string as a double value
+			return fullInput;
 		}
 		
-		// Overload of the above method that only takes one parameter (max input size)
-		// This method defines the min input size as 0
+		// Overload of the above method that only takes one parameter 
 		public string LimitInputDigitsOnly (int maxInputSize)
 		{
 			return LimitInputDigitsOnly(0, maxInputSize);
 		}
 		
+		// Method that implements the same method above (limits inputs to only numbers), but returns the input as a double value instead of a string value
+		// This uses a TryParse because, even if the result of a limitInputDigitsOnly is always a number, it can overflow a double in case it has over 307 characters
 		public double LimitInputDoubleNumber (int minInputSize, int maxInputSize)
 		{
 			GetCursorPosition();
@@ -232,21 +205,26 @@ namespace InputLimitator
 			
 			do
 			{
-				Console.SetCursorPosition(cursorX, cursorY);
+				Console.SetCursorPosition(cursorX, cursorY); // Erases the previous input in case the number is not valid
 				Console.Write(new String(' ', maxInputSize));
-				Console.SetCursorPosition(cursorX, cursorY);
-				isValidNumber = double.TryParse(LimitInputDigitsOnly(minInputSize, maxInputSize), out number);
+				Console.SetCursorPosition(cursorX, cursorY); // Goes back in position to accept a new input
+				isValidNumber = double.TryParse(LimitInputDigitsOnly(minInputSize, maxInputSize), out number); 
 			}
-			while (!isValidNumber);
+			while (!isValidNumber); // Keep going until the parsing is successful
 			
 			return number;
 		}
 		
+		// Overload of the above method that only takes one parameter
 		public double LimitInputDoubleNumber (int maxInputSize)
 		{
 			return LimitInputDoubleNumber(0, maxInputSize);
 		}
+		#endregion
 		
+		#region Limit Input 1 to 9
+		// Limits the amount of characters that can be entered
+		// This method only accepts digit characters from 1 to 9 (so it doesn't accept 0)
 		public string LimitInputDigitsOnlyNotZero (int minInputSize, int maxInputSize)
 		{
 			GetCursorPosition();
@@ -264,12 +242,12 @@ namespace InputLimitator
 			do
 			{
 				currentCharInput = Console.ReadKey(true);
-				inputAscii = (int)currentCharInput.KeyChar;
+				currentInputAscii = (int)currentCharInput.KeyChar;
 				
 				enterPressed = TestEnter(fullInput, minInputSize);
 				fullInput = TestBackspace(fullInput);
 				
-				fullInput = TestDigitsOneNine(fullInput, maxInputSize);
+				fullInput = TestMultipleCharacters(fullInput, maxInputSize, 48, 58); // Checks whether the input is between the passed parameters (48 and 58). The values correspond to the numbers from 1 to 9
 				
 				BeepOnInvalidInput();
 				Console.SetCursorPosition(cursorX, cursorY);
@@ -284,7 +262,9 @@ namespace InputLimitator
 		{
 			return LimitInputDigitsOnlyNotZero(0, maxInputSize);
 		}
+		#endregion
 		
+		#region Limit Input Letters A-Z
 		// Limits the amount of characters that can be entered
 		// This method only accepts input if the character is an uppercase or lowercase letter 
 		public string LimitInputLetterOnly (int minInputSize, int maxInputSize)
@@ -304,13 +284,13 @@ namespace InputLimitator
 			do
 			{
 				currentCharInput = Console.ReadKey(true);
-				inputAscii = (int)currentCharInput.KeyChar; // Converts the input character into an ascii value
+				currentInputAscii = (int)currentCharInput.KeyChar;
 				
 				enterPressed = TestEnter(fullInput, minInputSize);
 				fullInput = TestBackspace(fullInput);
 				
-				fullInput = TestUppercaseLetters(fullInput, maxInputSize);
-				fullInput = TestLowercaseLetters(fullInput, maxInputSize);
+				fullInput = TestMultipleCharacters(fullInput, maxInputSize, 64, 91); // Checks whether the input is between the passed parameters (64 and 91). The values correspond to the uppercase letters from A to Z
+				fullInput = TestMultipleCharacters(fullInput, maxInputSize, 96, 123); // Checks whether the input is between the passed parameters (96 and 123). The values correspond to the lowercase letters from a to z
 				
 				BeepOnInvalidInput();
 				Console.SetCursorPosition(cursorX, cursorY);
@@ -321,11 +301,11 @@ namespace InputLimitator
 			return fullInput;
 		}
 		
-		// Overload of the above method that only takes one parameter (max input size)
-		// This method defines the min input size as 0
+		// Overload of the above method that only takes one parameter
 		public string LimitInputLetterOnly (int maxInputSize)
 		{
 			return LimitInputLetterOnly(0, maxInputSize);
 		}
+		#endregion
 	}
 }

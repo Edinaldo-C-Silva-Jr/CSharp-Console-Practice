@@ -10,21 +10,9 @@ namespace Hangman
 	{
 		public static void Main(string[] args)
 		{
-			string chosenWord;
-			int chosen;
-			Random choice = new Random();
+			Menu menu = new Menu();
 			
-			Words list = new Words();
-			
-			for (int i = 0; i < 10; i++)
-			{
-				chosen = choice.Next(1, 76);
-				chosenWord = list.countries[chosen];
-				
-				Console.WriteLine(chosen + " - " + chosenWord);
-			}
-			
-			Console.ReadKey();
+			menu.StartMenu();
 		}
 	}
 }

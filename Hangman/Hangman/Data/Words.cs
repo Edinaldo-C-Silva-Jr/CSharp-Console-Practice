@@ -11,10 +11,13 @@ namespace Hangman
 	{
 		public Dictionary<int, string> countries;
 		public Dictionary<int, string> animals;
+		private int themeAmount;
 		
 		public Words()
 		{
-			this.countries = new Dictionary<int, string> ()
+			themeAmount = 2;
+			
+			this.countries = new Dictionary<int, string>()
 			{
 				{1, "Angola"}, {2, "Argentina"}, {3, "Armenia"}, {4, "Australia"}, {5, "Austria"},
 				{6, "Bahamas"}, {7, "Belgium"}, {8, "Bolivia"}, {9, "Brazil"}, {10, "Bulgaria"},
@@ -35,8 +38,18 @@ namespace Hangman
 				{60, "Saudi Arabia"}, {61, "Serbia"}, {62, "Singapore"}, {63, "South Africa"}, {64, "South Korea"}, {65, "Spain"}, {66, "Sweden"}, {67, "Switzerland"},
 				{68, "Taiwan"}, {69, "Thailand"}, {70, "Turkey"},
 				{71, "Ukreaine"}, {72, "United Kingdom"}, {73, "United States"}, {74, "Uruguay"},
-				{75, "Venezuela"},
+				{75, "Venezuela"}
 			};
+			
+			this.animals = new Dictionary<int, string>()
+			{
+				{1, "Dog"}, {2, "Cat"}, {3, "Bird"}
+			};
+		}
+		
+		public int GetThemeAmount()
+		{
+			return this.themeAmount;
 		}
 	}
 }

@@ -74,7 +74,7 @@ namespace Hangman
 						}
 					case ConsoleKey.DownArrow:
 						{
-							if (currentOption >= 3)
+							if (currentOption >= 1)
 							{
 								SystemSounds.Beep.Play();
 							}
@@ -90,6 +90,7 @@ namespace Hangman
 							{
 								case 0:
 									{
+										Console.CursorVisible = true;
 										game.PlayGame();
 										DrawMenu();
 										break;

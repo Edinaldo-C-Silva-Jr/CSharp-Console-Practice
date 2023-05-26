@@ -5,6 +5,7 @@
 using System;
 using System.Text;
 using System.Collections.Generic;
+using InputLimitator;
 
 namespace Hangman
 {
@@ -16,9 +17,12 @@ namespace Hangman
 		private Random wordPicker; // Word list related variables
 		private Dictionary<int, string> wordList;
 		
-		private string chosenWord, wordWithSpaces = "", letterToPlay; // Game variables
+		private string chosenWord, wordWithSpaces = "", letterToPlay, usedLetters; // Game variables
+		private string[] hangManDrawn;
 		private int totalMisses = 0;
 		private bool win;
+		
+		LimitInput limitator = new LimitInput();
 		
 		public Hangman()
 		{
@@ -63,6 +67,59 @@ namespace Hangman
 			return currentThemeName;
 		}
 		
+		private void DrawHangMan()
+		{
+			switch(totalMisses)
+			{
+				case 0:
+					{
+						hangManDrawn[0] = " ------- ";
+						hangManDrawn[1] = " |     | ";
+						hangManDrawn[2] = "       | ";
+						hangManDrawn[3] = "       | ";
+						hangManDrawn[4] = "       | ";
+						hangManDrawn[5] = "      ---";
+						break;
+					}
+				case 1:
+					{
+						hangManDrawn[2] = " O     | ";
+						break;
+					}
+				case 2:
+					{
+						hangManDrawn[3] = " |     | ";
+						break;
+					}
+				case 3:
+					{
+						hangManDrawn[3] = "/|     | ";
+						break;
+					}
+				case 4:
+					{
+						hangManDrawn[3] = "/|\\    | ";
+						break;
+					}
+				case 5:
+					{
+						hangManDrawn[4] = "/      | ";
+						break;
+					}
+				case 6:
+					{
+						hangManDrawn[4] = "/ \\    | ";
+						break;
+					}
+			}
+			
+			for (int i = 0; i < 6; i++)
+			{
+				Console.SetCursorPosition(30, 3 + i);
+				Console.Write(hangManDrawn[i]);
+			}
+		}
+		
 		private void DrawPlayField()
 		{
 			Console.Clear();
@@ -73,27 +130,35 @@ namespace Hangman
 			Console.SetCursorPosition(0, 2);
 			Console.Write(wordWithSpaces);
 			
-			Console.SetCursorPosition(0, 4);
-			Console.Write("Misses: " + totalMisses);
+			Console.SetCursorPosition(10, 11);
+			for (int i = 0; i < usedLetters.Length; i++) 
+			{
+				Console.Write(usedLetters.Substring(i, 1) + " ");
+			}
+			DrawHangMan();
 		}
 		
 		private void CompareLetter()
-		{
-			bool error = true;
-			
-			for (int i = 0; i < chosenWord.Length; i++)
+		{			
+			if (!usedLetters.Contains(letterToPlay.ToLower()))
 			{
-				if (chosenWord.Substring(i, 1).ToLower() == letterToPlay.ToLower())
+				usedLetters += letterToPlay.ToLower();
+				bool error = true;
+				
+				for (int i = 0; i < chosenWord.Length; i++)
 				{
-					wordWithSpaces = wordWithSpaces.Remove(i*2, 1);
-					wordWithSpaces = wordWithSpaces.Insert(i*2, chosenWord.Substring(i, 1));
-					error = false;
+					if (chosenWord.Substring(i, 1).ToLower() == letterToPlay.ToLower())
+					    {
+					    	wordWithSpaces = wordWithSpaces.Remove(i*2, 1);
+					    	wordWithSpaces = wordWithSpaces.Insert(i*2, chosenWord.Substring(i, 1));
+					    	error = false;
+					    }
+					}
+				
+				if (error)
+				{
+					totalMisses++;
 				}
-			}
-			
-			if (error)
-			{
-				totalMisses++;
 			}
 		}
 		
@@ -123,6 +188,9 @@ namespace Hangman
 		{
 			win = false;
 			totalMisses = 0;
+			usedLetters = "";
+			hangManDrawn = new String[6];
+			
 			chosenWord = wordList[wordPicker.Next(1, wordList.Count + 1)];
 			
 			BuildWordWithSpaces();
@@ -134,9 +202,9 @@ namespace Hangman
 				{
 					break;
 				}
-				Console.SetCursorPosition(0, 6);
-				Console.WriteLine("\nEnter a letter: ");
-				letterToPlay = Console.ReadLine();
+				Console.SetCursorPosition(0, 4);
+				Console.Write("\nEnter a letter: ");
+				letterToPlay = limitator.LimitInputLetterOnly(1, 1);
 				
 				CompareLetter();
 				DrawPlayField();

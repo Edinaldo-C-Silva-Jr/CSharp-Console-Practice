@@ -18,7 +18,6 @@ namespace Hangman
 		private Dictionary<int, string> wordList;
 		
 		private string chosenWord, wordWithSpaces = "", letterToPlay, usedLetters; // Game variables
-		private string[] hangManDrawn;
 		private int totalMisses = 0;
 		private bool win;
 		
@@ -27,9 +26,22 @@ namespace Hangman
 		public Hangman()
 		{
 			wordPicker = new Random();
-			PickTheme();
+			PickTheme(); // Picks the starting theme (the default is always Countries)
 		}
 		
+		// Returns the current settings for the game
+		// Note: Currently there's only one, but there will be more settings eventually
+		public string[] GetCurrentSettings()
+		{
+			string[] settings = new String[1];
+			
+			settings[0] = currentThemeName;
+			
+			return settings;
+		}
+		
+		// Method that picks the theme, based on the currentTheme variable, and loads the words into the themeList
+		// Also saves the current theme's name to return to the menu
 		private void PickTheme()
 		{
 			Words themeList = new Words();
@@ -51,7 +63,8 @@ namespace Hangman
 			}
 		}
 		
-		public string CycleTheme()
+		// Method that picks a new theme, by cycling through the available themes
+		public void CycleTheme()
 		{
 			if (currentTheme == 1)
 			{
@@ -63,110 +76,123 @@ namespace Hangman
 			}
 			
 			PickTheme();
-			
-			return currentThemeName;
 		}
 		
-		private void DrawHangMan()
+		// Method that draws the hangman on screen, depending on the amount of errors the player has made in the current game
+		// Redraws only the necessary line for the current amount of misses
+		private void RedrawHangMan()
 		{
 			switch(totalMisses)
 			{
-				case 0:
+				case 1: // 1 miss: Head
 					{
-						hangManDrawn[0] = " ------- ";
-						hangManDrawn[1] = " |     | ";
-						hangManDrawn[2] = "       | ";
-						hangManDrawn[3] = "       | ";
-						hangManDrawn[4] = "       | ";
-						hangManDrawn[5] = "      ---";
+						Console.SetCursorPosition(40, 5);
+						Console.Write(" O     | ");
 						break;
 					}
-				case 1:
+				case 2: // 2 misses: Body
 					{
-						hangManDrawn[2] = " O     | ";
+						Console.SetCursorPosition(40, 6);
+						Console.Write(" |     | ");
 						break;
 					}
-				case 2:
+				case 3: // 3 misses: Left arm
 					{
-						hangManDrawn[3] = " |     | ";
+						Console.SetCursorPosition(40, 6);
+						Console.Write("/|     | ");
 						break;
 					}
-				case 3:
+				case 4: // 4 misses: Right arm
 					{
-						hangManDrawn[3] = "/|     | ";
+						Console.SetCursorPosition(40, 6);
+						Console.Write("/|\\    | ");
 						break;
 					}
-				case 4:
+				case 5: // 5 misses: Left leg
 					{
-						hangManDrawn[3] = "/|\\    | ";
+						Console.SetCursorPosition(40, 7);
+						Console.Write("/      | ");
 						break;
 					}
-				case 5:
+				case 6: // 6 misses: Right leg
 					{
-						hangManDrawn[4] = "/      | ";
+						Console.SetCursorPosition(40, 7);
+						Console.Write("/ \\    | ");
 						break;
 					}
-				case 6:
-					{
-						hangManDrawn[4] = "/ \\    | ";
-						break;
-					}
-			}
-			
-			for (int i = 0; i < 6; i++)
-			{
-				Console.SetCursorPosition(30, 3 + i);
-				Console.Write(hangManDrawn[i]);
 			}
 		}
 		
+		// Redraws the relevant parts of the playfield after every turn played
+		private void RedrawPlayField()
+		{
+			Console.SetCursorPosition(0, 2);
+			Console.Write(wordWithSpaces);
+			
+			Console.SetCursorPosition(10, 11); // Shows the letters that have already been used on the screen
+			for (int i = 0; i < usedLetters.Length; i++)
+			{
+				Console.Write(usedLetters.Substring(i, 1) + " ");
+			}
+			
+			RedrawHangMan(); // Redraws the relevant part of the hangman
+		}
+		
+		// Draws the playfield once the game starts
 		private void DrawPlayField()
 		{
 			Console.Clear();
 			
-			Console.SetCursorPosition(12, 0);
-			Console.Write("Hangman Game");
+			Console.SetCursorPosition(17, 0); // Centers the text on screen
+			Console.Write("----- HANGMAN GAME -----");
 			
-			Console.SetCursorPosition(0, 2);
+			Console.SetCursorPosition(0, 3); // Drawing the starting hangman
+			Console.Write(new String(' ', 40) + " ------- \n");
+			Console.Write(new String(' ', 40) + " |     | \n");
+			Console.Write(new String(' ', 40) + "       | \n");
+			Console.Write(new String(' ', 40) + "       | \n");
+			Console.Write(new String(' ', 40) + "       | \n");
+			Console.Write(new String(' ', 40) + "      ---");
+			
+			Console.SetCursorPosition(0, 2); // Shows the spaces that correspond to the letters of the chosen word
 			Console.Write(wordWithSpaces);
 			
-			Console.SetCursorPosition(10, 11);
-			for (int i = 0; i < usedLetters.Length; i++) 
-			{
-				Console.Write(usedLetters.Substring(i, 1) + " ");
-			}
-			DrawHangMan();
+			Console.SetCursorPosition(20, 16);
+			Console.Write("Theme: " + currentThemeName);
 		}
 		
+		// Method that checks if the currently played letter exists in the chosen word
 		private void CompareLetter()
-		{			
-			if (!usedLetters.Contains(letterToPlay.ToLower()))
+		{
+			if (!usedLetters.Contains(letterToPlay.ToLower())) // Only play if the letter wasn't already used
 			{
-				usedLetters += letterToPlay.ToLower();
+				usedLetters += letterToPlay.ToUpper(); // The letter is now used
 				bool error = true;
 				
 				for (int i = 0; i < chosenWord.Length; i++)
 				{
-					if (chosenWord.Substring(i, 1).ToLower() == letterToPlay.ToLower())
-					    {
-					    	wordWithSpaces = wordWithSpaces.Remove(i*2, 1);
-					    	wordWithSpaces = wordWithSpaces.Insert(i*2, chosenWord.Substring(i, 1));
-					    	error = false;
-					    }
+					if (chosenWord.Substring(i, 1).ToLower() == letterToPlay.ToLower()) // Compares the letter to each letter in the chosen word
+					{
+						wordWithSpaces = wordWithSpaces.Remove(i*2, 1); // If it exists, change the space to the correct letter
+						wordWithSpaces = wordWithSpaces.Insert(i*2, chosenWord.Substring(i, 1));
+						error = false; // And don't count this turn as a miss
 					}
+				}
 				
-				if (error)
+				if (error) // If the turn is still counted as a miss (that is, the letter doesn't exist in the chosen word)
 				{
 					totalMisses++;
 				}
 			}
 		}
 		
+		// Method that checks if the player won, by checking if there's still any '_' in the word
 		private void CheckWin()
 		{
 			win = !(wordWithSpaces.Contains("_"));
 		}
 		
+		// Builds the word with spaces (hiding the original word) to be displayed in the game
 		private void BuildWordWithSpaces()
 		{
 			wordWithSpaces = "";
@@ -184,41 +210,43 @@ namespace Hangman
 			}
 		}
 		
+		// Method that actually handles playing the game
 		public void PlayGame()
 		{
-			win = false;
+			win = false; // Resets all relevant variables
 			totalMisses = 0;
 			usedLetters = "";
-			hangManDrawn = new String[6];
 			
 			chosenWord = wordList[wordPicker.Next(1, wordList.Count + 1)];
 			
 			BuildWordWithSpaces();
 			DrawPlayField();
 			
-			while(win == false)
+			while(win == false) // Keep going while the word still has spaces
 			{
-				if (totalMisses == 6)
+				if (totalMisses == 6) // Stop if the player has 6 misses, which means the hangman is completed
 				{
 					break;
 				}
+				
 				Console.SetCursorPosition(0, 4);
-				Console.Write("\nEnter a letter: ");
-				letterToPlay = limitator.LimitInputLetterOnly(1, 1);
+				Console.Write("Enter a letter: ");
+				letterToPlay = limitator.LimitInputLetterOnly(1, 1); // Asks for an input, and guarantees it will be a letter (uppercase or lowercase)
 				
 				CompareLetter();
-				DrawPlayField();
+				RedrawPlayField();
 				CheckWin();
 			}
 			
-			Console.SetCursorPosition(0, 8);
+			Console.SetCursorPosition(0, 4);
 			if (win)
 			{
-				Console.WriteLine("Winner!");
+				Console.Write("Congratulations! You won!");
 			}
 			else
 			{
-				Console.WriteLine("Loser!");
+				Console.Write("Oh no! You didn't make it!\n");
+				Console.Write("The correct word was: \n" + chosenWord);
 			}
 			Console.ReadKey(true);
 		}

@@ -11,6 +11,9 @@ namespace Hangman
 	{
 		public Dictionary<int, string> countries;
 		public Dictionary<int, string> animals;
+		public Dictionary<int, string> foods;
+		public Dictionary<int, string> colors;
+		public Dictionary<int, string> objects;
 		private int themeAmount;
 		
 		public Words()

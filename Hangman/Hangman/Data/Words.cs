@@ -57,6 +57,11 @@ namespace Hangman
 				{125, "Hummingbird"}, {126, "Grasshopper"}, {127, "Sea Cucumber"}, {128, "Grizzly Bear"},
 				{129, "Hippopotamus"}, {130, "Komodo Dragon"},
 			};
+			
+			this.foods = new Dictionary<int, string>()
+			{
+				
+			};
 		}
 		
 		public int GetThemeAmount()

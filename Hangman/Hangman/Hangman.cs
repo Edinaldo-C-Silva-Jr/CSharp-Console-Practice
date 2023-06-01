@@ -17,16 +17,18 @@ namespace Hangman
 		private Random wordPicker; // Word list related variables
 		private Dictionary<int, string> wordList;
 		
-		private string chosenWord, wordWithSpaces = "", letterToPlay, usedLetters; // Game variables
+		private string chosenWord, wordWithSpaces = "", letterToPlay, usedLetters, customTheme; // Game variables
 		private int totalMisses = 0;
-		private bool win;
+		private bool win, customWord;
 		
 		LimitInput limitator = new LimitInput();
 		
 		public Hangman()
 		{
 			wordPicker = new Random();
-			PickTheme(); // Picks the starting theme (the default is always Countries)
+			
+			Words themeList = new Words();
+			PickTheme(themeList); // Picks the starting theme (the default is always Countries)
 		}
 		
 		// Returns the current settings for the game
@@ -42,10 +44,9 @@ namespace Hangman
 		
 		// Method that picks the theme, based on the currentTheme variable, and loads the words into the themeList
 		// Also saves the current theme's name to return to the menu
-		private void PickTheme()
+		private void PickTheme(Words themeList)
 		{
-			Words themeList = new Words();
-			
+			customWord = false;
 			switch(currentTheme)
 			{
 				case 0:
@@ -60,13 +61,22 @@ namespace Hangman
 						currentThemeName = "Animals  ";
 						break;
 					}
+				default:
+					{
+						wordList = null;
+						customWord = true;
+						currentThemeName = "Custom   ";
+						break;
+					}
 			}
 		}
 		
 		// Method that picks a new theme, by cycling through the available themes
 		public void CycleTheme()
 		{
-			if (currentTheme == 1)
+			Words themeList = new Words();
+			
+			if (currentTheme == themeList.GetThemeAmount())
 			{
 				currentTheme = 0;
 			}
@@ -75,7 +85,7 @@ namespace Hangman
 				currentTheme++;
 			}
 			
-			PickTheme();
+			PickTheme(themeList);
 		}
 		
 		// Method that draws the hangman on screen, depending on the amount of errors the player has made in the current game
@@ -158,7 +168,14 @@ namespace Hangman
 			Console.Write(wordWithSpaces);
 			
 			Console.SetCursorPosition(20, 16);
-			Console.Write("Theme: " + currentThemeName);
+			if (customWord)
+			{
+				Console.Write("Theme: " + customTheme);
+			}
+			else
+			{
+				Console.Write("Theme: " + currentThemeName);
+			}
 		}
 		
 		// Method that checks if the currently played letter exists in the chosen word
@@ -210,14 +227,81 @@ namespace Hangman
 			}
 		}
 		
+		private void DefineCustomWord()
+		{
+			ConsoleKeyInfo input;
+			int inputAscii;
+			bool showWord = false;
+			
+			Console.Clear();
+			Console.Write("Enter the theme of your custom word: ");
+			customTheme = Console.ReadLine();
+			
+			Console.SetCursorPosition(0, 12);
+			Console.Write("You can use letters or space. \nThe word should have at least 2 characters. \nESC: Erase entire word.     !: Show or hide word.");
+			Console.SetCursorPosition(0, 1);
+			Console.Write("Enter the word to be guessed: ");
+			do
+			{
+				input = Console.ReadKey(true);
+				inputAscii = (int)input.KeyChar;
+				
+				if (inputAscii == 8)
+				{
+					if (chosenWord.Length > 0)
+					{
+						Console.SetCursorPosition(30, 1);
+						Console.Write(new String(' ', chosenWord.Length));
+						chosenWord = chosenWord.Substring(0, chosenWord.Length - 1);
+					}
+				}
+				
+				if (inputAscii == 27)
+				{
+					Console.SetCursorPosition(30, 1);
+					Console.Write(new String(' ', chosenWord.Length));
+					chosenWord = "";
+				}
+				
+				if (inputAscii == 33)
+				{
+					showWord = !showWord;
+				}
+				
+				if ((inputAscii == 32) || (inputAscii > 64 && inputAscii < 91) || (inputAscii > 96 && inputAscii < 123))
+				{
+					chosenWord += input.KeyChar;
+				}
+				
+				Console.SetCursorPosition(30, 1);
+				if (showWord)
+				{
+					Console.Write(chosenWord);
+				}
+				else
+				{
+					Console.Write(new String('*', chosenWord.Length));
+				}
+			}
+			while(input.Key != ConsoleKey.Enter || chosenWord.Length < 2);
+		}
+		
 		// Method that actually handles playing the game
 		public void PlayGame()
 		{
 			win = false; // Resets all relevant variables
 			totalMisses = 0;
 			usedLetters = "";
+			chosenWord = "";
 			
-			chosenWord = wordList[wordPicker.Next(1, wordList.Count + 1)];
+			if (customWord)
+			{
+				DefineCustomWord();
+			}
+			else
+			{
+				chosenWord = wordList[wordPicker.Next(1, wordList.Count + 1)];
+			}
 			
 			BuildWordWithSpaces();
 			DrawPlayField();

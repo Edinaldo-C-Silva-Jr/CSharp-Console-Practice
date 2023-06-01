@@ -18,6 +18,8 @@ namespace Hangman
 			Console.Clear();
 			Console.SetCursorPosition(17 ,0); // Value used to center the text on screen
 			Console.Write("----- HANGMAN GAME -----");
+			Console.SetCursorPosition(8, 17);
+			Console.Write("Arrows: Move     Enter: Select     Esc: Exit");
 			
 			Console.SetCursorPosition(10, 2);
 			Console.Write("> Start");
@@ -25,6 +27,10 @@ namespace Hangman
 			Console.Write("  Theme: " + settings[0]);
 			//Console.SetCursorPosition(10, 4);
 			//Console.Write("  ");
+			
+			Console.SetCursorPosition(10, 2);
+			Console.Write("> Start");
+			
 		}
 		
 		// Redraws only the currently selected line

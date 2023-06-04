@@ -7,18 +7,20 @@ using System.Collections.Generic;
 
 namespace Hangman
 {
+	// The class that defines all words that can be picked on each theme
 	public class Words
 	{
 		public Dictionary<int, string> countries;
 		public Dictionary<int, string> animals;
+		public Dictionary<int, string> fruits;
+		public Dictionary<int, string> vegetables;
 		public Dictionary<int, string> foods;
-		public Dictionary<int, string> colors;
-		public Dictionary<int, string> objects;
 		private int themeAmount;
 		
+		// Defines the words into the dictionaries as the class is instanced
 		public Words()
 		{
-			themeAmount = 2;
+			themeAmount = 3;
 			
 			this.countries = new Dictionary<int, string>()
 			{
@@ -41,7 +43,7 @@ namespace Hangman
 				{60, "Saudi Arabia"}, {61, "Serbia"}, {62, "Singapore"}, {63, "South Africa"}, {64, "South Korea"}, {65, "Spain"}, {66, "Sweden"}, {67, "Switzerland"},
 				{68, "Taiwan"}, {69, "Thailand"}, {70, "Turkey"},
 				{71, "Ukreaine"}, {72, "United Kingdom"}, {73, "United States"}, {74, "Uruguay"},
-				{75, "Venezuela"}
+				{75, "Venezuela"},
 			};
 			
 			this.animals = new Dictionary<int, string>()
@@ -58,12 +60,16 @@ namespace Hangman
 				{129, "Hippopotamus"}, {130, "Komodo Dragon"},
 			};
 			
-			this.foods = new Dictionary<int, string>()
+			this.fruits = new Dictionary<int, string>()
 			{
-				
+				{1, "Acai Berry"}, {2, "Apple"}, {3, "Apricot"}, {4, "Avocado"}, {5, "Banana"}, {6, "Blackberry"}, {7, "Blueberry"}, {8, "Cherry"}, {9, "Cocoa Bean"}, {10, "Coconut"},
+				{11, "Custard Apple"}, {12, "Dragonfruit"}, {13, "Durian"}, {14, "Fig"}, {15, "Grape"}, {16, "Grapefruit"}, {17, "Guava"}, {18, "Jackfruit"}, {19, "Kiwi"}, {20, "Lemon"},
+				{21, "Lime"}, {22, "Lychee"}, {23, "Mango"}, {24, "Melon"}, {25, "Nectarine"}, {26, "Orange"}, {27, "Papaya"}, {28, "Passion Fruit"}, {29, "Peach"}, {30, "Pear"},
+				{31, "Pineapple"}, {32, "Plum"}, {33, "Pomegranate"}, {34, "Pumpkin"}, {35, "Raspberry"}, {36, "Starfruit"}, {37, "Strawberry"}, {38, "Tamarind"}, {39, "Tangerine"}, {40, "Watermelon"},
 			};
 		}
 		
+		// Returns the amount of themes that can be currently used in the game (to cycle through them when choosing a theme)
 		public int GetThemeAmount()
 		{
 			return this.themeAmount;

@@ -12,6 +12,7 @@ namespace Hangman
 	// It allows the player to start the game, or set a few game options (only the word theme for now)
 	public class Menu
 	{
+		#region Drawing Related Methods
 		// Method that draws the menu on screen
 		private void DrawMenu(string[] settings)
 		{
@@ -26,11 +27,7 @@ namespace Hangman
 			Console.SetCursorPosition(10, 3);
 			Console.Write("  Theme: " + settings[0]);
 			//Console.SetCursorPosition(10, 4);
-			//Console.Write("  ");
-			
-			Console.SetCursorPosition(10, 2);
-			Console.Write("> Start");
-			
+			//Console.Write("  Language: ");
 		}
 		
 		// Redraws only the currently selected line
@@ -38,9 +35,13 @@ namespace Hangman
 		private void RedrawCurrentSelection(string text, string setting, int current)
 		{
 			Console.SetCursorPosition(10, 2 + current);
+			Console.Write(new String(' ', 60));
+			Console.SetCursorPosition(10, 2 + current);
 			Console.Write("> " + text + setting); // Redraws entire line with the selection cursor
 		}
+		#endregion
 		
+		#region Moving the Selection
 		// Moves the "selection cursor" (the > that points at the current option) one option up
 		private int MoveSelectionUp(int currentSelection)
 		{
@@ -60,7 +61,9 @@ namespace Hangman
 			Console.Write(">");
 			return currentSelection + 1;
 		}
+		#endregion
 		
+		#region Starting the Menu
 		// Method that actually starts the menu
 		public void StartMenu()
 		{
@@ -115,7 +118,6 @@ namespace Hangman
 									}
 								case 1: // Second option: Select the theme by cycling through the themes available
 									{
-										Console.SetCursorPosition(19, 3); // Changes the name of the theme on the menu
 										game.CycleTheme();
 										RedrawCurrentSelection("Theme: ", game.GetCurrentSettings()[0], 1);
 										break;
@@ -139,5 +141,6 @@ namespace Hangman
 			}
 			while(menuInput != ConsoleKey.Escape); // Keep going until Esc is pressed
 		}
+		#endregion
 	}
 }

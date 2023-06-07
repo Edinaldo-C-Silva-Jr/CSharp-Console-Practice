@@ -12,7 +12,7 @@ namespace MineSweeper
 	public class MineFieldCell
 	{
 		private int xPosition, yPosition, neighborMinesAmount = 0;
-		private bool cellIsMine;
+		private bool cellIsMine, cellIsFlagged = false, cellIsRevealed = false;
 		
 		public MineFieldCell(int x, int y, bool mine)
 		{
@@ -21,18 +21,10 @@ namespace MineSweeper
 			this.cellIsMine = mine;
 		}
 		
-		public int GetX()
-		{
-			return this.xPosition;
-		}
-		
-		public int GetY()
-		{
-			return this.yPosition;
-		}
-		
 		public char GetCellContent()
 		{
+			cellIsRevealed = true;
+			
 			if (cellIsMine)
 			{
 				return 'M';
@@ -46,6 +38,21 @@ namespace MineSweeper
 		public bool IsMine()
 		{
 			return this.cellIsMine;
+		}
+		
+		public void FlagCell()
+		{
+			cellIsFlagged = !cellIsFlagged;
+		}
+		
+		public bool IsFlagged()
+		{
+			return this.cellIsFlagged;
+		}
+		
+		public bool IsRevealed()
+		{
+			return this.cellIsRevealed;
 		}
 		
 		public void CheckNeighboringCell(MineFieldCell neighbor)

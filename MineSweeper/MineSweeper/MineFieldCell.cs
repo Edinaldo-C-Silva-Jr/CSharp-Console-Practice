@@ -11,7 +11,7 @@ namespace MineSweeper
 	/// </summary>
 	public class MineFieldCell
 	{
-		private int xPosition, yPosition, neighborMinesAmount;
+		private int xPosition, yPosition, neighborMinesAmount = 0;
 		private bool cellIsMine;
 		
 		public MineFieldCell(int x, int y, bool mine)
@@ -31,7 +31,7 @@ namespace MineSweeper
 			return this.yPosition;
 		}
 		
-		public char GetNumber()
+		public char GetCellContent()
 		{
 			if (cellIsMine)
 			{

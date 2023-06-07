@@ -10,74 +10,12 @@ namespace MineSweeper
 	{
 		public static void Main(string[] args)
 		{
-			Random minePicker = new Random();
-			MineFieldCell[,] mineField = new MineFieldCell[10,10];
+			Console.SetWindowSize(161, 55);
+			Console.SetBufferSize(163, 55);
+			MineSweeper game = new MineSweeper(40,25);
 			
-			for (int x = 0; x < 10; x++)
-			{
-				for (int y = 0; y < 10; y++)
-				{
-					mineField[x,y] = new MineFieldCell(x, y, Convert.ToBoolean(minePicker.Next(2)));
-				}
-			}
 			
-			for (int x = 0; x < 10; x++)
-			{
-				for (int y = 0; y < 10; y++)
-				{
-					if (x != 0)
-					{
-						mineField[x,y].CheckNeighboringCell(mineField[x - 1, y]);
-					}
-					
-					if (x != 9)
-					{
-						mineField[x,y].CheckNeighboringCell(mineField[x + 1, y]);
-					}
-					
-					if (y != 0)
-					{
-						mineField[x,y].CheckNeighboringCell(mineField[x, y - 1]);
-					}
-					
-					if (y != 9)
-					{
-						mineField[x,y].CheckNeighboringCell(mineField[x, y + 1]);
-					}
-					
-					if (x != 0 && y != 0)
-					{
-						mineField[x,y].CheckNeighboringCell(mineField[x - 1, y - 1]);
-					}
-					
-					if (x != 0 && y != 9)
-					{
-						mineField[x,y].CheckNeighboringCell(mineField[x - 1, y + 1]);
-					}
-					
-					if (x != 9 && y != 0)
-					{
-						mineField[x,y].CheckNeighboringCell(mineField[x + 1, y - 1]);
-					}
-					
-					if (x != 9 && y != 9)
-					{
-						mineField[x,y].CheckNeighboringCell(mineField[x + 1, y + 1]);
-					}
-				}
-			}
-			
-			for (int x = 0; x < 10; x++)
-			{
-				Console.WriteLine(" ");
-				
-				for (int y = 0; y < 10; y++)
-				{
-					Console.Write(" " + mineField[x,y].GetNumber());
-				}
-			}
-			
-			Console.ReadKey();
+			game.StartGame();
 		}
 	}
 }

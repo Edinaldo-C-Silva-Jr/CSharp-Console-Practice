@@ -34,11 +34,30 @@ namespace MineSweeper
 			{
 				for (int y = 0; y < ySize; y++)
 				{
-					mineField[x,y] = new MineFieldCell(x, y, Convert.ToBoolean(minePicker.Next(2)));
+					mineField[x,y] = new MineFieldCell(x, y, minePicker.Next(10) == 0);
 				}
 			}
 		}
 		
+		// Draws the mine field on the screen
+		// Shows every cell as a '.' to hide the cell's content
+		private void DrawMineField()
+		{
+			Console.WriteLine("----- MINESWEEPER -----");
+			
+			for (int y = 0; y < ySize; y++)
+			{
+				Console.WriteLine("\n " + new String('-', xSize * 4 + 1));
+				for (int x = 0; x < xSize; x++)
+				{
+					Console.Write(" | " + ".");
+				}
+				Console.Write(" | ");
+			}
+			Console.Write("\n " + new String('-', xSize * 4 + 1));
+		}
+		
+		// Checks for mines in the neighboring cells of each cell to define the number they will show
 		private void CheckCellNeighbors()
 		{
 			for (int x = 0; x < xSize; x++)
@@ -88,73 +107,116 @@ namespace MineSweeper
 			}
 		}
 		
-		private void DrawMineField()
+		// Reveals the neighboring cells of the current cell if its value is a 0
+		private void RevealNeighborCells(int currentX, int currentY)
 		{
-			Console.WriteLine("MineSweeper");
-			
-			for (int y = 0; y < ySize; y++)
+			if (currentX != 0)
 			{
-				Console.WriteLine("\n " + new String('-', xSize * 4 + 1));
-				for (int x = 0; x < xSize; x++)
-				{
-					Console.Write(" | " + ".");
-				}
-				Console.Write(" | ");
+				CheckCurrentCell(currentX - 1, currentY);
 			}
-			Console.Write("\n " + new String('-', xSize * 4 + 1));
+			
+			if (currentX != xSize - 1)
+			{
+				CheckCurrentCell(currentX + 1, currentY);
+			}
+			
+			if (currentY != 0)
+			{
+				CheckCurrentCell(currentX, currentY - 1);
+			}
+			
+			if (currentY != ySize - 1)
+			{
+				CheckCurrentCell(currentX, currentY + 1);
+			}
+			
+			if ((currentX != 0) && (currentY != 0))
+			{
+				CheckCurrentCell(currentX - 1, currentY - 1);
+			}
+			
+			if ((currentX != 0) && (currentY != ySize - 1))
+			{
+				CheckCurrentCell(currentX - 1, currentY + 1);
+			}
+			
+			if ((currentX != xSize - 1) && (currentY != 0))
+			{
+				CheckCurrentCell(currentX + 1, currentY - 1);
+			}
+			
+			if ((currentX != xSize - 1) && (currentY != ySize - 1))
+			{
+				CheckCurrentCell(currentX + 1, currentY + 1);
+			}
 		}
 		
-		// Method that checks whether the field played is a mine or a number
-		private void CheckCurrentCell()
+		// Method that checks whether the cell played is a mine or a number
+		// If the cell is a 0, it will also reveal all cells around it
+		private void CheckCurrentCell(int currentX, int currentY)
 		{
-			Console.SetCursorPosition(3 + 4*playedX, 3 + 2*playedY); // Gets the cursor in position
-			
-			if (!mineField[playedX, playedY].IsFlagged()) // Only check if cell is not flagged
+			if (mineField[currentX, currentY].IsRevealed() || mineField[currentX, currentY].IsFlagged()) // Do nothing if cell is flagged or revealed
 			{
-				if (mineField[playedX, playedY].GetCellContent() == 'M') // If cell is a mine, end the game in a loss and make the text red
-				{
-					//lose = true;
-					Console.ForegroundColor = ConsoleColor.Red;
-				}
-				Console.Write(mineField[playedX, playedY].GetCellContent()); // Show the content of the cell (either number or a mine)
-				Console.ForegroundColor = ConsoleColor.White;
+				return;
+			}
+			
+			Console.SetCursorPosition(3 + 4*currentX, 3 + 2*currentY); // Formula that gets the cursor in position to change the cell
+			
+			if (mineField[currentX, currentY].GetCellContent() == 'M') // If cell is a mine, end the game in a loss and make the text red
+			{
+				//lose = true;
+				Console.ForegroundColor = ConsoleColor.Red;
+			}
+			
+			Console.Write(mineField[currentX, currentY].GetCellContent()); // Show the content of the cell
+			Console.ForegroundColor = ConsoleColor.White;
+			
+			if (mineField[currentX, currentY].GetCellContent() == ' ') // If the cell is a 0, reveal surrouding cells
+			{
+				RevealNeighborCells(currentX, currentY);
 			}
 		}
 		
-		private void SelectCurrentCell()
+		// Changes the "selected cursor" (the "> <" that points at a cell) to the newly selected cell after moving
+		private void SelectNextCell()
 		{
-			Console.SetCursorPosition(2 + 4*playedX, 3 + 2*playedY);
+			Console.SetCursorPosition(2 + 4*playedX, 3 + 2*playedY); // Formula to get the correct position to show the cursor
 			Console.Write(">");
 			Console.SetCursorPosition(4 + 4*playedX, 3 + 2*playedY);
 			Console.Write("<");
 		}
 		
-		private void DeselectCurrentCell()
+		// Removes the "selected cursor" from the previously selected cell after moving
+		private void DeselectPreviousCell()
 		{
-			Console.SetCursorPosition(2 + 4*playedX, 3 + 2*playedY);
+			Console.SetCursorPosition(2 + 4*playedX, 3 + 2*playedY); // Formula to get the correct position to remove the cursor
 			Console.Write(" ");
 			Console.SetCursorPosition(4 + 4*playedX, 3 + 2*playedY);
 			Console.Write(" ");
 		}
 		
+		// Flags or unflags the current cell. Only unrevealed cells can be flagged
+		// Flagging a cell prevents it from being revealed
 		private void FlagCurrentCell()
 		{
-			if (!mineField[playedX, playedY].IsRevealed())
+			if (mineField[playedX, playedY].IsRevealed()) // Do nothing if cell is already revealed
 			{
-				mineField[playedX, playedY].FlagCell();
-				
-				Console.SetCursorPosition(3 + 4*playedX, 3 + 2*playedY);
-				if (mineField[playedX, playedY].IsFlagged())
-				{
-					Console.ForegroundColor = ConsoleColor.Green;
-					Console.Write("F");
-				}
-				else
-				{
-					Console.Write(".");
-				}
-				Console.ForegroundColor = ConsoleColor.White;
+				return;
 			}
+			
+			mineField[playedX, playedY].FlagCell();
+			
+			Console.SetCursorPosition(3 + 4*playedX, 3 + 2*playedY); // Gets in position to change the cell content
+			if (mineField[playedX, playedY].IsFlagged()) // If cell is flagged, write a green F
+			{
+				Console.ForegroundColor = ConsoleColor.Green;
+				Console.Write("F");
+			}
+			else // If cell is not flagged, return it to a hidden cell
+			{
+				Console.Write(".");
+			}
+			Console.ForegroundColor = ConsoleColor.White;
 		}
 		
 		private void PlayTurn()
@@ -164,7 +226,7 @@ namespace MineSweeper
 			do
 			{
 				control = Console.ReadKey(true);
-				DeselectCurrentCell();
+				DeselectPreviousCell();
 				switch(control.Key)
 				{
 					case ConsoleKey.UpArrow:
@@ -201,7 +263,7 @@ namespace MineSweeper
 						}
 					case ConsoleKey.Enter:
 						{
-							CheckCurrentCell();
+							CheckCurrentCell(playedX, playedY);
 							break;
 						}
 					case ConsoleKey.Backspace:
@@ -210,7 +272,7 @@ namespace MineSweeper
 							break;
 						}
 				}
-				SelectCurrentCell();
+				SelectNextCell();
 			}
 			while(control.Key != ConsoleKey.Enter);
 		}
@@ -223,7 +285,7 @@ namespace MineSweeper
 			InstanceMineFieldCells();
 			CheckCellNeighbors();
 			DrawMineField();
-			SelectCurrentCell();
+			SelectNextCell();
 			
 			Console.ForegroundColor = ConsoleColor.White;
 			

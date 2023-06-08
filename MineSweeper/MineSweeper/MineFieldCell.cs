@@ -31,7 +31,14 @@ namespace MineSweeper
 			}
 			else
 			{
-				return neighborMinesAmount.ToString()[0];
+				if (neighborMinesAmount == 0)
+				{
+					return ' ';
+				}
+				else
+				{
+					return neighborMinesAmount.ToString()[0];
+				}
 			}
 		}
 		

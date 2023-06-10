@@ -17,13 +17,14 @@ namespace MineSweeper
 		private int xSize, ySize;
 		
 		private bool win, lose;
-		private int playedX, playedY, markedMines, revealedCells;
+		private int playedX, playedY, totalCells, revealedCells, totalMines;
 		
 		public MineSweeper(int x, int y)
 		{
 			this.xSize = x;
 			this.ySize = y;
 			minePicker = new Random();
+			totalCells = xSize * ySize;
 		}
 		
 		private void InstanceMineFieldCells()
@@ -35,6 +36,11 @@ namespace MineSweeper
 				for (int y = 0; y < ySize; y++)
 				{
 					mineField[x,y] = new MineFieldCell(x, y, minePicker.Next(10) == 0);
+					
+					if (mineField[x,y].IsMine())
+					{
+						totalMines++;
+					}
 				}
 			}
 		}
@@ -164,12 +170,14 @@ namespace MineSweeper
 			
 			if (mineField[currentX, currentY].GetCellContent() == 'M') // If cell is a mine, end the game in a loss and make the text red
 			{
-				//lose = true;
+				lose = true;
 				Console.ForegroundColor = ConsoleColor.Red;
 			}
 			
 			Console.Write(mineField[currentX, currentY].GetCellContent()); // Show the content of the cell
 			Console.ForegroundColor = ConsoleColor.White;
+			
+			revealedCells++;
 			
 			if (mineField[currentX, currentY].GetCellContent() == ' ') // If the cell is a 0, reveal surrouding cells
 			{
@@ -219,6 +227,21 @@ namespace MineSweeper
 			Console.ForegroundColor = ConsoleColor.White;
 		}
 		
+		private void RevealMines()
+		{
+			for (int x = 0; x < xSize; x++)
+			{
+				for (int y = 0; y < ySize; y++)
+				{
+					if (mineField[x,y].IsMine())
+					{
+						Console.SetCursorPosition(3 + 4*x, 3 + 2*y);
+						Console.Write(mineField[x,y].GetCellContent());
+					}
+				}
+			}
+		}
+		
 		private void PlayTurn()
 		{
 			ConsoleKeyInfo control;
@@ -264,6 +287,7 @@ namespace MineSweeper
 					case ConsoleKey.Enter:
 						{
 							CheckCurrentCell(playedX, playedY);
+							win = totalCells - revealedCells == totalMines;
 							break;
 						}
 					case ConsoleKey.Backspace:
@@ -275,11 +299,14 @@ namespace MineSweeper
 				SelectNextCell();
 			}
 			while(control.Key != ConsoleKey.Enter);
+			
+			Console.SetCursorPosition(40, 0);
+			Console.Write("Total: " + totalCells + " - Revealed: " + revealedCells + " // Mines: " + totalMines);
 		}
 		
 		public void StartGame()
 		{
-			playedX = playedY = markedMines = revealedCells = 0;
+			playedX = playedY = revealedCells = 0;
 			win = lose = false;
 			
 			InstanceMineFieldCells();
@@ -299,12 +326,16 @@ namespace MineSweeper
 			if (win)
 			{
 				Console.Write("Winner!");
+				Console.ForegroundColor = ConsoleColor.Cyan;
 			}
 			
 			if (lose)
 			{
 				Console.Write("Loser!");
+				Console.ForegroundColor = ConsoleColor.Red;
 			}
+			
+			RevealMines();
 			
 			Console.ForegroundColor = ConsoleColor.Gray;
 			Console.ReadKey();

@@ -16,15 +16,16 @@ namespace MineSweeper
 		
 		private int xSize, ySize;
 		
-		private bool win, lose;
+		private bool win, lose, firstTurn;
 		private int playedX, playedY, totalCells, revealedCells, totalMines;
 		
-		public MineSweeper(int x, int y)
+		public MineSweeper(int x, int y, int mineCount)
 		{
 			this.xSize = x;
 			this.ySize = y;
 			minePicker = new Random();
 			totalCells = xSize * ySize;
+			totalMines = mineCount;
 		}
 		
 		private void InstanceMineFieldCells()
@@ -36,12 +37,57 @@ namespace MineSweeper
 				for (int y = 0; y < ySize; y++)
 				{
 					mineField[x,y] = new MineFieldCell(x, y, minePicker.Next(10) == 0);
-					
-					if (mineField[x,y].IsMine())
-					{
-						totalMines++;
-					}
 				}
+			}
+		}
+		
+		private void PickMines()
+		{
+			// TODO
+		}
+		
+		private void PickSafeCells()
+		{
+			mineField[playedX, playedY].MakeSafeCell();
+			
+			if (playedX != 0)
+			{
+				mineField[playedX - 1, playedY].MakeSafeCell();
+			}
+			
+			if (playedX != xSize - 1)
+			{
+				mineField[playedX + 1, playedY].MakeSafeCell();
+			}
+			
+			if (playedY != 0)
+			{
+				mineField[playedX, playedY - 1].MakeSafeCell();
+			}
+			
+			if (playedY != ySize - 1)
+			{
+				mineField[playedX, playedY + 1].MakeSafeCell();
+			}
+			
+			if ((playedX != 0) && (playedY != 0))
+			{
+				mineField[playedX - 1, playedY - 1].MakeSafeCell();
+			}
+			
+			if ((playedX != 0) && (playedY != ySize - 1))
+			{
+				mineField[playedX - 1, playedY + 1].MakeSafeCell();
+			}
+			
+			if ((playedX != xSize - 1) && (playedY != 0))
+			{
+				mineField[playedX + 1, playedY - 1].MakeSafeCell();
+			}
+			
+			if ((playedX != xSize - 1) && (playedY != ySize - 1))
+			{
+				mineField[playedX + 1, playedY + 1].MakeSafeCell();
 			}
 		}
 		
@@ -166,16 +212,20 @@ namespace MineSweeper
 				return;
 			}
 			
-			Console.SetCursorPosition(3 + 4*currentX, 3 + 2*currentY); // Formula that gets the cursor in position to change the cell
-			
-			if (mineField[currentX, currentY].GetCellContent() == 'M') // If cell is a mine, end the game in a loss and make the text red
+			if (mineField[currentX, currentY].GetCellContent() == 'M') // If cell is a mine, end the game in a loss
 			{
 				lose = true;
-				Console.ForegroundColor = ConsoleColor.Red;
+				return;
 			}
 			
+			if (firstTurn)
+			{
+				PickSafeCells();
+				firstTurn = false;
+			}
+			
+			Console.SetCursorPosition(3 + 4*currentX, 3 + 2*currentY); // Formula that gets the cursor in position to change the cell
 			Console.Write(mineField[currentX, currentY].GetCellContent()); // Show the content of the cell
-			Console.ForegroundColor = ConsoleColor.White;
 			
 			revealedCells++;
 			
@@ -308,6 +358,7 @@ namespace MineSweeper
 		{
 			playedX = playedY = revealedCells = 0;
 			win = lose = false;
+			firstTurn = true;
 			
 			InstanceMineFieldCells();
 			CheckCellNeighbors();

@@ -1,7 +1,7 @@
 ﻿/*
  * Date: 04/06/2023
  * Time: 23:34
-*/
+ */
 using System;
 
 namespace MineSweeper
@@ -12,13 +12,23 @@ namespace MineSweeper
 	public class MineFieldCell
 	{
 		private int xPosition, yPosition, neighborMinesAmount = 0;
-		private bool cellIsMine, cellIsFlagged = false, cellIsRevealed = false;
+		private bool cellIsMine, cellIsFlagged = false, cellIsRevealed = false, initialSafety = false;
 		
 		public MineFieldCell(int x, int y, bool mine)
 		{
 			this.xPosition = x;
 			this.yPosition = y;
 			this.cellIsMine = mine;
+		}
+		
+		public void MakeSafeCell()
+		{
+			this.initialSafety = true;
+		}
+		
+		public bool IsSafe()
+		{
+			return this.initialSafety;
 		}
 		
 		public char GetCellContent()
@@ -29,17 +39,13 @@ namespace MineSweeper
 			{
 				return 'M';
 			}
-			else
+			
+			if (neighborMinesAmount == 0)
 			{
-				if (neighborMinesAmount == 0)
-				{
-					return ' ';
-				}
-				else
-				{
-					return neighborMinesAmount.ToString()[0];
-				}
+				return ' ';
 			}
+			
+			return neighborMinesAmount.ToString()[0];
 		}
 		
 		public bool IsMine()

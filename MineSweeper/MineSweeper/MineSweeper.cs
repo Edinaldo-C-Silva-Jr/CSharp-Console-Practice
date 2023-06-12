@@ -3,6 +3,8 @@
  * Time: 15:24
  */
 using System;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace MineSweeper
 {
@@ -36,14 +38,32 @@ namespace MineSweeper
 			{
 				for (int y = 0; y < ySize; y++)
 				{
-					mineField[x,y] = new MineFieldCell(x, y, minePicker.Next(10) == 0);
+					mineField[x,y] = new MineFieldCell(x, y);
 				}
 			}
 		}
 		
 		private void PickMines()
 		{
-			// TODO
+			HashSet<int> mineCellsPicker = new HashSet<int>();
+			int cellCoordinates;
+			
+			while(mineCellsPicker.Count < totalMines)
+			{
+				cellCoordinates = minePicker.Next(totalCells);
+				
+				if (!mineField[cellCoordinates % xSize, cellCoordinates / xSize].IsSafe())
+				{
+					mineCellsPicker.Add(cellCoordinates);
+				}
+			}
+			
+			List<int> mineCells = mineCellsPicker.ToList();
+			
+			for (int i = 0; i < mineCells.Count; i++) 
+			{
+				mineField[mineCells[i] % xSize, mineCells[i] / xSize].MakeMine();
+			}
 		}
 		
 		private void PickSafeCells()
@@ -221,6 +241,8 @@ namespace MineSweeper
 			if (firstTurn)
 			{
 				PickSafeCells();
+				PickMines();
+				CheckCellNeighbors();
 				firstTurn = false;
 			}
 			
@@ -361,7 +383,6 @@ namespace MineSweeper
 			firstTurn = true;
 			
 			InstanceMineFieldCells();
-			CheckCellNeighbors();
 			DrawMineField();
 			SelectNextCell();
 			

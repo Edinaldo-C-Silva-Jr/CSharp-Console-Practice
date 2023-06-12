@@ -14,16 +14,20 @@ namespace MineSweeper
 		private int xPosition, yPosition, neighborMinesAmount = 0;
 		private bool cellIsMine, cellIsFlagged = false, cellIsRevealed = false, initialSafety = false;
 		
-		public MineFieldCell(int x, int y, bool mine)
+		public MineFieldCell(int x, int y)
 		{
 			this.xPosition = x;
 			this.yPosition = y;
-			this.cellIsMine = mine;
 		}
 		
 		public void MakeSafeCell()
 		{
 			this.initialSafety = true;
+		}
+		
+		public void MakeMine()
+		{
+			this.cellIsMine = true;
 		}
 		
 		public bool IsSafe()

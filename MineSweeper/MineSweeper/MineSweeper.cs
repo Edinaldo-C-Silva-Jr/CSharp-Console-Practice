@@ -8,28 +8,28 @@ using System.Collections.Generic;
 
 namespace MineSweeper
 {
-	/// <summary>
-	/// Description of MineSweeper.
-	/// </summary>
+	// A class that implements a game of MineSweeper
+	// It instances a grid of MineFieldCells and handles all the steps of creating, playing and ending the game 
 	public class MineSweeper
 	{
-		private Random minePicker;
+		private Random randomCoordinatePicker; // Game creation variables
 		private MineFieldCell[,] mineField;
-		
 		private int xSize, ySize;
 		
-		private bool win, lose, firstTurn;
+		private bool winGame, loseGame, thisIsTheFirstTurn; // Gameplay related variables
 		private int playedX, playedY, totalCells, revealedCells, totalMines;
 		
 		public MineSweeper(int x, int y, int mineCount)
 		{
 			this.xSize = x;
 			this.ySize = y;
-			minePicker = new Random();
+			randomCoordinatePicker = new Random();
 			totalCells = xSize * ySize;
 			totalMines = mineCount;
 		}
 		
+		#region Building the Mine Field
+		// Instances every cell in the mine field, by giving them their coordinates
 		private void InstanceMineFieldCells()
 		{
 			mineField = new MineFieldCell[xSize, ySize];
@@ -43,29 +43,30 @@ namespace MineSweeper
 			}
 		}
 		
-		private void PickMines()
+		// Draws the mine field on the screen
+		// Shows every cell as a '.' to hide their content
+		private void DrawMineField()
 		{
-			HashSet<int> mineCellsPicker = new HashSet<int>();
-			int cellCoordinates;
+			Console.SetCursorPosition((4*xSize - 20) / 2, 0);
+			Console.WriteLine("----- MINESWEEPER -----");
 			
-			while(mineCellsPicker.Count < totalMines)
+			Console.SetCursorPosition(0, 2);
+			for (int y = 0; y < ySize; y++)
 			{
-				cellCoordinates = minePicker.Next(totalCells);
-				
-				if (!mineField[cellCoordinates % xSize, cellCoordinates / xSize].IsSafe())
+				Console.Write(" " + new String('-', xSize * 4 + 1) + "\n");
+				for (int x = 0; x < xSize; x++)
 				{
-					mineCellsPicker.Add(cellCoordinates);
+					Console.Write(" | " + ".");
 				}
+				Console.Write(" | \n");
 			}
-			
-			List<int> mineCells = mineCellsPicker.ToList();
-			
-			for (int i = 0; i < mineCells.Count; i++) 
-			{
-				mineField[mineCells[i] % xSize, mineCells[i] / xSize].MakeMine();
-			}
+			Console.Write(" " + new String('-', xSize * 4 + 1));
 		}
+		#endregion
 		
+		#region Playing the First Turn
+		// Based on the currently played cell, turns all its adjacent cells into safe cells
+		// TODO: Maybe make it more efficient
 		private void PickSafeCells()
 		{
 			mineField[playedX, playedY].MakeSafeCell();
@@ -111,25 +112,32 @@ namespace MineSweeper
 			}
 		}
 		
-		// Draws the mine field on the screen
-		// Shows every cell as a '.' to hide the cell's content
-		private void DrawMineField()
+		// Randomly picks the cells that will be mines, based on the amount chosen when starting the game
+		private void PickMines()
 		{
-			Console.WriteLine("----- MINESWEEPER -----");
+			HashSet<int> mineCellsPicker = new HashSet<int>();
+			int cellCoordinates;
 			
-			for (int y = 0; y < ySize; y++)
+			while(mineCellsPicker.Count < totalMines)
 			{
-				Console.WriteLine("\n " + new String('-', xSize * 4 + 1));
-				for (int x = 0; x < xSize; x++)
+				cellCoordinates = randomCoordinatePicker.Next(totalCells); // Picks a random cell
+				
+				if (!mineField[cellCoordinates % xSize, cellCoordinates / xSize].IsSafe()) // If cell is not a safe cell
 				{
-					Console.Write(" | " + ".");
+					mineCellsPicker.Add(cellCoordinates); // Add it to the mines list
 				}
-				Console.Write(" | ");
 			}
-			Console.Write("\n " + new String('-', xSize * 4 + 1));
+			
+			List<int> mineCells = mineCellsPicker.ToList();
+			
+			for (int i = 0; i < mineCells.Count; i++) 
+			{
+				mineField[mineCells[i] % xSize, mineCells[i] / xSize].TurnCellIntoMine(); // Turns the cells in the list into mines
+			}
 		}
 		
 		// Checks for mines in the neighboring cells of each cell to define the number they will show
+		// TODO: Maybe make it more efficient
 		private void CheckCellNeighbors()
 		{
 			for (int x = 0; x < xSize; x++)
@@ -138,48 +146,128 @@ namespace MineSweeper
 				{
 					if (x != 0)
 					{
-						mineField[x,y].CheckNeighboringCell(mineField[x - 1, y]);
+						mineField[x,y].CheckAdjacentCellContent(mineField[x - 1, y]);
 					}
 					
 					if (x != xSize - 1)
 					{
-						mineField[x,y].CheckNeighboringCell(mineField[x + 1, y]);
+						mineField[x,y].CheckAdjacentCellContent(mineField[x + 1, y]);
 					}
 					
 					if (y != 0)
 					{
-						mineField[x,y].CheckNeighboringCell(mineField[x, y - 1]);
+						mineField[x,y].CheckAdjacentCellContent(mineField[x, y - 1]);
 					}
 					
 					if (y != ySize - 1)
 					{
-						mineField[x,y].CheckNeighboringCell(mineField[x, y + 1]);
+						mineField[x,y].CheckAdjacentCellContent(mineField[x, y + 1]);
 					}
 					
 					if ((x != 0) && (y != 0))
 					{
-						mineField[x,y].CheckNeighboringCell(mineField[x - 1, y - 1]);
+						mineField[x,y].CheckAdjacentCellContent(mineField[x - 1, y - 1]);
 					}
 					
 					if ((x != 0) && (y != ySize - 1))
 					{
-						mineField[x,y].CheckNeighboringCell(mineField[x - 1, y + 1]);
+						mineField[x,y].CheckAdjacentCellContent(mineField[x - 1, y + 1]);
 					}
 					
 					if ((x != xSize - 1) && (y != 0))
 					{
-						mineField[x,y].CheckNeighboringCell(mineField[x + 1, y - 1]);
+						mineField[x,y].CheckAdjacentCellContent(mineField[x + 1, y - 1]);
 					}
 					
 					if ((x != xSize - 1) && (y != ySize - 1))
 					{
-						mineField[x,y].CheckNeighboringCell(mineField[x + 1, y + 1]);
+						mineField[x,y].CheckAdjacentCellContent(mineField[x + 1, y + 1]);
 					}
 				}
 			}
 		}
+		#endregion
+		
+		// TODO Clean up the code, possibly change method names and comment some more
+		#region Playing Turns
+		// Changes the "selected cursor" (the "> <" that points at a cell) to the newly selected cell after moving
+		private void SelectNextCell()
+		{
+			Console.SetCursorPosition(2 + 4*playedX, 3 + 2*playedY); // Formula to get the correct position to show the cursor
+			Console.Write(">");
+			Console.SetCursorPosition(4 + 4*playedX, 3 + 2*playedY);
+			Console.Write("<");
+		}
+		
+		// Removes the "selected cursor" from the previously selected cell after moving
+		private void DeselectPreviousCell()
+		{
+			Console.SetCursorPosition(2 + 4*playedX, 3 + 2*playedY); // Formula to get the correct position to remove the cursor
+			Console.Write(" ");
+			Console.SetCursorPosition(4 + 4*playedX, 3 + 2*playedY);
+			Console.Write(" ");
+		}
+		
+		// Flags or unflags the current cell. Only unrevealed cells can be flagged
+		// Flagging a cell prevents it from being revealed
+		private void FlagCurrentCell()
+		{
+			if (mineField[playedX, playedY].IsRevealed()) // Do nothing if cell is already revealed
+			{
+				return;
+			}
+			
+			mineField[playedX, playedY].FlagCell();
+			
+			Console.SetCursorPosition(3 + 4*playedX, 3 + 2*playedY); // Gets in position to change the cell content
+			if (mineField[playedX, playedY].IsFlagged()) // If cell is flagged, write a green F
+			{
+				Console.ForegroundColor = ConsoleColor.Green;
+				Console.Write("F");
+			}
+			else // If cell is not flagged, return it to a hidden cell
+			{
+				Console.Write(".");
+			}
+			Console.ForegroundColor = ConsoleColor.White;
+		}
+		
+		// Method that checks whether the cell played is a mine or a number
+		// If the cell is a 0, it will also reveal all cells around it
+		private void CheckCurrentCell(int currentX, int currentY)
+		{
+			if (mineField[currentX, currentY].IsRevealed() || mineField[currentX, currentY].IsFlagged()) // Do nothing if cell is flagged or revealed
+			{
+				return;
+			}
+			
+			if (mineField[currentX, currentY].RevealCellContent() == 'M') // If cell is a mine, end the game in a loss
+			{
+				loseGame = true;
+				return;
+			}
+			
+			if (thisIsTheFirstTurn)
+			{
+				PickSafeCells();
+				PickMines();
+				CheckCellNeighbors();
+				thisIsTheFirstTurn = false;
+			}
+			
+			Console.SetCursorPosition(3 + 4*currentX, 3 + 2*currentY); // Formula that gets the cursor in position to change the cell
+			Console.Write(mineField[currentX, currentY].RevealCellContent()); // Show the content of the cell
+			
+			revealedCells++;
+			
+			if (mineField[currentX, currentY].RevealCellContent() == ' ') // If the cell is a 0, reveal surrouding cells
+			{
+				RevealNeighborCells(currentX, currentY);
+			}
+		}
 		
 		// Reveals the neighboring cells of the current cell if its value is a 0
+		// TODO: Maybe make it more efficient
 		private void RevealNeighborCells(int currentX, int currentY)
 		{
 			if (currentX != 0)
@@ -223,97 +311,7 @@ namespace MineSweeper
 			}
 		}
 		
-		// Method that checks whether the cell played is a mine or a number
-		// If the cell is a 0, it will also reveal all cells around it
-		private void CheckCurrentCell(int currentX, int currentY)
-		{
-			if (mineField[currentX, currentY].IsRevealed() || mineField[currentX, currentY].IsFlagged()) // Do nothing if cell is flagged or revealed
-			{
-				return;
-			}
-			
-			if (mineField[currentX, currentY].GetCellContent() == 'M') // If cell is a mine, end the game in a loss
-			{
-				lose = true;
-				return;
-			}
-			
-			if (firstTurn)
-			{
-				PickSafeCells();
-				PickMines();
-				CheckCellNeighbors();
-				firstTurn = false;
-			}
-			
-			Console.SetCursorPosition(3 + 4*currentX, 3 + 2*currentY); // Formula that gets the cursor in position to change the cell
-			Console.Write(mineField[currentX, currentY].GetCellContent()); // Show the content of the cell
-			
-			revealedCells++;
-			
-			if (mineField[currentX, currentY].GetCellContent() == ' ') // If the cell is a 0, reveal surrouding cells
-			{
-				RevealNeighborCells(currentX, currentY);
-			}
-		}
-		
-		// Changes the "selected cursor" (the "> <" that points at a cell) to the newly selected cell after moving
-		private void SelectNextCell()
-		{
-			Console.SetCursorPosition(2 + 4*playedX, 3 + 2*playedY); // Formula to get the correct position to show the cursor
-			Console.Write(">");
-			Console.SetCursorPosition(4 + 4*playedX, 3 + 2*playedY);
-			Console.Write("<");
-		}
-		
-		// Removes the "selected cursor" from the previously selected cell after moving
-		private void DeselectPreviousCell()
-		{
-			Console.SetCursorPosition(2 + 4*playedX, 3 + 2*playedY); // Formula to get the correct position to remove the cursor
-			Console.Write(" ");
-			Console.SetCursorPosition(4 + 4*playedX, 3 + 2*playedY);
-			Console.Write(" ");
-		}
-		
-		// Flags or unflags the current cell. Only unrevealed cells can be flagged
-		// Flagging a cell prevents it from being revealed
-		private void FlagCurrentCell()
-		{
-			if (mineField[playedX, playedY].IsRevealed()) // Do nothing if cell is already revealed
-			{
-				return;
-			}
-			
-			mineField[playedX, playedY].FlagCell();
-			
-			Console.SetCursorPosition(3 + 4*playedX, 3 + 2*playedY); // Gets in position to change the cell content
-			if (mineField[playedX, playedY].IsFlagged()) // If cell is flagged, write a green F
-			{
-				Console.ForegroundColor = ConsoleColor.Green;
-				Console.Write("F");
-			}
-			else // If cell is not flagged, return it to a hidden cell
-			{
-				Console.Write(".");
-			}
-			Console.ForegroundColor = ConsoleColor.White;
-		}
-		
-		private void RevealMines()
-		{
-			for (int x = 0; x < xSize; x++)
-			{
-				for (int y = 0; y < ySize; y++)
-				{
-					if (mineField[x,y].IsMine())
-					{
-						Console.SetCursorPosition(3 + 4*x, 3 + 2*y);
-						Console.Write(mineField[x,y].GetCellContent());
-					}
-				}
-			}
-		}
-		
+		// Plays a turn
 		private void PlayTurn()
 		{
 			ConsoleKeyInfo control;
@@ -359,7 +357,7 @@ namespace MineSweeper
 					case ConsoleKey.Enter:
 						{
 							CheckCurrentCell(playedX, playedY);
-							win = totalCells - revealedCells == totalMines;
+							winGame = totalCells - revealedCells == totalMines;
 							break;
 						}
 					case ConsoleKey.Backspace:
@@ -376,11 +374,30 @@ namespace MineSweeper
 			Console.Write("Total: " + totalCells + " - Revealed: " + revealedCells + " // Mines: " + totalMines);
 		}
 		
+		// Reveals all mines once the game ends
+		private void RevealMines()
+		{
+			for (int x = 0; x < xSize; x++)
+			{
+				for (int y = 0; y < ySize; y++)
+				{
+					if (mineField[x,y].IsMine())
+					{
+						Console.SetCursorPosition(3 + 4*x, 3 + 2*y);
+						Console.Write(mineField[x,y].RevealCellContent());
+					}
+				}
+			}
+		}
+		#endregion
+		
+		// TODO Clean up the code and comment some more
+		#region Actually Playing the Game
 		public void StartGame()
 		{
 			playedX = playedY = revealedCells = 0;
-			win = lose = false;
-			firstTurn = true;
+			winGame = loseGame = false;
+			thisIsTheFirstTurn = true;
 			
 			InstanceMineFieldCells();
 			DrawMineField();
@@ -392,18 +409,16 @@ namespace MineSweeper
 			{
 				PlayTurn();
 			}
-			while(!win && !lose);
+			while(!winGame && !loseGame);
 			
 			Console.SetCursorPosition(0,0);
-			if (win)
+			if (winGame)
 			{
-				Console.Write("Winner!");
 				Console.ForegroundColor = ConsoleColor.Cyan;
 			}
 			
-			if (lose)
+			if (loseGame)
 			{
-				Console.Write("Loser!");
 				Console.ForegroundColor = ConsoleColor.Red;
 			}
 			
@@ -412,5 +427,6 @@ namespace MineSweeper
 			Console.ForegroundColor = ConsoleColor.Gray;
 			Console.ReadKey();
 		}
+		#endregion
 	}
 }

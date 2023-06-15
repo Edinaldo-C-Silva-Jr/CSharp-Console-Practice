@@ -38,7 +38,7 @@ namespace MineSweeper
 			{
 				for (int y = 0; y < ySize; y++)
 				{
-					mineField[x,y] = new MineFieldCell(x, y);
+					mineField[x,y] = new MineFieldCell(x, y, xSize, ySize);
 				}
 			}
 		}
@@ -64,51 +64,20 @@ namespace MineSweeper
 		}
 		#endregion
 		
-		#region Playing the First Turn
+		// TODO Clean up the code, possibly change method names and comment some more
+		#region Playing the First Turn	
 		// Based on the currently played cell, turns all its adjacent cells into safe cells
-		// TODO: Maybe make it more efficient
 		private void PickSafeCells()
 		{
-			mineField[playedX, playedY].MakeSafeCell();
-			
-			if (playedX != 0)
+			for (int x = 0; x < 3; x++)
 			{
-				mineField[playedX - 1, playedY].MakeSafeCell();
-			}
-			
-			if (playedX != xSize - 1)
-			{
-				mineField[playedX + 1, playedY].MakeSafeCell();
-			}
-			
-			if (playedY != 0)
-			{
-				mineField[playedX, playedY - 1].MakeSafeCell();
-			}
-			
-			if (playedY != ySize - 1)
-			{
-				mineField[playedX, playedY + 1].MakeSafeCell();
-			}
-			
-			if ((playedX != 0) && (playedY != 0))
-			{
-				mineField[playedX - 1, playedY - 1].MakeSafeCell();
-			}
-			
-			if ((playedX != 0) && (playedY != ySize - 1))
-			{
-				mineField[playedX - 1, playedY + 1].MakeSafeCell();
-			}
-			
-			if ((playedX != xSize - 1) && (playedY != 0))
-			{
-				mineField[playedX + 1, playedY - 1].MakeSafeCell();
-			}
-			
-			if ((playedX != xSize - 1) && (playedY != ySize - 1))
-			{
-				mineField[playedX + 1, playedY + 1].MakeSafeCell();
+				for (int y = 0; y < 3; y++)
+				{
+					if (mineField[playedX, playedY].DoesNeighborExist(x,y))
+					{
+						mineField[playedX + x - 1, playedY + y - 1].MakeSafeCell();
+					}
+				}
 			}
 		}
 		
@@ -136,53 +105,28 @@ namespace MineSweeper
 			}
 		}
 		
+		private void CheckCellNeighbors(int currentX, int currentY)
+		{
+			for (int x = 0; x < 3; x++)
+			{
+				for (int y = 0; y < 3; y++)
+				{
+					if (mineField[currentX, currentY].DoesNeighborExist(x,y))
+					{
+						mineField[currentX, currentY].CheckAdjacentCellContent(mineField[currentX + x - 1, currentY + y - 1]);
+					}
+				}
+			}
+		}
+		
 		// Checks for mines in the neighboring cells of each cell to define the number they will show
-		// TODO: Maybe make it more efficient
-		private void CheckCellNeighbors()
+		private void CheckAllCellNeighbors()
 		{
 			for (int x = 0; x < xSize; x++)
 			{
 				for (int y = 0; y < ySize; y++)
 				{
-					if (x != 0)
-					{
-						mineField[x,y].CheckAdjacentCellContent(mineField[x - 1, y]);
-					}
-					
-					if (x != xSize - 1)
-					{
-						mineField[x,y].CheckAdjacentCellContent(mineField[x + 1, y]);
-					}
-					
-					if (y != 0)
-					{
-						mineField[x,y].CheckAdjacentCellContent(mineField[x, y - 1]);
-					}
-					
-					if (y != ySize - 1)
-					{
-						mineField[x,y].CheckAdjacentCellContent(mineField[x, y + 1]);
-					}
-					
-					if ((x != 0) && (y != 0))
-					{
-						mineField[x,y].CheckAdjacentCellContent(mineField[x - 1, y - 1]);
-					}
-					
-					if ((x != 0) && (y != ySize - 1))
-					{
-						mineField[x,y].CheckAdjacentCellContent(mineField[x - 1, y + 1]);
-					}
-					
-					if ((x != xSize - 1) && (y != 0))
-					{
-						mineField[x,y].CheckAdjacentCellContent(mineField[x + 1, y - 1]);
-					}
-					
-					if ((x != xSize - 1) && (y != ySize - 1))
-					{
-						mineField[x,y].CheckAdjacentCellContent(mineField[x + 1, y + 1]);
-					}
+					CheckCellNeighbors(x, y);
 				}
 			}
 		}
@@ -251,7 +195,7 @@ namespace MineSweeper
 			{
 				PickSafeCells();
 				PickMines();
-				CheckCellNeighbors();
+				CheckAllCellNeighbors();
 				thisIsTheFirstTurn = false;
 			}
 			
@@ -267,47 +211,17 @@ namespace MineSweeper
 		}
 		
 		// Reveals the neighboring cells of the current cell if its value is a 0
-		// TODO: Maybe make it more efficient
 		private void RevealNeighborCells(int currentX, int currentY)
 		{
-			if (currentX != 0)
+			for (int x = 0; x < 3; x++)
 			{
-				CheckCurrentCell(currentX - 1, currentY);
-			}
-			
-			if (currentX != xSize - 1)
-			{
-				CheckCurrentCell(currentX + 1, currentY);
-			}
-			
-			if (currentY != 0)
-			{
-				CheckCurrentCell(currentX, currentY - 1);
-			}
-			
-			if (currentY != ySize - 1)
-			{
-				CheckCurrentCell(currentX, currentY + 1);
-			}
-			
-			if ((currentX != 0) && (currentY != 0))
-			{
-				CheckCurrentCell(currentX - 1, currentY - 1);
-			}
-			
-			if ((currentX != 0) && (currentY != ySize - 1))
-			{
-				CheckCurrentCell(currentX - 1, currentY + 1);
-			}
-			
-			if ((currentX != xSize - 1) && (currentY != 0))
-			{
-				CheckCurrentCell(currentX + 1, currentY - 1);
-			}
-			
-			if ((currentX != xSize - 1) && (currentY != ySize - 1))
-			{
-				CheckCurrentCell(currentX + 1, currentY + 1);
+				for (int y = 0; y < 3; y++)
+				{
+					if (mineField[currentX, currentY].DoesNeighborExist(x,y))
+					{
+						CheckCurrentCell(currentX + x - 1, currentY + y - 1);
+					}
+				}
 			}
 		}
 		

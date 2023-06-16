@@ -11,15 +11,16 @@ namespace MineSweeper
 	{
 		private int xPosition, yPosition, amountOfAdjacentMines = 0;
 		private bool cellIsMine = false, cellIsFlagged = false, cellIsRevealed = false, initialSafety = false;
-		private bool[,] neighborExists;
+		private bool[,] neighboringCellExists;
 		
 		// When the cell is instanced, it is given its coordinates on the current game's grid
+		// It also checks which neighboring cells it has, depending on its position on the grid
 		public MineFieldCell(int x, int y, int xMax, int yMax)
 		{
 			this.xPosition = x;
 			this.yPosition = y;
-			this.neighborExists = new bool[3,3] { {false, false, false} , {false, true, false} , {false, false, false} };
-			CheckNeighborsExistence(xMax, yMax);
+			this.neighboringCellExists = new bool[3,3] { {false, false, false} , {false, true, false} , {false, false, false} };
+			CheckNeighboringCellsExistence(xMax, yMax);
 		}
 		
 		// Turns this cell into a mine
@@ -85,52 +86,56 @@ namespace MineSweeper
 			return this.cellIsRevealed;
 		}
 		
-		public void CheckNeighborsExistence(int xMax, int yMax)
+		// Checks this cell's current position related to the grid, and sets whether the adjacent cell in a specific direction exists
+		// This is done by checking if the cell is on the edges of the grid (a cell on an edge doesn't have any cells past it in that specific direction)
+		public void CheckNeighboringCellsExistence(int xMax, int yMax)
 		{
 			if ((this.xPosition!= 0) && (this.yPosition!= 0))
 			{
-				this.neighborExists[0, 0] = true;
+				this.neighboringCellExists[0, 0] = true;
 			}
 			
 			if (this.xPosition!= 0)
 			{
-				this.neighborExists[0, 1] = true;
+				this.neighboringCellExists[0, 1] = true;
 			}
 			
 			if ((this.xPosition!= 0) && (this.yPosition!= yMax - 1))
 			{
-				this.neighborExists[0, 2] = true;
+				this.neighboringCellExists[0, 2] = true;
 			}
 			
 			if (this.yPosition!= 0)
 			{
-				this.neighborExists[1, 0] = true;
+				this.neighboringCellExists[1, 0] = true;
 			}
 			
 			if (this.yPosition!= yMax - 1)
 			{
-				this.neighborExists[1, 2] = true;
+				this.neighboringCellExists[1, 2] = true;
 			}
 			
 			if ((this.xPosition!= xMax - 1) && (this.yPosition!= 0))
 			{
-				this.neighborExists[2, 0] = true;
+				this.neighboringCellExists[2, 0] = true;
 			}
 			
 			if (this.xPosition!= xMax - 1)
 			{
-				this.neighborExists[2, 1] = true;
+				this.neighboringCellExists[2, 1] = true;
 			}
 			
 			if ((this.xPosition!= xMax - 1) && (this.yPosition!= yMax - 1))
 			{
-				this.neighborExists[2, 2] = true;
+				this.neighboringCellExists[2, 2] = true;
 			}
 		}
 		
-		public bool DoesNeighborExist(int x, int y)
+		// Receives the coordinates of an adjacent cell and returns if that cell exists
+		// The coordinates range from 0 to 2, with (1,1) being the cell itself
+		public bool DoesThisNeighborExist(int x, int y)
 		{
-			return this.neighborExists[x,y];
+			return this.neighboringCellExists[x,y];
 		}
 		
 		// Receives an adjacent cell and checks if it is a mine, to increase the adjacent mines counter

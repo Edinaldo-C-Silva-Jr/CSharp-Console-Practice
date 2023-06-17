@@ -26,6 +26,9 @@ namespace MineSweeper
 			randomCoordinatePicker = new Random();
 			totalCells = xSize * ySize;
 			totalMines = mineCount;
+			
+			Console.SetWindowSize(5 + xSize * 4, 7 + ySize * 2);
+			Console.SetBufferSize(5 + xSize * 4, 7 + ySize * 2);
 		}
 		
 		#region Building the Mine Field
@@ -47,20 +50,21 @@ namespace MineSweeper
 		// Shows every cell as a '.' to hide their content
 		private void DrawMineField()
 		{
+			Console.Clear();
 			Console.SetCursorPosition((4*xSize - 20) / 2, 0);
-			Console.WriteLine("----- MINESWEEPER -----");
+			Console.Write("----- MINESWEEPER -----");
 			
 			Console.SetCursorPosition(0, 6);
 			for (int y = 0; y < ySize; y++)
 			{
-				Console.Write(" " + new String('-', xSize * 4 + 1) + "\n");
+				Console.Write("  " + new String('-', xSize * 4 + 1) + "\n ");
 				for (int x = 0; x < xSize; x++)
 				{
 					Console.Write(" | " + ".");
 				}
 				Console.Write(" | \n");
 			}
-			Console.Write(" " + new String('-', xSize * 4 + 1));
+			Console.Write("  " + new String('-', xSize * 4 + 1));
 		}
 		#endregion
 		
@@ -136,18 +140,18 @@ namespace MineSweeper
 		// Draws a "selected cursor" (The "> <" pointing at a specific cell) on the current cell coordinates
 		private void SelectCell()
 		{
-			Console.SetCursorPosition(2 + 4*playedX, 7 + 2*playedY); // Formula to get the correct position to show the cursor
+			Console.SetCursorPosition(3 + 4*playedX, 7 + 2*playedY); // Formula to get the correct position to show the cursor
 			Console.Write(">");
-			Console.SetCursorPosition(4 + 4*playedX, 7 + 2*playedY);
+			Console.SetCursorPosition(5 + 4*playedX, 7 + 2*playedY);
 			Console.Write("<");
 		}
 		
 		// Removes the "selected cursor" from the current cell coordinates
 		private void DeselectCell()
 		{
-			Console.SetCursorPosition(2 + 4*playedX, 7 + 2*playedY); // Formula to get the correct position to remove the cursor
+			Console.SetCursorPosition(3 + 4*playedX, 7 + 2*playedY); // Formula to get the correct position to remove the cursor
 			Console.Write(" ");
-			Console.SetCursorPosition(4 + 4*playedX, 7 + 2*playedY);
+			Console.SetCursorPosition(5 + 4*playedX, 7 + 2*playedY);
 			Console.Write(" ");
 		}
 		
@@ -162,7 +166,7 @@ namespace MineSweeper
 			
 			mineField[playedX, playedY].FlagCell();
 			
-			Console.SetCursorPosition(3 + 4*playedX, 7 + 2*playedY); // Gets in position to change the cell content
+			Console.SetCursorPosition(4 + 4*playedX, 7 + 2*playedY); // Gets in position to change the cell content
 			if (mineField[playedX, playedY].IsFlagged()) // If cell is flagged, write a green F
 			{
 				Console.ForegroundColor = ConsoleColor.Green;
@@ -198,7 +202,7 @@ namespace MineSweeper
 				thisIsTheFirstTurn = false;
 			}
 			
-			Console.SetCursorPosition(3 + 4*currentX, 7 + 2*currentY); // Formula that gets the cursor in position to change the cell
+			Console.SetCursorPosition(4 + 4*currentX, 7 + 2*currentY); // Formula that gets the cursor in position to change the cell
 			Console.Write(mineField[currentX, currentY].RevealCellContent()); // Show the content of the cell
 			
 			revealedCells++;
@@ -228,9 +232,9 @@ namespace MineSweeper
 		private void UpdateCounters()
 		{
 			Console.SetCursorPosition(0, 2);
-			Console.Write("Cells: " + totalCells + "     Mines: " + totalMines + "     ");
-			Console.Write("\nRevealed Cells: " + revealedCells);
- 			Console.Write("\nRemaining Cells: " + (totalCells - (totalMines + revealedCells)) + "     ");
+			Console.Write("  Cells: " + totalCells + "     Mines: " + totalMines + "     ");
+			Console.Write("\n  Revealed Cells: " + revealedCells);
+ 			Console.Write("\n  Remaining Cells: " + (totalCells - (totalMines + revealedCells)) + "     ");
 		}
 		
 		// Actually plays a turn in the game
@@ -302,7 +306,7 @@ namespace MineSweeper
 				{
 					if (mineField[x,y].IsMine())
 					{
-						Console.SetCursorPosition(3 + 4*x, 7 + 2*y);
+						Console.SetCursorPosition(4 + 4*x, 7 + 2*y);
 						Console.Write(mineField[x,y].RevealCellContent()); // If cell is a mine, reveal it
 					}
 				}

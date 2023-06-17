@@ -10,13 +10,10 @@ namespace MineSweeper
 	{
 		public static void Main(string[] args)
 		{
-			Console.SetWindowSize(163, 55);
-			Console.SetBufferSize(164, 55);
 			Console.CursorVisible = false;
-			MineSweeper game = new MineSweeper(20, 15, 80);
+			Menu menu = new Menu();
 			
-			// TODO: Create menu
-			game.StartGame();
+			menu.StartMenu();
 		}
 	}
 }

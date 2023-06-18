@@ -137,7 +137,7 @@ namespace MineSweeper
 		#endregion
 		
 		#region Playing Turns
-		// Draws a "selected cursor" (The "> <" pointing at a specific cell) on the current cell coordinates
+		// Draws a "selected  cursor" (The "> <"pointing at a specific cell) on the current cell coordinates
 		private void SelectCell()
 		{
 			Console.SetCursorPosition(3 + 4*playedX, 7 + 2*playedY); // Formula to get the correct position to show the cursor
@@ -197,7 +197,7 @@ namespace MineSweeper
 			if (thisIsTheFirstTurn) // If this is the first turn of the game
 			{
 				PickSafeCells(); // Make the currently played cell and its neighbors safe cells
-				PickMines(); // Then picks mines (has to be done after the first play, otherwise it's opssible to lose on first turn)
+				PickMines(); // Then picks mines (has to be done after the first play, otherwise it's possible to lose on first turn)
 				CheckAllCellsNeighboringMines(); // And finally gets the number on all cells
 				thisIsTheFirstTurn = false;
 			}
@@ -335,7 +335,6 @@ namespace MineSweeper
 			}
 			while(!winGame && !loseGame);
 			
-			Console.SetCursorPosition(0,0);
 			if (winGame)
 			{
 				Console.ForegroundColor = ConsoleColor.Cyan;

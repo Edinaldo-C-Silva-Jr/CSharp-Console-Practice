@@ -47,7 +47,7 @@ namespace MineSweeper
 		}
 		
 		// Draws the mine field on the screen
-		// Shows every cell as a '.' to hide their content
+		// Shows every cell as a yellow '.' to hide their content
 		private void DrawMineField()
 		{
 			Console.Clear();
@@ -60,7 +60,10 @@ namespace MineSweeper
 				Console.Write("  " + new String('-', xSize * 4 + 1) + "\n ");
 				for (int x = 0; x < xSize; x++)
 				{
-					Console.Write(" | " + ".");
+					Console.Write(" | ");
+					Console.ForegroundColor = ConsoleColor.Yellow;
+					Console.Write(".");
+					Console.ForegroundColor = ConsoleColor.Gray;
 				}
 				Console.Write(" | \n");
 			}
@@ -174,6 +177,7 @@ namespace MineSweeper
 			}
 			else // If cell is not flagged, return it to a hidden cell
 			{
+				Console.ForegroundColor = ConsoleColor.Yellow;
 				Console.Write(".");
 			}
 			Console.ForegroundColor = ConsoleColor.White;
@@ -228,13 +232,18 @@ namespace MineSweeper
 			}
 		}
 		
-		// Updates the game counters
+		// Updates the game counters on screen, using their relevant color
 		private void UpdateCounters()
 		{
 			Console.SetCursorPosition(0, 2);
-			Console.Write("  Cells: " + totalCells + "     Mines: " + totalMines + "     ");
+			Console.ForegroundColor = ConsoleColor.Gray;
+			Console.Write("  Cells: " + totalCells);
+			Console.ForegroundColor = ConsoleColor.Red;
+			Console.Write("  Mines: " + totalMines);
+			Console.ForegroundColor = ConsoleColor.Yellow;
+			Console.Write("\n  Remaining Cells: " + (totalCells - (totalMines + revealedCells)) + "  ");
+			Console.ForegroundColor = ConsoleColor.White;
 			Console.Write("\n  Revealed Cells: " + revealedCells);
- 			Console.Write("\n  Remaining Cells: " + (totalCells - (totalMines + revealedCells)) + "     ");
 		}
 		
 		// Actually plays a turn in the game

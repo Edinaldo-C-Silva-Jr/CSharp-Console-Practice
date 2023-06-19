@@ -30,7 +30,7 @@ namespace MineSweeper
 			Console.Write("----- Mine Sweeper -----");
 			
 			Console.SetCursorPosition(0, 22);
-			Console.Write("Arrows: Move Selection    Enter: Select Option    Esc: Exit");
+			Console.Write(" Arrows: Move Selection    Enter: Select Option   ESC: Exit");
 			
 			Console.SetCursorPosition(10, 2);
 			Console.Write("> Start Game");

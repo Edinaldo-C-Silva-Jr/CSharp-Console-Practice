@@ -22,6 +22,10 @@ namespace Ex02_Calculadora
 			Console.Write("3 - Multiplicação");
 			Console.SetCursorPosition(10, 5);
 			Console.Write("4 - Divisão");
+			Console.SetCursorPosition(10, 6);
+			Console.Write("5 - Resto da Divisão");
+			Console.SetCursorPosition(10, 7);
+			Console.Write("6 - Potenciação");
 			Console.SetCursorPosition(10, 9);
 			Console.Write("0 - Sair");
 			
@@ -52,22 +56,32 @@ namespace Ex02_Calculadora
 						}
 					case '1':
 						{
-							Console.Write("Resultado: " + calculate.Addition());
+							Console.Write("Resultado da adição: " + calculate.Addition());
 							break;
 						}
 					case '2':
 						{
-							Console.Write("Resultado: " + calculate.Subtraction());
+							Console.Write("Resultado da subtração: " + calculate.Subtraction());
 							break;
 						}
 					case '3':
 						{
-							Console.Write("Resultado: " + calculate.Multiplication());
+							Console.Write("Resultado da multiplicação: " + calculate.Multiplication());
 							break;
 						}
 					case '4':
 						{
-							Console.Write("Resultado: " + calculate.Division());
+							Console.Write("Resultado da divisão: " + calculate.Division());
+							break;
+						}
+					case '5':
+						{
+							Console.Write("Resto da divisão: " + calculate.RestDivision());
+							break;
+						}
+					case '6':
+						{
+							Console.Write("Resultado da potenciação: " + calculate.Exponential());
 							break;
 						}
 					default:

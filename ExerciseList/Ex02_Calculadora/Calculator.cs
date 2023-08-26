@@ -73,5 +73,17 @@ namespace Ex02_Calculadora
 			ReceiveInputDivision();
 			return n1 / n2;
 		}
+		
+		public double RestDivision()
+		{
+			ReceiveInputDivision();
+			return n1 % n2;
+		}
+		
+		public double Exponential()
+		{
+			ReceiveInput();
+			return Math.Pow(n1, n2);
+		}
 	}
 }

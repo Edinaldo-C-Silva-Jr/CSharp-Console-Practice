@@ -4,6 +4,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Ex03_SomaMedia
 {
@@ -22,6 +23,11 @@ namespace Ex03_SomaMedia
 			Console.Clear();
 			Console.WriteLine("A soma dos números é {0}", numberSum);
 			Console.WriteLine("E a média deles é {0}", numberAverage);
+			Console.ReadLine();
+			
+			Console.WriteLine("\nUtilizando a biblioteca Linq!");
+			Console.WriteLine("A soma dos números é {0}", numberList.Sum());
+			Console.WriteLine("E a média deles é {0}", numberList.Average());
 			Console.ReadLine();
 		}
 		

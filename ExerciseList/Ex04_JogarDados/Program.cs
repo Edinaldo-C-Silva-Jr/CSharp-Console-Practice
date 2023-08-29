@@ -17,7 +17,7 @@ namespace Ex04_JogarDados
 			diceRoll = new Random();
 			
 			ReceiveNames();
-			ShowScore();
+			PlayTurn();
 		}
 		
 		public static void ReceiveNames()
@@ -40,67 +40,78 @@ namespace Ex04_JogarDados
 		public static void ShowScore()
 		{
 			Console.Clear();
-			Console.WriteLine(nameP1 + " - Pontos: " + scoreP1);
-			Console.WriteLine(nameP2 + " - Pontos: " + scoreP2);
-			
-			Console.WriteLine("Pressione enter para jogar uma rodada.");
-			Console.ReadLine();
-			PlayTurn();
+			Console.WriteLine("{0} - Pontos: {1}", nameP1, scoreP1);
+			Console.WriteLine("{0} - Pontos: {1}\n", nameP2, scoreP2);
 		}
 		
 		public static void PlayTurn()
 		{
-			int rollP1, rollP2;
-			rollP1 = diceRoll.Next(6);
-			rollP2 = diceRoll.Next(6);
+			ShowScore();
 			
-			Console.Write("{0} tirou {1}, e {2} tirou {3}. ", nameP1, rollP1, nameP2, rollP2);
+			if (currentTurn == 3)
+			{
+				ShowResults();
+				return;
+			}
+			
+			int rollP1, rollP2;
+			rollP1 = RollDice(nameP1);
+			rollP2 = RollDice(nameP2);
 			
 			if (rollP1 > rollP2)
 			{
 				scoreP1++;
-				Console.Write("{0} venceu a rodada!", nameP1);
+				Console.WriteLine("{0} venceu a rodada!", nameP1);
 			}
 			else
 			{
 				if (rollP2 > rollP1)
 				{
 					scoreP2++;
-					Console.Write("{0} venceu a rodada!", nameP2);
+					Console.WriteLine("{0} venceu a rodada!", nameP2);
 				}
 				else
 				{
-					Console.Write("Empate!");
+					Console.WriteLine("Empate!");
 				}
 			}
 			
+			Console.WriteLine("\nPressione Enter para continuar...");
 			currentTurn++;
 			Console.ReadLine();
 			
-			if (currentTurn < 3)
+			PlayTurn();
+		}
+		
+		public static int RollDice(string playerName)
+		{
+			int diceValue;
+			Console.Write("{0}, pressione Enter para fazer sua jogada.", playerName);
+			Console.ReadLine();
+			Console.WriteLine("{0} tirou {1} no dado!\n", playerName, diceValue = diceRoll.Next(1, 7));
+			return diceValue;
+		}
+		
+		private static void ShowResults()
+		{
+			Console.Write("\nResultado!\n");
+			
+			if (scoreP1 > scoreP2)
 			{
-				ShowScore();
+				Console.Write("{0} venceu a partida!", nameP1);
 			}
 			else
 			{
-				Console.Write("\n\nResultado!\n");
-				if (scoreP1 > scoreP2)
+				if (scoreP2 > scoreP1)
 				{
-					Console.Write("{0} venceu a partida!", nameP1);
+					Console.Write("{0} venceu a partida!", nameP2);
 				}
 				else
 				{
-					if (scoreP2 > scoreP1)
-					{
-						Console.Write("{0} venceu a rodada!", nameP2);
-					}
-					else
-					{
-						Console.Write("A partida terminou em um empate!");
-					}
+					Console.Write("A partida terminou em um empate!");
 				}
-				Console.ReadLine();
 			}
+			Console.ReadLine();
 		}
 	}
 }

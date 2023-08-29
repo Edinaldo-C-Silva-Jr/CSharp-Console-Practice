@@ -9,7 +9,7 @@ namespace Ex04_JogarDados
 	class Program
 	{
 		private static string nameP1, nameP2;
-		private static int scoreP1, scoreP2, currentTurn;
+		private static int scoreP1, scoreP2, currentTurn, amountOfTurns;
 		private static Random diceRoll;
 		
 		public static void Main(string[] args)
@@ -35,11 +35,26 @@ namespace Ex04_JogarDados
 				Console.Write(new String(' ', 260));
 				Console.SetCursorPosition(34, 1);
 			}
+			Console.SetCursorPosition(25, 5);
+			Console.Write(new String(' ', 30));
+			
+			Console.SetCursorPosition(0, 2);
+			Console.Write("Quantas rodadas vocês desejam jogar? Escolha um valor de 1 a 5: ");
+			while(!(int.TryParse(Console.ReadLine(), out amountOfTurns)) || (amountOfTurns < 1 || amountOfTurns > 5))
+			{
+				Console.SetCursorPosition(64, 2);
+				Console.Write(new String(' ', 260));
+				Console.SetCursorPosition(64, 2);
+			}
 		}
 		
 		public static void ShowScore()
 		{
 			Console.Clear();
+			if (currentTurn < amountOfTurns)
+			{
+				Console.WriteLine("Rodada atual: {0}/{1}\n", currentTurn + 1, amountOfTurns);
+			}
 			Console.WriteLine("{0} - Pontos: {1}", nameP1, scoreP1);
 			Console.WriteLine("{0} - Pontos: {1}\n", nameP2, scoreP2);
 		}
@@ -48,7 +63,7 @@ namespace Ex04_JogarDados
 		{
 			ShowScore();
 			
-			if (currentTurn == 3)
+			if (currentTurn == amountOfTurns)
 			{
 				ShowResults();
 				return;
@@ -99,19 +114,21 @@ namespace Ex04_JogarDados
 			if (scoreP1 > scoreP2)
 			{
 				Console.Write("{0} venceu a partida!", nameP1);
+				Console.ReadLine();
 			}
 			else
 			{
 				if (scoreP2 > scoreP1)
 				{
 					Console.Write("{0} venceu a partida!", nameP2);
+					Console.ReadLine();
 				}
 				else
 				{
-					Console.Write("A partida terminou em um empate!");
+					currentTurn--;
+					PlayTurn();
 				}
 			}
-			Console.ReadLine();
 		}
 	}
 }

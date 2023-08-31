@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex03_SomaMedia", "Ex03_Soma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex04_JogarDados", "Ex04_JogarDados\Ex04_JogarDados.csproj", "{E9B968CF-9551-48D6-9651-250F9308434F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex05_Datas", "Ex05_Datas\Ex05_Datas.csproj", "{5A0206B1-33AA-4FF0-B26B-5F2B3ECD591B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,5 +28,9 @@ Global
 		{E9B968CF-9551-48D6-9651-250F9308434F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E9B968CF-9551-48D6-9651-250F9308434F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E9B968CF-9551-48D6-9651-250F9308434F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A0206B1-33AA-4FF0-B26B-5F2B3ECD591B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A0206B1-33AA-4FF0-B26B-5F2B3ECD591B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A0206B1-33AA-4FF0-B26B-5F2B3ECD591B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A0206B1-33AA-4FF0-B26B-5F2B3ECD591B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -7,73 +7,67 @@ using System.Globalization;
 
 namespace Ex05_Datas
 {
-	/// <summary>
-	/// Description of DateConfiguration.
-	/// </summary>
 	public class DateConfiguration
 	{
 		public DateConfiguration()
 		{
 		}
 		
-		public string FormatDate(int formatChosen, DateTime dateToShow, int cultureChosen)
+		public string FormatDate(int formatChosen, DateTime dateToShow, CultureInfo cultureToFormat)
 		{
-			DateRepository dateRepo = new DateRepository();
-			CultureInfo culture = dateRepo.ReturnCulture(cultureChosen);
-			
 			switch(formatChosen)
 			{
 				default:
 					{
-						return dateToShow.ToString(culture);
+						return dateToShow.ToString(cultureToFormat);
 					}
 				case 2:
 					{
-						return dateToShow.ToString("dd/MM/yyyy", culture);
+						return dateToShow.ToString("dd/MM/yyyy", cultureToFormat);
 					}
 				case 3:
 					{
-						return dateToShow.ToString("dddd, dd MMMM yyyy", culture);
+						return dateToShow.ToString("dddd, dd MMMM yyyy", cultureToFormat);
 					}
 				case 4:
 					{
-						return dateToShow.ToString("R", culture);
+						return dateToShow.ToString("R", cultureToFormat);
 					}
 				case 5:
 					{
-						return dateToShow.ToString("dd/MM/yyyy HH:mm:ss", culture);
+						return dateToShow.ToString("dd/MM/yyyy HH:mm:ss", cultureToFormat);
 					}
 				case 6:
 					{
-						return dateToShow.ToString("dd/MM/yyyy hh:mm:ss tt", culture);
+						return dateToShow.ToString("dd/MM/yyyy hh:mm:ss tt", cultureToFormat);
 					}
 				case 7:
 					{
-						return dateToShow.ToString("dddd dd/MM/yyyy", culture);
+						return dateToShow.ToString("dddd dd/MM/yyyy", cultureToFormat);
 					}
 			}
 		}
 		
-		public int ChooseDateFormat()
+		public int ChooseDateFormat(CultureInfo cultureDefault)
 		{
 			int format;
-			int culture = 1;
 			
 			Console.Clear();
 			
 			Console.WriteLine("Escolha um formato para visualizar a data: ");
 			
 			Console.SetCursorPosition(0, 4);
-			Console.WriteLine("1 - Utilizar a configuração do sistema: {0}", FormatDate(1, DateTime.Now, culture));
-			Console.WriteLine("2 - Formato simples: {0}", FormatDate(2, DateTime.Now, culture));
-			Console.WriteLine("3 - Formato longo: {0}", FormatDate(3, DateTime.Now, culture));
-			Console.WriteLine("4 - Formato RFC1123: {0}", FormatDate(4, DateTime.Now, culture));
-			Console.WriteLine("5 - Data e hora: {0}", FormatDate(5, DateTime.Now, culture));
-			Console.WriteLine("6 - Data e hora formato 12 horas: {0}", FormatDate(6, DateTime.Now, culture));
-			Console.WriteLine("7 - Data com dia da semana: {0}", FormatDate(7, DateTime.Now, culture));
+			Console.WriteLine("1 - Utilizar a configuração do sistema: {0}", FormatDate(1, DateTime.Now, cultureDefault));
+			Console.WriteLine("2 - Formato simples: {0}", FormatDate(2, DateTime.Now, cultureDefault));
+			Console.WriteLine("3 - Formato longo: {0}", FormatDate(3, DateTime.Now, cultureDefault));
+			Console.WriteLine("4 - Formato RFC1123: {0}", FormatDate(4, DateTime.Now, cultureDefault));
+			Console.WriteLine("5 - Data e hora: {0}", FormatDate(5, DateTime.Now, cultureDefault));
+			Console.WriteLine("6 - Data e hora formato 12 horas: {0}", FormatDate(6, DateTime.Now, cultureDefault));
+			Console.WriteLine("7 - Data com dia da semana: {0}", FormatDate(7, DateTime.Now, cultureDefault));
+			Console.WriteLine("\n0 - Sair");
 			
 			Console.SetCursorPosition(43, 0);
-			while (!(int.TryParse(Console.ReadLine(), out format)) || (format < 1 || format > 7)) {
+			while (!(int.TryParse(Console.ReadLine(), out format)) || (format < 0 || format > 7)) {
 				Console.SetCursorPosition(43, 0);
 				Console.Write(new String(' ', 260));
 				Console.SetCursorPosition(43, 0);
@@ -93,9 +87,10 @@ namespace Ex05_Datas
 			Console.WriteLine("1 - ENIAC");
 			Console.WriteLine("2 - RFC1");
 			Console.WriteLine("3 - Alan Turing");
+			Console.WriteLine("\n0 - Sair");
 			
 			Console.SetCursorPosition(34, 0);
-			while (!(int.TryParse(Console.ReadLine(), out date)) || (date < 1 || date > 3))
+			while (!(int.TryParse(Console.ReadLine(), out date)) || (date < 0 || date > 3))
 			{
 				Console.SetCursorPosition(34, 0);
 				Console.Write(new String(' ', 260));
@@ -119,9 +114,10 @@ namespace Ex05_Datas
 			Console.WriteLine("4 - Francês (França)");
 			Console.WriteLine("5 - Italiano (Itália)");
 			Console.WriteLine("6 - Alemão (Alemanha)");
+			Console.WriteLine("\n0 - Sair");
 			
 			Console.SetCursorPosition(47, 0);
-			while (!(int.TryParse(Console.ReadLine(), out culture)) || (culture < 1 || culture > 6))
+			while (!(int.TryParse(Console.ReadLine(), out culture)) || (culture < 0 || culture > 6))
 			{
 				Console.SetCursorPosition(47, 0);
 				Console.Write(new String(' ', 260));

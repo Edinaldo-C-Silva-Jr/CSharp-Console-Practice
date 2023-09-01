@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex04_JogarDados", "Ex04_Jog
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex05_Datas", "Ex05_Datas\Ex05_Datas.csproj", "{5A0206B1-33AA-4FF0-B26B-5F2B3ECD591B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex06_ConversaoMoedas", "Ex06_ConversaoMoedas\Ex06_ConversaoMoedas.csproj", "{3075460D-9F5A-4003-A578-38FDC8F580B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,5 +34,9 @@ Global
 		{5A0206B1-33AA-4FF0-B26B-5F2B3ECD591B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5A0206B1-33AA-4FF0-B26B-5F2B3ECD591B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5A0206B1-33AA-4FF0-B26B-5F2B3ECD591B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3075460D-9F5A-4003-A578-38FDC8F580B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3075460D-9F5A-4003-A578-38FDC8F580B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3075460D-9F5A-4003-A578-38FDC8F580B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3075460D-9F5A-4003-A578-38FDC8F580B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 EndGlobal

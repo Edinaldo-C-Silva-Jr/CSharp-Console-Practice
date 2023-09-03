@@ -9,10 +9,6 @@ namespace Ex05_Datas
 {
 	public class DateConfiguration
 	{
-		public DateConfiguration()
-		{
-		}
-		
 		public string FormatDate(int formatChosen, DateTime dateToShow, CultureInfo cultureToFormat)
 		{
 			switch(formatChosen)

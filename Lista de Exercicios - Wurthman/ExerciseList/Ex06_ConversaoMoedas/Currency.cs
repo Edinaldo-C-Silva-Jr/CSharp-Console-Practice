@@ -3,6 +3,7 @@
  * Time: 20:52
  */
 using System;
+using System.Collections.Generic;
 
 namespace Ex06_ConversaoMoedas
 {

@@ -34,10 +34,6 @@ namespace Ex05_Datas
 			new CultureInfo("de-DE")
 		};
 		
-		public DateRepository()
-		{
-		}
-		
 		public DateTime ReturnDate(int dateChosen)
 		{
 			return listDate[dateChosen - 1];

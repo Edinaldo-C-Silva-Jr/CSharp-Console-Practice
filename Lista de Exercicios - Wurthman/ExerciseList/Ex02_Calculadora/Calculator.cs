@@ -13,11 +13,6 @@ namespace Ex02_Calculadora
 	{
 		double n1, n2;
 		
-		public Calculator()
-		{
-			
-		}
-		
 		public void ReceiveInput()
 		{
 			Console.Clear();

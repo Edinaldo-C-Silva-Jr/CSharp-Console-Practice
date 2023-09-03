@@ -1,7 +1,7 @@
 ﻿/*
  * Date: 31/08/2023
  * Time: 21:04
-*/
+ */
 using System;
 
 namespace Ex06_ConversaoMoedas
@@ -10,39 +10,48 @@ namespace Ex06_ConversaoMoedas
 	{
 		public static void Main(string[] args)
 		{
-			decimal valorReal = 0, valorConvertido = 0;
-			byte moeda;
+			decimal valueInReal = 0, convertedValue = 0;
+			int currencyID;
 			
 			Console.WriteLine("Digite o valor que deseja converter, em reais (R$): ");
-			decimal.TryParse(Console.ReadLine(), out valorReal);
+			decimal.TryParse(Console.ReadLine(), out valueInReal);
 			
+			Console.Clear();
+			Console.WriteLine("Valor em Reais para conversão: {0}", valueInReal);
 			Console.WriteLine("Para qual moeda você deseja converter o valor? ");
 			Console.WriteLine("1 - Dólar($)");
 			Console.WriteLine("2 - Euro (€)");
 			Console.WriteLine("3 - Iene (¥)");
 			Console.WriteLine("4 - Libra esterlina (£)");
-			byte.TryParse(Console.ReadLine(), out moeda);
+			Console.Write("Opção: ");
 			
-			switch(moeda)
+			while(!(int.TryParse(Console.ReadLine(), out currencyID)) || (currencyID < 1 || currencyID > 4))
 			{
-				case 1:
+				Console.SetCursorPosition(7, 6);
+				Console.Write(new String(' ', 260));
+				Console.SetCursorPosition(7, 6);
+			}
+			
+			switch((Currency)currencyID)
+			{
+				case Currency.Dolar:
 					{
-						valorConvertido = valorReal / 4.5M;
+						convertedValue = valueInReal / 4.5M;
 						break;
 					}
-				case 2:
+				case Currency.Euro:
 					{
-						valorConvertido = valorReal / 6.2M;
+						convertedValue = valueInReal / 6.2M;
 						break;
 					}
-				case 3:
+				case Currency.Yene:
 					{
-						valorConvertido = valorReal / 0.052M;
+						convertedValue = valueInReal / 0.052M;
 						break;
 					}
-				case 4:
+				case Currency.Pound:
 					{
-						valorConvertido = valorReal / 6.95M;
+						convertedValue = valueInReal / 6.95M;
 						break;
 					}
 				default:
@@ -51,7 +60,7 @@ namespace Ex06_ConversaoMoedas
 					}
 			}
 			
-			Console.WriteLine(valorConvertido.ToString());
+			Console.WriteLine(convertedValue.ToString());
 			Console.ReadLine();
 		}
 	}

@@ -9,10 +9,10 @@ namespace Ex06_ConversaoMoedas
 {
 	public enum Currency
 	{
-		Real,
-		Dolar,
-		Euro,
-		Yene,
-		Pound
+		Real = 1,
+		Dolar = 2,
+		Euro = 3,
+		Yene = 4,
+		Pound = 5
 	}
 }

@@ -10,7 +10,7 @@ namespace Ex06_ConversaoMoedas
 {
 	public class CurrencyConversion
 	{
-		public Dictionary<Currency, decimal> currencyValues = new Dictionary<Currency, decimal>
+		private Dictionary<Currency, decimal> currencyValues = new Dictionary<Currency, decimal>
 		{
 			{Currency.Real, 1m},
 			{Currency.Dolar, 4.5m},
@@ -19,7 +19,7 @@ namespace Ex06_ConversaoMoedas
 			{Currency.Pound, 6.95m}
 		};
 		
-		public Dictionary<Currency, string> currencyNames = new Dictionary<Currency, string>
+		private Dictionary<Currency, string> currencyNames = new Dictionary<Currency, string>
 		{
 			{Currency.Real, "Real"},
 			{Currency.Dolar, "Dólar Americano"},
@@ -28,7 +28,7 @@ namespace Ex06_ConversaoMoedas
 			{Currency.Pound, "Libra Esterlina"}
 		};
 		
-		List<CultureInfo> listCultures = new List<CultureInfo>
+		private List<CultureInfo> listCultures = new List<CultureInfo>
 		{
 			new CultureInfo("pt-BR"), 
 			new CultureInfo("en-US"), 
@@ -37,14 +37,24 @@ namespace Ex06_ConversaoMoedas
 			new CultureInfo("en-GB")
 		};
 		
-		public decimal ConvertFromReal(Currency newCurrency, decimal valueToConvert)
+		public decimal ConvertToNewCurrency(Currency originalCurrency, Currency newCurrency, decimal valueToConvert)
 		{
-			return valueToConvert / currencyValues[newCurrency];
+			return valueToConvert * currencyValues[originalCurrency] / currencyValues[newCurrency];
 		}
 		
-		public CultureInfo GetCulture(Currency culturesCurrency)
+		public string GetCurrencyName(Currency currency)
 		{
-			return listCultures[(int)culturesCurrency];
+			return currencyNames[currency];
+		}
+		
+		public CultureInfo GetCulture(Currency currencyOfCulture)
+		{
+			return listCultures[(int)currencyOfCulture - 1];
+		}
+		
+		public string GetCurrencySymbol(Currency currencyOfCulture)
+		{
+			return listCultures[(int)currencyOfCulture - 1].NumberFormat.CurrencySymbol;
 		}
 	}
 }

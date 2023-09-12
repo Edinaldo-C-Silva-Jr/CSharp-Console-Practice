@@ -9,6 +9,7 @@ namespace Ex02_Calculadora
 {
 	class Program
 	{
+		// Draws the menu of the application, showing all the options available and asking the user to choose one of them
 		public static void DrawMenu()
 		{
 			Console.Clear();
@@ -48,43 +49,43 @@ namespace Ex02_Calculadora
 				
 				switch(option)
 				{
-					case '0':
+					case '0': // Leave the Application
 						{
 							Console.Clear();
 							Console.Write("Saindo do aplicativo...");
 							break;
 						}
-					case '1':
+					case '1': // Addition
 						{
 							Console.Write("Resultado da adição: " + calculate.Addition());
 							break;
 						}
-					case '2':
+					case '2': // Subtraction
 						{
 							Console.Write("Resultado da subtração: " + calculate.Subtraction());
 							break;
 						}
-					case '3':
+					case '3': // Multiplication
 						{
 							Console.Write("Resultado da multiplicação: " + calculate.Multiplication());
 							break;
 						}
-					case '4':
+					case '4': // Division
 						{
 							Console.Write("Resultado da divisão: " + calculate.Division());
 							break;
 						}
-					case '5':
+					case '5': // Mod (rest of division)
 						{
 							Console.Write("Resto da divisão: " + calculate.RestDivision());
 							break;
 						}
-					case '6':
+					case '6': // Exponential
 						{
 							Console.Write("Resultado da potenciação: " + calculate.Exponential());
 							break;
 						}
-					default:
+					default: // If none of the previous, tell the user the operation is invalid
 						{
 							Console.Clear();
 							Console.Write("Opção Inválida.");

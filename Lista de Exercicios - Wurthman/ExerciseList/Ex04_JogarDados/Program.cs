@@ -17,9 +17,11 @@ namespace Ex04_JogarDados
 			diceRoll = new Random();
 			
 			ReceiveNames();
+			DecideAmountOfTurns();
 			PlayTurn();
 		}
 		
+		// Receives the name of both players. The program has to ensure their names are different
 		public static void ReceiveNames()
 		{
 			Console.Write("Digite o nome do primeiro jogador: ");
@@ -36,8 +38,12 @@ namespace Ex04_JogarDados
 				Console.SetCursorPosition(34, 1);
 			}
 			Console.SetCursorPosition(25, 5);
-			Console.Write(new String(' ', 30));
-			
+			Console.Write(new String(' ', 30)); // Removes the "invalid name" message from the screen
+		}
+		
+		// Receives and validates the amount of turns, which must be between 1 and 5 based on the exercise's description
+		public static void DecideAmountOfTurns()
+		{
 			Console.SetCursorPosition(0, 2);
 			Console.Write("Quantas rodadas vocês desejam jogar? Escolha um valor de 1 a 5: ");
 			while(!(int.TryParse(Console.ReadLine(), out amountOfTurns)) || (amountOfTurns < 1 || amountOfTurns > 5))
@@ -48,6 +54,7 @@ namespace Ex04_JogarDados
 			}
 		}
 		
+		// Shows the current turn and the scoreboard
 		public static void ShowScore()
 		{
 			Console.Clear();
@@ -59,6 +66,7 @@ namespace Ex04_JogarDados
 			Console.WriteLine("{0} - Pontos: {1}\n", nameP2, scoreP2);
 		}
 		
+		// Plays a turn of the dice roll game
 		public static void PlayTurn()
 		{
 			ShowScore();
@@ -98,6 +106,7 @@ namespace Ex04_JogarDados
 			PlayTurn();
 		}
 		
+		// Rolls the dice for a player. Receives the player name to show on the screen
 		public static int RollDice(string playerName)
 		{
 			int diceValue;
@@ -107,6 +116,7 @@ namespace Ex04_JogarDados
 			return diceValue;
 		}
 		
+		// Shows the results of the match and ends the application
 		private static void ShowResults()
 		{
 			Console.Write("\nResultado!\n");
@@ -123,7 +133,7 @@ namespace Ex04_JogarDados
 					Console.Write("{0} venceu a partida!", nameP2);
 					Console.ReadLine();
 				}
-				else
+				else // If the result is a draw, play an extra turn (until a winner is defined)
 				{
 					currentTurn--;
 					PlayTurn();

@@ -7,8 +7,10 @@ using System.Globalization;
 
 namespace Ex05_Datas
 {
+	// A class that handles all the configurations related to the program
 	public class DateConfiguration
 	{
+		// Returns the date chosen, in the format chosen, with the language chosen
 		public string FormatDate(int formatChosen, DateTime dateToShow, CultureInfo cultureToFormat)
 		{
 			switch(formatChosen)
@@ -44,6 +46,7 @@ namespace Ex05_Datas
 			}
 		}
 		
+		// Handles the choice of the date format, showing examples and receiving the index of the format as an input, which is validated
 		public int ChooseDateFormat(CultureInfo cultureDefault)
 		{
 			int format;
@@ -52,13 +55,13 @@ namespace Ex05_Datas
 			
 			Console.WriteLine("Escolha um formato para visualizar a data: ");
 			
-			Console.SetCursorPosition(0, 4);
-			Console.WriteLine("1 - Utilizar a configuração do sistema: {0}", FormatDate(1, DateTime.Now, cultureDefault));
+			Console.SetCursorPosition(0, 4); // Shows an example of each format, using today's date
+			Console.WriteLine("1 - Utilizar a configuração do sistema: {0}", FormatDate(1, DateTime.Now, cultureDefault)); // The first five formats were given by the exercise description
 			Console.WriteLine("2 - Formato simples: {0}", FormatDate(2, DateTime.Now, cultureDefault));
 			Console.WriteLine("3 - Formato longo: {0}", FormatDate(3, DateTime.Now, cultureDefault));
 			Console.WriteLine("4 - Formato RFC1123: {0}", FormatDate(4, DateTime.Now, cultureDefault));
 			Console.WriteLine("5 - Data e hora: {0}", FormatDate(5, DateTime.Now, cultureDefault));
-			Console.WriteLine("6 - Data e hora formato 12 horas: {0}", FormatDate(6, DateTime.Now, cultureDefault));
+			Console.WriteLine("6 - Data e hora formato 12 horas: {0}", FormatDate(6, DateTime.Now, cultureDefault)); // Formats 6 and 7 were picked by myself as part of the optional challenge
 			Console.WriteLine("7 - Data com dia da semana: {0}", FormatDate(7, DateTime.Now, cultureDefault));
 			Console.WriteLine("\n0 - Sair");
 			
@@ -72,6 +75,7 @@ namespace Ex05_Datas
 			return format;
 		}
 		
+		// Handles the choice of the date, showing the options and receiving the index as an input, that is validated
 		public int ChooseDate()
 		{
 			int date;
@@ -96,6 +100,7 @@ namespace Ex05_Datas
 			return date;
 		}
 		
+		// Handles the choice of the language, also receiving and validating an index
 		public int ChooseCulture()
 		{
 			int culture;

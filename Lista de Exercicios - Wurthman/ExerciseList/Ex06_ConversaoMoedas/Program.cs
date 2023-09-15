@@ -25,6 +25,7 @@ namespace Ex06_ConversaoMoedas
 			Console.ReadLine();
 		}
 		
+		// Handles the choice of the first currency (the currency to convert from), showing currency names and symbols and receiving the index as an input, that is validated
 		public static Currency GetOriginalCurrency()
 		{
 			Currency originalCurrency;
@@ -48,6 +49,7 @@ namespace Ex06_ConversaoMoedas
 			return originalCurrency;
 		}
 		
+		// Asks for the value in the currency that the user wants to convert from, validating the input before proceeding
 		public static decimal GetOriginalValue(Currency originalCurrency)
 		{
 			decimal originalValue;
@@ -64,6 +66,8 @@ namespace Ex06_ConversaoMoedas
 			return originalValue;
 		}
 		
+		// Handles the choice of the new currency (the currency to convert to) by showing currency names and symbols and receiving the index as an input, that is validated
+		// Note that the program allows converting to the same currency of the original value
 		public static Currency GetCurrencyToConvert(Currency originalCurrency, decimal originalValue)
 		{
 			Currency convertCurrency;

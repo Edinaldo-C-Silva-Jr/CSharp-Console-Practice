@@ -18,7 +18,7 @@ namespace Ex05_Datas
 			DateTime dateToShow;
 			CultureInfo cultureToFormat;
 			
-			while(true)
+			while(true) // Program will keep running until option 0 is selected at any point during the execution
 			{
 				formatChosen = dateConfig.ChooseDateFormat(new CultureInfo("pt-BR"));
 				if (formatChosen == 0)
@@ -38,11 +38,11 @@ namespace Ex05_Datas
 					break;
 				}
 				
-				dateToShow = dateRepo.ReturnDate(dateChosen);
+				dateToShow = dateRepo.ReturnDate(dateChosen); // Gets the date and language from the repository
 				cultureToFormat = dateRepo.ReturnCulture(cultureChosen);
 				
 				Console.Clear();
-				Console.WriteLine("{0}\n", dateConfig.FormatDate(formatChosen, dateToShow, cultureToFormat));
+				Console.WriteLine("{0}\n", dateConfig.FormatDate(formatChosen, dateToShow, cultureToFormat)); // Formats date, and then shows the description separately
 				Console.WriteLine(dateRepo.ReturnDescription(dateChosen));
 				
 				Console.ReadLine();

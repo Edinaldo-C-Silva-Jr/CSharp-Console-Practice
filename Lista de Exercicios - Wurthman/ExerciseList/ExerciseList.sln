@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex05_Datas", "Ex05_Datas\Ex
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex06_ConversaoMoedas", "Ex06_ConversaoMoedas\Ex06_ConversaoMoedas.csproj", "{3075460D-9F5A-4003-A578-38FDC8F580B5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex07_JogoForca", "Ex07_JogoForca\Ex07_JogoForca.csproj", "{710B4287-BA1D-4EB9-9549-8B9EED895963}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,5 +40,9 @@ Global
 		{3075460D-9F5A-4003-A578-38FDC8F580B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3075460D-9F5A-4003-A578-38FDC8F580B5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3075460D-9F5A-4003-A578-38FDC8F580B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{710B4287-BA1D-4EB9-9549-8B9EED895963}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{710B4287-BA1D-4EB9-9549-8B9EED895963}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{710B4287-BA1D-4EB9-9549-8B9EED895963}.Release|Any CPU.Build.0 = Release|Any CPU
+		{710B4287-BA1D-4EB9-9549-8B9EED895963}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -5,7 +5,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 
 namespace Ex07_JogoForca
 {
@@ -13,7 +12,8 @@ namespace Ex07_JogoForca
 	{
 		public static void Main(string[] args)
 		{
-			List<string> word = new List<string>(), type = new List<string>();
+			List<string> words = new List<string>();
+			List<Category> types = new List<Category>();
 			string[] lineSplit;
 			
 			string line;
@@ -23,21 +23,28 @@ namespace Ex07_JogoForca
 			while((line = wordRead.ReadLine()) != null)
 			{
 				lineSplit = line.Split(',');
-				word.Add(lineSplit[0]);
-				type.Add(lineSplit[1]);
+				words.Add(lineSplit[0]);
+				
+				Category type;
+				Enum.TryParse(lineSplit[1], out type);
+				types.Add(type);
 			}
 			
-			foreach(string s in word)
+			foreach(string s in words)
 			{
 				Console.WriteLine(s);
 			}
 			
-			foreach(string s in type)
+			foreach(Category c in types)
 			{
-				Console.WriteLine(s);
+				Console.WriteLine(c);
 			}
 			
 			Console.ReadKey();
+			for (int i = 0; i < 30; i++) 
+			{
+				HangmanGame game = new HangmanGame(types[i], words[i]);
+			}
 		}
 	}
 }

@@ -1,7 +1,7 @@
 ﻿/*
  * Date: 15/09/2023
  * Time: 20:57
-*/
+ */
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,12 +12,17 @@ namespace Ex07_JogoForca
 	{
 		public static void Main(string[] args)
 		{
+			Random wordPicker = new Random();
 			List<string> words = new List<string>();
 			List<Category> types = new List<Category>();
 			string[] lineSplit;
 			
+			// Read the file
+			
 			string line;
-			string path = "C:\\Users\\Windows\\Documents\\SharpDevelop Projects\\C# Console Practice\\Lista de Exercicios - Wurthman\\ExerciseList\\Ex07_JogoForca\\Resources\\WordList.csv";
+			string path = AppDomain.CurrentDomain.BaseDirectory;
+			path = path.TrimEnd(new char[]{'\\', 'b', 'i', 'n', 'D', 'e', 'u', 'g'});
+			path += "\\Resources\\WordList.csv";
 			StreamReader wordRead = new StreamReader(path);
 			
 			while((line = wordRead.ReadLine()) != null)
@@ -30,21 +35,25 @@ namespace Ex07_JogoForca
 				types.Add(type);
 			}
 			
-			foreach(string s in words)
+			// Pick category
+			
+			Category category = (Category)wordPicker.Next(0, 2);
+			List<int> wordsInCategory = new List<int>();
+			
+			for (int i = 0; i < types.Count; i++)
 			{
-				Console.WriteLine(s);
+				if (types[i] == category)
+				{
+					wordsInCategory.Add(i);
+				}
 			}
 			
-			foreach(Category c in types)
-			{
-				Console.WriteLine(c);
-			}
+			int randomWord = wordsInCategory[wordPicker.Next(0, wordsInCategory.Count)];
+			string pickedWord = words[randomWord];
 			
-			Console.ReadKey();
-			for (int i = 0; i < 30; i++) 
-			{
-				HangmanGame game = new HangmanGame(types[i], words[i]);
-			}
+			// Start Game
+			
+			HangmanGame game = new HangmanGame(category, pickedWord);
 		}
 	}
 }

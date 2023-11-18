@@ -35,6 +35,7 @@ namespace Ex07_JogoForca
 				}
 			}
 			
+			Console.WriteLine(category);
 			Console.WriteLine(word);
 			Console.WriteLine(wordWithSpaces);
 			Console.ReadKey();

@@ -11,6 +11,7 @@ namespace Ex07_JogoForca
 	{
 		public static void Main(string[] args)
 		{
+			Console.CursorVisible = false;
 			GameSetup setupGame = new GameSetup();
 			
 			setupGame.ReadWordListFile();

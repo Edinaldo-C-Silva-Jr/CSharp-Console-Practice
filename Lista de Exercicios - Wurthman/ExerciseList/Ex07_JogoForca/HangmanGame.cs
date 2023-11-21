@@ -4,6 +4,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Ex07_JogoForca
 {
@@ -40,6 +41,10 @@ namespace Ex07_JogoForca
 				{
 					wordWithSpaces += "_ ";
 				}
+				else
+				{
+					wordWithSpaces += wordToPlay[i] + " ";
+				}
 			}
 		}
 		
@@ -71,10 +76,50 @@ namespace Ex07_JogoForca
 			Console.Write(wordWithSpaces);
 		}
 		
+		private char RemoveAccentMarks(char letter)
+		{
+			byte[] temporaryBytes = Encoding.GetEncoding("ISO-8859-8").GetBytes(letter.ToString());
+			string letterWithoutAccentMarks = Encoding.UTF8.GetString(temporaryBytes);
+			
+			return letterWithoutAccentMarks[0];
+		}
+		
+		private char ReceiveLetterInput(int CursorLeft, int CursorTop)
+		{
+			ConsoleKeyInfo input;
+			char letter = '_';
+			
+			Console.SetCursorPosition(29, 10);
+			Console.Write(letter);
+			
+			do
+			{
+				Console.SetCursorPosition(29, 10);
+				input = Console.ReadKey(true);
+				
+				if (input.Key != ConsoleKey.Enter)
+				{
+					if (!Char.IsLetter(input.KeyChar))
+					{
+						letter = '_';
+					}
+					else
+					{
+						letter = input.KeyChar;
+					}
+					Console.Write(letter);
+				}
+			}
+			while(input.Key != ConsoleKey.Enter && letter != '_');
+			
+			Console.Write(" ");
+			return letter;
+		}
+		
 		private void ChooseLetter()
 		{
-			Console.SetCursorPosition(29, 10);
-			char letter = Char.ToUpper(Console.ReadKey().KeyChar);
+			char letter = Char.ToUpper(ReceiveLetterInput(29, 10));
+			letter = RemoveAccentMarks(letter);
 			
 			if (!Char.IsLetter(letter) || lettersUsed.IndexOf(letter) > -1)
 			{
@@ -109,6 +154,7 @@ namespace Ex07_JogoForca
 		
 		public void PlayGame()
 		{
+			Console.Clear();
 			bool win = false;
 			
 			while(!win)

@@ -13,12 +13,12 @@ namespace Ex07_JogoForca
 		{
 			GameSetup setupGame = new GameSetup();
 			
-			
 			setupGame.ReadWordListFile();
 			Category wordCategory = setupGame.PickCategory();
 			string chosenWord = setupGame.PickWord(wordCategory);
 			
 			HangmanGame game = new HangmanGame(wordCategory, chosenWord);
+			game.PlayGame();
 		}
 	}
 }

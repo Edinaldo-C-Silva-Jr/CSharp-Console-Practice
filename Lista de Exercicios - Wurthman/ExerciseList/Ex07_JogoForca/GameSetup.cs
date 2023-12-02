@@ -3,10 +3,11 @@
  * Time: 15:59
  */
 using System;
+using System.Text;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Ex07_JogoForca.Resources
+namespace Ex07_JogoForca
 {
 	/// <summary>
 	/// Description of GameSetup.
@@ -52,7 +53,7 @@ namespace Ex07_JogoForca.Resources
 		
 		public Category PickCategory()
 		{
-			Category chosenCategory = (Category)randomNumber.Next(0, 2);
+			Category chosenCategory = (Category)randomNumber.Next(0, 3);
 			return chosenCategory;
 		}
 		
@@ -69,7 +70,15 @@ namespace Ex07_JogoForca.Resources
 			}
 			
 			int randomWord = wordsInChosenCategory[randomNumber.Next(0, wordsInChosenCategory.Count)];
-			return listOfWords[randomWord];
+			return RemoveAccentMarks(listOfWords[randomWord]);
+		}
+		
+		private string RemoveAccentMarks(string word)
+		{
+			byte[] temporaryBytes = Encoding.GetEncoding("ISO-8859-8").GetBytes(word);
+			string wordWithoutAccentMarks = Encoding.UTF8.GetString(temporaryBytes);
+			
+			return wordWithoutAccentMarks;
 		}
 	}
 }

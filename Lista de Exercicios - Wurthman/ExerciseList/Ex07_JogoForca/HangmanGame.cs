@@ -4,6 +4,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Text;
 
 namespace Ex07_JogoForca
@@ -15,16 +16,15 @@ namespace Ex07_JogoForca
 		int mistakesMade, mistakesAllowed;
 		string lettersUsed;
 		
-		public HangmanGame(Category category, string word)
+		private void StartGame(Category category, string word, Difficulty difficulty)
 		{
 			wordCategory = category;
 			wordToPlay = word.ToUpper();
-			mistakesAllowed = 6;
+			mistakesAllowed = 7 - (int)difficulty;
 			mistakesMade = 0;
 			lettersUsed = "";
 			
 			BuildWordWithSpaces();
-			ShowGameField();
 		}
 		
 		private void BuildWordWithSpaces()
@@ -152,9 +152,13 @@ namespace Ex07_JogoForca
 			return wordWithSpaces.IndexOf('_') == -1;
 		}
 		
-		public void PlayGame()
+		public void PlayGame(Category category, string word, Difficulty difficulty)
 		{
+			StartGame(category, word, difficulty);
+			
 			Console.Clear();
+			ShowGameField();
+			
 			bool win = false;
 			
 			while(!win)
@@ -177,6 +181,7 @@ namespace Ex07_JogoForca
 			{
 				Console.Write("Fim de jogo, você perdeu! A palavra era: " + wordToPlay);
 			}
+			Thread.Sleep(1000);
 			Console.ReadKey();
 		}
 	}

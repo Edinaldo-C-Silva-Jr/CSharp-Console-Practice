@@ -8,8 +8,8 @@ namespace Ex07_JogoForca
 {
 	public enum Category
 	{
-		Movies,
-		Games,
-		Countries
+		Filmes,
+		Jogos,
+		Países
 	}
 }

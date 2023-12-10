@@ -10,6 +10,7 @@ namespace Ex07_JogoForca
 	{
 		Filmes,
 		Jogos,
-		Países
+		Países,
+		Animais
 	}
 }

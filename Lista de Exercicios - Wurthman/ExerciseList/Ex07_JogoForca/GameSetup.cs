@@ -53,7 +53,7 @@ namespace Ex07_JogoForca
 		
 		public Category PickCategory()
 		{
-			Category chosenCategory = (Category)randomNumber.Next(0, 3);
+			Category chosenCategory = (Category)randomNumber.Next(0, 4);
 			return chosenCategory;
 		}
 		

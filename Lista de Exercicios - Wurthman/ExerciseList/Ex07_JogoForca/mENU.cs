@@ -9,7 +9,7 @@ using System.Threading;
 namespace Ex07_JogoForca
 {
 	/// <summary>
-	/// Description of Menu.
+	/// A class that implements a visual menu for the game, where the player can scroll through options such as difficulty selection or start the game.
 	/// </summary>
 	public class Menu
 	{
@@ -20,6 +20,9 @@ namespace Ex07_JogoForca
 			chosenDifficulty = Difficulty.Médio;
 		}
 		
+		/// <summary>
+		/// Draws the options of the menu onto the screen.
+		/// </summary>
 		private void DrawMenu()
 		{
 			Console.Clear();
@@ -36,30 +39,46 @@ namespace Ex07_JogoForca
 			Console.Write("  Dificuldade: " + chosenDifficulty);
 		}
 		
+		/// <summary>
+		/// Redraws the line of the menu that shows the difficulty, to reflect a change in the difficulty setting.
+		/// </summary>
 		private void RedrawDifficulty()
 		{
 			Console.SetCursorPosition(10, 3);
 			Console.Write("> Dificuldade: " + chosenDifficulty + "   ");
 		}
 		
+		/// <summary>
+		/// Moves the selection cursor of the menu to the option above the currently selected.
+		/// </summary>
+		/// <param name="currentSelection">The number of the option currently selected in the menu.</param>
+		/// <returns>The number of the newly selected option.</returns>
 		private int MoveSelectionUp(int currentSelection)
 		{
-			Console.SetCursorPosition(10, 1 + currentSelection);
+			Console.SetCursorPosition(10, 1 + currentSelection); // Draws the cursor onto the new option
 			Console.Write(">");
-			Console.SetCursorPosition(10, 2 + currentSelection);
+			Console.SetCursorPosition(10, 2 + currentSelection); // Erases the cursor from the previous option
 			Console.Write(" ");
 			return currentSelection - 1;
 		}
 		
+		/// <summary>
+		/// Moves the selection cursor of the menu to the option below the currently selected.
+		/// </summary>
+		/// <param name="currentSelection">The number of the option currently selected in the menu.</param>
+		/// <returns>The number of the newly selected option.</returns>
 		private int MoveSelectionDown(int currentSelection)
 		{
-			Console.SetCursorPosition(10, 2 + currentSelection);
+			Console.SetCursorPosition(10, 2 + currentSelection); // Draws the cursor onto the new option
 			Console.Write(" ");
-			Console.SetCursorPosition(10, 3 + currentSelection);
+			Console.SetCursorPosition(10, 3 + currentSelection); // Erases the cursor from the previous option
 			Console.Write(">");
 			return currentSelection + 1;
 		}
 		
+		/// <summary>
+		/// Runs the menu for the game.
+		/// </summary>
 		public void StartMenu()
 		{
 			ConsoleKey menuInput;
@@ -67,7 +86,6 @@ namespace Ex07_JogoForca
 			
 			GameSetup setupGame = new GameSetup();
 			setupGame.ReadWordListFile();
-			
 			HangmanGame game = new HangmanGame();
 			
 			DrawMenu();
@@ -81,7 +99,7 @@ namespace Ex07_JogoForca
 				{
 					case ConsoleKey.UpArrow:
 						{
-							if (currentOption == 0)
+							if (currentOption == 0) // If already at the top, can't go up any further
 							{
 								SystemSounds.Beep.Play();
 							}
@@ -93,7 +111,7 @@ namespace Ex07_JogoForca
 						}
 					case ConsoleKey.DownArrow:
 						{
-							if (currentOption >= 1)
+							if (currentOption >= 1) // If already at the bottom, can't go down any further
 							{
 								SystemSounds.Beep.Play();
 							}
@@ -107,7 +125,7 @@ namespace Ex07_JogoForca
 						{
 							switch(currentOption)
 							{
-								case 0:
+								case 0: // Option "Start Game". Picks the word, category and starts the game
 									{
 										Category wordCategory = setupGame.PickCategory();
 										string chosenWord = setupGame.PickWord(wordCategory);
@@ -115,10 +133,10 @@ namespace Ex07_JogoForca
 										DrawMenu();
 										break;
 									}
-								case 1:
+								case 1: // Option "Choose Difficulty". 
 									{
 										int oldDifficulty = (int)chosenDifficulty;
-										chosenDifficulty = (Difficulty)((oldDifficulty + 1) % 3);
+										chosenDifficulty = (Difficulty)((oldDifficulty + 1) % 3); // Cycles through all 3 difficulties
 										RedrawDifficulty();
 										break;
 									}

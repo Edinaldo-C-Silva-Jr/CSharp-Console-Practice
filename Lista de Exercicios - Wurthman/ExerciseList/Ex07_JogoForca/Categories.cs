@@ -6,6 +6,9 @@ using System;
 
 namespace Ex07_JogoForca
 {
+	/// <summary>
+	/// The possible word categories for the game
+	/// </summary>
 	public enum Category
 	{
 		Filmes,

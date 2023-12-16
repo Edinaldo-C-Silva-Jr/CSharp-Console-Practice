@@ -49,7 +49,7 @@
     <Compile Include="Difficulties.cs" />
     <Compile Include="GameSetup.cs" />
     <Compile Include="HangmanGame.cs" />
-    <Compile Include="Menu.cs" />
+    <Compile Include="GameMenu.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

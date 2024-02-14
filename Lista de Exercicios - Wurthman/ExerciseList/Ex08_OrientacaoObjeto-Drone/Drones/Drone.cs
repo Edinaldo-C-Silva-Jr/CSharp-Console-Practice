@@ -9,45 +9,55 @@ namespace Ex08_OrientacaoObjeto_Drone.Drones
 	public class Drone
 	{
 		private double _height;
-		public double Height 
-		{ 
+		public double Height
+		{
 			get { return _height; }
-			private set { if (value >= 0.5 && value <= 25) { _height = value; } }
+			private set
+			{
+				if (value >= 0.5 && value <= 25) { _height = value; }
+				else { Console.WriteLine("Altura inválida!"); }
+			}
 		}
 		
-		private double _direction;
-		public double Direction
-		{ 
-			get { return _direction; }
-			private set 
+		private double _angle;
+		public double Angle
+		{
+			get { return _angle; }
+			private set
 			{
-				if (value < 0) { _direction = value + 360; }
-				if (value > 360) { _direction = value - 360; }
+				if (value < 0) { _angle = value + 360; }
+				else if (value > 359) { _angle = value - 360; }
+				else { _angle = value; }
 			}
 		}
 		
 		private double _speed;
-		public double Speed 
-		{ 
+		public double Speed
+		{
 			get { return _speed; }
-			private set { if (value >= 0 && value <= 15) { _speed = value; } }
+			private set 
+			{
+				if (value >= 0 && value <= 15) { _speed = value; }
+				else { Console.WriteLine("Velocidade inválida!"); }
+			}
 		}
 		
-		public bool ApproachObject { get; private set; }
-		public MovementState DroneMovement { get; private set; }
+		private MovementState DroneMovement { get; private set; }
+		
+		public bool ApproachedObject { get; private set; }
 		
 		public Drone()
 		{
 			Height = 0.5;
-			Direction = 0;
+			Angle = 0;
 			Speed = 0;
 			DroneMovement = MovementState.Stopped;
 			ApproachObject = false;
 		}
 		
-		public void ChangeHeight(double value)
+		public void ChangeHeight(double height)
 		{
-			Height = value;
+			Height = height;
 		}
 		
 		public void ChangeHeight(bool increment)

@@ -71,5 +71,65 @@ namespace Ex08_OrientacaoObjeto_Drone.Drones
 				Height -= 0.5;
 			}
 		}
+		
+		public void ChangeAngle(int angle)
+		{
+			if (angle >= 0 && angle <= 359)
+			{
+				Angle = angle;
+			}
+			else
+			{
+				Console.WriteLine("Ângulo inválido!");
+			}
+		}
+		
+		public void ChangeAngle(bool clockwise)
+		{
+			if (clockwise)
+			{
+				Angle += 5;
+			}
+			else
+			{
+				Angle -= 5;
+			}
+		}
+		
+		public void ChangeSpeed(bool increment)
+		{
+			if (increment)
+			{
+				Speed += 0.5;
+			}
+			else
+			{
+				Speed -= 0.5;
+			}
+		}
+		
+		public void DefineMovementState()
+		{
+			if (Speed == 0) 
+			{ 
+				DroneMovement = MovementState.Stopped; 
+			}
+			else 
+			{ 
+				DroneMovement = MovementState.Moving; 
+			}
+		}
+		
+		public void ShowMovementState()
+		{
+			if (DroneMovement == MovementState.Stopped)
+			{
+				Console.WriteLine("O Drone está parado.");
+			}
+			else
+			{
+				Console.WriteLine("O drone esta em movimento.");
+			}
+		}
 	}
 }

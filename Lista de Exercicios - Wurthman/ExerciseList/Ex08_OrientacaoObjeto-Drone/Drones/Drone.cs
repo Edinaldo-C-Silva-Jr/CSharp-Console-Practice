@@ -131,5 +131,33 @@ namespace Ex08_OrientacaoObjeto_Drone.Drones
 				Console.WriteLine("O drone esta em movimento.");
 			}
 		}
+		
+		public void ApproachObject()
+		{
+			if (DroneMovement == MovementState.Moving)
+			{
+				Console.WriteLine("Não é possível aproximar-se de um objeto com o drone em movimento!");
+				return;
+			}
+			
+			if (Approached)
+			{
+				Console.WriteLine("O drone já se aproximou de um objeto!");
+				return;
+			}
+			
+			Approached = true;
+		}
+		
+		public void DistanceFromObject()
+		{
+			if (!Approached)
+			{
+				Console.WriteLine("O drone não está próximo de nenhum objeto!");
+				return;
+			}
+			
+			Approached = false;
+		}
 	}
 }

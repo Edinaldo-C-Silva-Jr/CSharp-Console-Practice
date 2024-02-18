@@ -35,7 +35,7 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 		public double Speed
 		{
 			get { return _speed; }
-			private set 
+			private set
 			{
 				if (value >= 0 && value <= 15) { _speed = value; }
 				else { Console.WriteLine("Velocidade inválida!"); }
@@ -46,6 +46,9 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 		
 		public bool ApproachedObject { get; private set; }
 		
+		public DroneArms LeftArm { get; set; }
+		public DroneArms RightArm { get; set; }
+		
 		public DroneBody()
 		{
 			Height = 0.5;
@@ -53,6 +56,9 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 			Speed = 0;
 			DroneMovement = MovementState.Stopped;
 			ApproachedObject = false;
+			
+			LeftArm = new DroneArms();
+			RightArm = new DroneArms();
 		}
 		
 		public void ChangeHeight(double height)
@@ -136,26 +142,23 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 		
 		private void DefineMovementState()
 		{
-			if (Speed == 0) 
-			{ 
-				DroneMovement = MovementState.Stopped; 
-			}
-			else 
-			{ 
-				DroneMovement = MovementState.Moving; 
-			}
-		}
-		
-		public void ShowMovementState()
-		{
-			if (DroneMovement == MovementState.Stopped)
+			if (Speed == 0)
 			{
-				Console.WriteLine("O Drone está parado.");
+				DroneMovement = MovementState.Stopped;
 			}
 			else
 			{
-				Console.WriteLine("O drone esta em movimento.");
+				DroneMovement = MovementState.Moving;
 			}
+		}
+		
+		public string ShowMovementState()
+		{
+			if (DroneMovement == MovementState.Stopped)
+			{
+				return "Parado";
+			}
+			return "Em movimento.";
 		}
 		
 		public void ApproachObject()

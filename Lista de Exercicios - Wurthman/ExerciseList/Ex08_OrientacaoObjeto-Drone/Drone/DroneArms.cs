@@ -8,8 +8,8 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 {
 	public class DroneArms
 	{
-		public ArmState State { get; private set; }
-		public ElbowState Elbow { get; private set; }
+		public ArmState State { get; protected set; }
+		public ElbowState Elbow { get; protected set; }
 		
 		private int _wristAngle;
 		public int WristAngle

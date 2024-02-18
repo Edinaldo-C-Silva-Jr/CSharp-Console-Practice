@@ -45,11 +45,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ControlMenu.cs" />
     <Compile Include="Drone\ArmState.cs" />
     <Compile Include="Drone\DroneArms.cs" />
     <Compile Include="Drone\DroneBody.cs" />
     <Compile Include="Drone\ElbowState.cs" />
+    <Compile Include="Drone\LeftDroneArm.cs" />
     <Compile Include="Drone\MovementState.cs" />
+    <Compile Include="Drone\RightDroneArm.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

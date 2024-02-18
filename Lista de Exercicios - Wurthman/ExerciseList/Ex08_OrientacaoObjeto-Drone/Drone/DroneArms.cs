@@ -53,7 +53,7 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 		{
 			if (State == ArmState.Active)
 			{
-				if (Elbow = ElbowState.Resting)
+				if (Elbow == ElbowState.Resting)
 				{
 					Elbow = ElbowState.Contracted;
 				}
@@ -85,6 +85,40 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 			else
 			{
 				WristAngle -= 5;
+			}
+		}
+		
+		public void TakeReleaseObject()
+		{
+			if (State == ArmState.Occupied) // If the arm is occupied, holding an object...
+			{
+				State = ArmState.Active; // Let go of the object to free it.
+			}
+			else
+			{
+				if (Elbow == ElbowState.Contracted) // If the arm is free and the elbow contracted...
+				{
+					State = ArmState.Occupied; // Take an object, occupying the arm.
+				}
+				else
+				{
+					Console.WriteLine("O cotovelo deve estar contraído para pegar um objeto.");
+				}
+			}
+		}
+		
+		public void StoreObject()
+		{
+			if (State == ArmState.Occupied) // If the arm is occupied holding an object...
+			{
+				if (Elbow == ElbowState.Resting) // And the elbow is resting...
+				{
+					State = ArmState.Active; // Store the object, freeing the arm. 
+				}
+			}
+			else
+			{
+				Console.WriteLine("O braço não possui nenhum objeto para armazenar.");
 			}
 		}
 	}

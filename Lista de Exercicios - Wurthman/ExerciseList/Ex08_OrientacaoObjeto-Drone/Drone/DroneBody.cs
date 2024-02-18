@@ -173,6 +173,7 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 			}
 			
 			ApproachedObject = true;
+			Console.WriteLine("O drone se aproximou do objeto.");
 		}
 		
 		public void DistanceFromObject()
@@ -184,6 +185,7 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 			}
 			
 			ApproachedObject = false;
+			Console.WriteLine("O drone se distanciou do objeto.");
 		}
 	}
 }

@@ -4,9 +4,9 @@
  */
 using System;
 
-namespace Ex08_OrientacaoObjeto_Drone.Drones
+namespace Ex08_OrientacaoObjeto_Drone.Drone
 {
-	public class Drone
+	public class DroneBody
 	{
 		private double _height;
 		public double Height
@@ -19,8 +19,8 @@ namespace Ex08_OrientacaoObjeto_Drone.Drones
 			}
 		}
 		
-		private double _angle;
-		public double Angle
+		private int _angle;
+		public int Angle
 		{
 			get { return _angle; }
 			private set
@@ -42,26 +42,36 @@ namespace Ex08_OrientacaoObjeto_Drone.Drones
 			}
 		}
 		
-		private MovementState DroneMovement { get; private set; }
+		private MovementState DroneMovement { get; set; }
 		
 		public bool ApproachedObject { get; private set; }
 		
-		public Drone()
+		public DroneBody()
 		{
 			Height = 0.5;
 			Angle = 0;
 			Speed = 0;
 			DroneMovement = MovementState.Stopped;
-			ApproachObject = false;
+			ApproachedObject = false;
 		}
 		
 		public void ChangeHeight(double height)
 		{
+			if (ApproachedObject)
+			{
+				return;
+			}
+			
 			Height = height;
 		}
 		
 		public void ChangeHeight(bool increment)
 		{
+			if (ApproachedObject)
+			{
+				return;
+			}
+			
 			if (increment)
 			{
 				Height += 0.5;
@@ -74,6 +84,11 @@ namespace Ex08_OrientacaoObjeto_Drone.Drones
 		
 		public void ChangeAngle(int angle)
 		{
+			if (ApproachedObject)
+			{
+				return;
+			}
+			
 			if (angle >= 0 && angle <= 359)
 			{
 				Angle = angle;
@@ -86,6 +101,11 @@ namespace Ex08_OrientacaoObjeto_Drone.Drones
 		
 		public void ChangeAngle(bool clockwise)
 		{
+			if (ApproachedObject)
+			{
+				return;
+			}
+			
 			if (clockwise)
 			{
 				Angle += 5;
@@ -98,6 +118,11 @@ namespace Ex08_OrientacaoObjeto_Drone.Drones
 		
 		public void ChangeSpeed(bool increment)
 		{
+			if (ApproachedObject)
+			{
+				return;
+			}
+			
 			if (increment)
 			{
 				Speed += 0.5;
@@ -106,9 +131,10 @@ namespace Ex08_OrientacaoObjeto_Drone.Drones
 			{
 				Speed -= 0.5;
 			}
+			DefineMovementState();
 		}
 		
-		public void DefineMovementState()
+		private void DefineMovementState()
 		{
 			if (Speed == 0) 
 			{ 
@@ -140,24 +166,24 @@ namespace Ex08_OrientacaoObjeto_Drone.Drones
 				return;
 			}
 			
-			if (Approached)
+			if (ApproachedObject)
 			{
 				Console.WriteLine("O drone já se aproximou de um objeto!");
 				return;
 			}
 			
-			Approached = true;
+			ApproachedObject = true;
 		}
 		
 		public void DistanceFromObject()
 		{
-			if (!Approached)
+			if (!ApproachedObject)
 			{
 				Console.WriteLine("O drone não está próximo de nenhum objeto!");
 				return;
 			}
 			
-			Approached = false;
+			ApproachedObject = false;
 		}
 	}
 }

@@ -4,7 +4,7 @@
 */
 using System;
 
-namespace Ex08_OrientacaoObjeto_Drone.Drones
+namespace Ex08_OrientacaoObjeto_Drone.Drone
 {
 	public enum MovementState
 	{

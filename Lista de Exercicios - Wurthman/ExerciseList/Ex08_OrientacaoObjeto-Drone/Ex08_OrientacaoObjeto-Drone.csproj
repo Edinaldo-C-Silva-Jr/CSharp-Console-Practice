@@ -45,8 +45,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Drones\Drone.cs" />
-    <Compile Include="Drones\MovementState.cs" />
+    <Compile Include="Drone\ArmState.cs" />
+    <Compile Include="Drone\DroneArms.cs" />
+    <Compile Include="Drone\DroneBody.cs" />
+    <Compile Include="Drone\ElbowState.cs" />
+    <Compile Include="Drone\MovementState.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -54,7 +57,7 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Drones" />
+    <Folder Include="Drone" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

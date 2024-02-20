@@ -15,7 +15,6 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 			private set
 			{
 				if (value >= 0.5 && value <= 25) { _height = value; }
-				else { Console.WriteLine("Altura inválida!"); }
 			}
 		}
 		
@@ -38,7 +37,6 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 			private set
 			{
 				if (value >= 0 && value <= 15) { _speed = value; }
-				else { Console.WriteLine("Velocidade inválida!"); }
 			}
 		}
 		
@@ -99,10 +97,6 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 			{
 				Angle = angle;
 			}
-			else
-			{
-				Console.WriteLine("Ângulo inválido!");
-			}
 		}
 		
 		public void ChangeAngle(bool clockwise)
@@ -120,6 +114,17 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 			{
 				Angle -= 5;
 			}
+		}
+		
+		public void ChangeSpeed(double speed)
+		{
+			if (ApproachedObject)
+			{
+				return;
+			}
+			
+			Speed = speed;
+			DefineMovementState();
 		}
 		
 		public void ChangeSpeed(bool increment)

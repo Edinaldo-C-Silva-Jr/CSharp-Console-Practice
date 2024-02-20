@@ -31,7 +31,7 @@ namespace Ex08_OrientacaoObjeto_Drone
 			Console.Write(drone.ShowApproachedObject());
 		}
 		
-		private void DrawDroneOptions()
+		private void DrawDroneOptions(int currentOption)
 		{
 			Console.SetCursorPosition(33, 5);
 			Console.Write("--- CONTROLES ---");
@@ -65,22 +65,18 @@ namespace Ex08_OrientacaoObjeto_Drone
 			Console.SetCursorPosition(15, 17);
 			Console.Write("Acessar os Braços");
 			
-			Console.SetCursorPosition(15, 20);
+			Console.SetCursorPosition(13, 6 + currentOption);
+			Console.Write(">");
+			
+			Console.SetCursorPosition(15, 23);
 			Console.Write("Setas: Mover     Enter: Escolher     Esc: Sair");
 		}
 		
-		private void DrawSelectionCursor(int currentOption)
-		{
-			Console.SetCursorPosition(13, 6 + currentOption);
-			Console.Write(">");
-		}
-		
-		private void DrawMenu(DroneBody drone, int option)
+		private void DrawDroneMenu(DroneBody drone, int option)
 		{
 			Console.Clear();
 			DrawDroneStates(drone);
-			DrawDroneOptions();
-			DrawSelectionCursor(option);
+			DrawDroneOptions(option);
 		}
 		
 		// Moves the "selection cursor" (the > that points at the current option) one option up
@@ -103,19 +99,30 @@ namespace Ex08_OrientacaoObjeto_Drone
 			return currentOption + 1;
 		}
 		
+		private double DroneValueInput(string property)
+		{
+			Console.CursorVisible = true;
+			Console.SetCursorPosition(15, 19);
+			Console.Write("Digite o novo valor para {0}: ", property);
+			
+			int value;
+			int.TryParse(Console.ReadLine(), out value);
+			return value;
+		}
+		
 		public void Start()
 		{
 			DroneBody drone = new DroneBody();
 			int menuOption = 0;
 			ConsoleKeyInfo menuInput;
 			
-			DrawMenu(drone, menuOption);
+			DrawDroneMenu(drone, menuOption);
 			
 			do
 			{
 				Console.CursorVisible = false;
 				Console.SetCursorPosition(0,0);
-				menuInput = Console.ReadKey();
+				menuInput = Console.ReadKey(true);
 				
 				switch(menuInput.Key)
 				{
@@ -133,6 +140,92 @@ namespace Ex08_OrientacaoObjeto_Drone
 							{
 								menuOption = MoveSelectionDown(menuOption);
 							}
+							break;
+						}
+					case ConsoleKey.Enter:
+						{
+							switch (menuOption)
+							{
+								case 0:
+									{
+										drone.ChangeHeight(true);
+										DrawDroneMenu(drone, menuOption);
+										break;
+									}
+								case 1:
+									{
+										drone.ChangeHeight(false);
+										DrawDroneMenu(drone, menuOption);
+										break;
+									}
+								case 2:
+									{
+										double height = DroneValueInput("Altura");
+										drone.ChangeHeight(height);
+										DrawDroneMenu(drone, menuOption);
+										break;
+									}
+								case 3:
+									{
+										drone.ChangeAngle(true);
+										DrawDroneMenu(drone, menuOption);
+										break;
+									}
+								case 4:
+									{
+										drone.ChangeAngle(false);
+										DrawDroneMenu(drone, menuOption);
+										break;
+									}
+								case 5:
+									{
+										int angle = (int)DroneValueInput("Ângulo");
+										drone.ChangeAngle(angle);
+										DrawDroneMenu(drone, menuOption);
+										break;
+									}
+								case 6:
+									{
+										drone.ChangeSpeed(true);
+										DrawDroneMenu(drone, menuOption);
+										break;
+									}
+								case 7:
+									{
+										drone.ChangeSpeed(false);
+										DrawDroneMenu(drone, menuOption);
+										break;
+									}
+								case 8:
+									{
+										double speed = DroneValueInput("Velocidade");
+										drone.ChangeSpeed(speed);
+										DrawDroneMenu(drone, menuOption);
+										break;
+									}
+								case 9:
+									{
+										drone.ApproachObject();
+										DrawDroneMenu(drone, menuOption);
+										break;
+									}
+								case 10:
+									{
+										drone.DistanceFromObject();
+										DrawDroneMenu(drone, menuOption);
+										break;
+									}
+							}
+							break;
+						}
+					case ConsoleKey.Escape:
+						{
+							Console.Clear();
+							Console.SetCursorPosition(30, 10);
+							Console.Write("Desligando Drone...");
+							Console.SetCursorPosition(24, 11);
+							Console.Write("Pressione Enter para encerrar...");
+							Console.ReadLine();
 							break;
 						}
 				}

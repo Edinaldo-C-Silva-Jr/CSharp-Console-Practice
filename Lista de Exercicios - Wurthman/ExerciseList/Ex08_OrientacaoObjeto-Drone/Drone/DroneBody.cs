@@ -44,7 +44,7 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 		
 		private MovementState DroneMovement { get; set; }
 		
-		public bool ApproachedObject { get; private set; }
+		private bool ApproachedObject { get; set; }
 		
 		public DroneArms LeftArm { get; set; }
 		public DroneArms RightArm { get; set; }
@@ -189,6 +189,15 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 			
 			ApproachedObject = false;
 			Console.WriteLine("O drone se distanciou do objeto.");
+		}
+		
+		public string ShowApproachedObject()
+		{
+			if (ApproachedObject)
+			{
+				return "Próximo de um Objeto.";
+			}
+			return "Distante de Objetos.";
 		}
 	}
 }

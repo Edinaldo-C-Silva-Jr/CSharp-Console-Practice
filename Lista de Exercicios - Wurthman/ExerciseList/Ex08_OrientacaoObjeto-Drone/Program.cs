@@ -1,8 +1,9 @@
 ﻿/*
  * Date: 13/02/2024
  * Time: 20:33
-*/
+ */
 using System;
+using Ex08_OrientacaoObjeto_Drone.Drone;
 
 namespace Ex08_OrientacaoObjeto_Drone
 {
@@ -10,12 +11,8 @@ namespace Ex08_OrientacaoObjeto_Drone
 	{
 		public static void Main(string[] args)
 		{
-			Console.WriteLine("Hello World!");
-			
-			// TODO: Implement Functionality Here
-			
-			Console.Write("Press any key to continue . . . ");
-			Console.ReadKey(true);
+			ControlMenu menu = new ControlMenu();
+			menu.Start();
 		}
 	}
 }

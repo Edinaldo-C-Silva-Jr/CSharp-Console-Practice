@@ -113,10 +113,13 @@ namespace Ex08_OrientacaoObjeto_Drone
 			return value;
 		}
 		
-		private void ShowErrorMessage(DroneBody drone)
+		private void VerifyErrorAndShowMessage(DroneBody drone, bool success)
 		{
-			Console.SetCursorPosition(15, 19);
-			Console.Write(drone.Message);
+			if (!success)
+			{
+				Console.SetCursorPosition(15, 19);
+				Console.Write(drone.Message);
+			}
 		}
 		
 		public void Start()
@@ -160,20 +163,14 @@ namespace Ex08_OrientacaoObjeto_Drone
 									{
 										success = drone.ChangeHeight(true);
 										DrawDroneMenu(drone, menuOption);
-										if (!success)
-										{
-											ShowErrorMessage(drone);
-										}
+										VerifyErrorAndShowMessage(drone, success);
 										break;
 									}
 								case 1:
 									{
 										success = drone.ChangeHeight(false);
 										DrawDroneMenu(drone, menuOption);
-										if (!success)
-										{
-											ShowErrorMessage(drone);
-										}
+										VerifyErrorAndShowMessage(drone, success);
 										break;
 									}
 								case 2:
@@ -181,30 +178,21 @@ namespace Ex08_OrientacaoObjeto_Drone
 										double height = DroneValueInput("Altura");
 										success = drone.ChangeHeight(height);
 										DrawDroneMenu(drone, menuOption);
-										if (!success)
-										{
-											ShowErrorMessage(drone);
-										}
+										VerifyErrorAndShowMessage(drone, success);
 										break;
 									}
 								case 3:
 									{
 										success = drone.ChangeAngle(true);
 										DrawDroneMenu(drone, menuOption);
-										if (!success)
-										{
-											ShowErrorMessage(drone);
-										}
+										VerifyErrorAndShowMessage(drone, success);
 										break;
 									}
 								case 4:
 									{
 										success = drone.ChangeAngle(false);
 										DrawDroneMenu(drone, menuOption);
-										if (!success)
-										{
-											ShowErrorMessage(drone);
-										}
+										VerifyErrorAndShowMessage(drone, success);
 										break;
 									}
 								case 5:
@@ -212,30 +200,21 @@ namespace Ex08_OrientacaoObjeto_Drone
 										int angle = (int)DroneValueInput("Ângulo");
 										success = drone.ChangeAngle(angle);
 										DrawDroneMenu(drone, menuOption);
-										if (!success)
-										{
-											ShowErrorMessage(drone);
-										}
+										VerifyErrorAndShowMessage(drone, success);
 										break;
 									}
 								case 6:
 									{
 										success = drone.ChangeSpeed(true);
 										DrawDroneMenu(drone, menuOption);
-										if (!success)
-										{
-											ShowErrorMessage(drone);
-										}
+										VerifyErrorAndShowMessage(drone, success);
 										break;
 									}
 								case 7:
 									{
 										success = drone.ChangeSpeed(false);
 										DrawDroneMenu(drone, menuOption);
-										if (!success)
-										{
-											ShowErrorMessage(drone);
-										}
+										VerifyErrorAndShowMessage(drone, success);
 										break;
 									}
 								case 8:
@@ -243,22 +222,25 @@ namespace Ex08_OrientacaoObjeto_Drone
 										double speed = DroneValueInput("Velocidade");
 										success = drone.ChangeSpeed(speed);
 										DrawDroneMenu(drone, menuOption);
-										if (!success)
-										{
-											ShowErrorMessage(drone);
-										}
+										VerifyErrorAndShowMessage(drone, success);
 										break;
 									}
 								case 9:
 									{
-										drone.ApproachObject();
+										success = drone.ApproachObject();
 										DrawDroneMenu(drone, menuOption);
+										VerifyErrorAndShowMessage(drone, success);
 										break;
 									}
 								case 10:
 									{
-										drone.DistanceFromObject();
+										success = drone.DistanceFromObject();
 										DrawDroneMenu(drone, menuOption);
+										VerifyErrorAndShowMessage(drone, success);
+										break;
+									}
+								case 11:
+									{
 										break;
 									}
 							}

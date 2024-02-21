@@ -37,7 +37,7 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 		{
 			if (ApproachedObject)
 			{
-				Message = "Não é possível mover o Drone ao estar próximo de um objeto.";
+				Message = "Não é possível mover o Drone próximo de um objeto.";
 				return false;
 			}
 			
@@ -78,7 +78,7 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 		{
 			if (ApproachedObject)
 			{
-				Message = "Não é possível girar o Drone ao estar próximo de um objeto.";
+				Message = "Não é possível girar o Drone próximo de um objeto.";
 				return false;
 			}
 			
@@ -121,7 +121,7 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 		{
 			if (ApproachedObject)
 			{
-				Message = "Não é possível alterar a Velocidade ao estar próximo de um objeto.";
+				Message = "Não é possível alterar a Velocidade próximo de um objeto.";
 				return false;
 			}
 			
@@ -183,34 +183,32 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 			}
 		}
 		
-		public void ApproachObject()
+		public bool ApproachObject()
 		{
 			if (DroneMovement == MovementState.Moving)
 			{
-				Console.WriteLine("Não é possível aproximar-se de um objeto com o drone em movimento!");
-				return;
+				Message = "Não é possível aproximar de um objeto com o drone em movimento!";
+				return false;
 			}
 			
 			if (ApproachedObject)
 			{
-				Console.WriteLine("O drone já se aproximou de um objeto!");
-				return;
+				Message = "O drone já se aproximou de um objeto!";
+				return false;
 			}
 			
-			ApproachedObject = true;
-			Console.WriteLine("O drone se aproximou do objeto.");
+			return ApproachedObject = true;
 		}
 		
-		public void DistanceFromObject()
+		public bool DistanceFromObject()
 		{
 			if (!ApproachedObject)
 			{
-				Console.WriteLine("O drone não está próximo de nenhum objeto!");
-				return;
+				Message = "O drone não está próximo de nenhum objeto!";
+				return false;
 			}
 			
-			ApproachedObject = false;
-			Console.WriteLine("O drone se distanciou do objeto.");
+			return !(ApproachedObject = false);
 		}
 		
 		public string ShowApproachedObject()

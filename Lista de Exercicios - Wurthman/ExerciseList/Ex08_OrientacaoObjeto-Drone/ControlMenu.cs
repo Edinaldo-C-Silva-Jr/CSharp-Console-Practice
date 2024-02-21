@@ -101,13 +101,22 @@ namespace Ex08_OrientacaoObjeto_Drone
 		
 		private double DroneValueInput(string property)
 		{
+			Console.SetCursorPosition(15, 19);
+			Console.Write(new String(' ', 200));
+			
 			Console.CursorVisible = true;
 			Console.SetCursorPosition(15, 19);
-			Console.Write("Digite o novo valor para {0}: ", property);
+			Console.Write("Digite o novo valor para {0}: " , property);
 			
 			int value;
 			int.TryParse(Console.ReadLine(), out value);
 			return value;
+		}
+		
+		private void ShowErrorMessage(DroneBody drone)
+		{
+			Console.SetCursorPosition(15, 19);
+			Console.Write(drone.Message);
 		}
 		
 		public void Start()
@@ -144,25 +153,38 @@ namespace Ex08_OrientacaoObjeto_Drone
 						}
 					case ConsoleKey.Enter:
 						{
+							bool success;
 							switch (menuOption)
 							{
 								case 0:
 									{
-										drone.ChangeHeight(true);
+										success = drone.ChangeHeight(true);
 										DrawDroneMenu(drone, menuOption);
+										if (!success)
+										{
+											ShowErrorMessage(drone);
+										}
 										break;
 									}
 								case 1:
 									{
-										drone.ChangeHeight(false);
+										success = drone.ChangeHeight(false);
 										DrawDroneMenu(drone, menuOption);
+										if (!success)
+										{
+											ShowErrorMessage(drone);
+										}
 										break;
 									}
 								case 2:
 									{
 										double height = DroneValueInput("Altura");
-										drone.ChangeHeight(height);
+										success = drone.ChangeHeight(height);
 										DrawDroneMenu(drone, menuOption);
+										if (!success)
+										{
+											ShowErrorMessage(drone);
+										}
 										break;
 									}
 								case 3:

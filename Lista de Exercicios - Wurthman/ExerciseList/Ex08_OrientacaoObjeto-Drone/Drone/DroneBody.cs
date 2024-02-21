@@ -8,15 +8,7 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 {
 	public class DroneBody
 	{
-		private double _height;
-		public double Height
-		{
-			get { return _height; }
-			private set
-			{
-				if (value >= 0.5 && value <= 25) { _height = value; }
-			}
-		}
+		public double Height { get; private set; }
 		
 		private int _angle;
 		public int Angle
@@ -44,6 +36,8 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 		
 		private bool ApproachedObject { get; set; }
 		
+		public string Message { get; private set; }
+		
 		public DroneArms LeftArm { get; set; }
 		public DroneArms RightArm { get; set; }
 		
@@ -59,30 +53,44 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 			RightArm = new DroneArms();
 		}
 		
-		public void ChangeHeight(double height)
+		private bool SetHeight(double height)
 		{
 			if (ApproachedObject)
 			{
-				return;
+				Message = "Não é possível mover o Drone ao estar próximo de um objeto.";
+				return false;
+			}
+			
+			if (height < 0.5)
+			{
+				Message = "Valor de Altura abaixo do mínimo permitido.";
+				return false;
+			}
+			
+			if (height > 25)
+			{
+				Message = "Valor de Altura acima do máximo permitido.";
+				return false;
 			}
 			
 			Height = height;
+			return true;
 		}
 		
-		public void ChangeHeight(bool increment)
+		public bool ChangeHeight(double height)
 		{
-			if (ApproachedObject)
-			{
-				return;
-			}
-			
+			return SetHeight(height);
+		}
+		
+		public bool ChangeHeight(bool increment)
+		{
 			if (increment)
 			{
-				Height += 0.5;
+				return SetHeight(Height + 0.5);
 			}
 			else
 			{
-				Height -= 0.5;
+				return SetHeight(Height - 0.5);
 			}
 		}
 		

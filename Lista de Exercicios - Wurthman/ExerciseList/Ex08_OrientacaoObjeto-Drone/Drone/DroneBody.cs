@@ -9,31 +9,9 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 	public class DroneBody
 	{
 		public double Height { get; private set; }
-		
-		private int _angle;
-		public int Angle
-		{
-			get { return _angle; }
-			private set
-			{
-				if (value < 0) { _angle = value + 360; }
-				else if (value > 359) { _angle = value - 360; }
-				else { _angle = value; }
-			}
-		}
-		
-		private double _speed;
-		public double Speed
-		{
-			get { return _speed; }
-			private set
-			{
-				if (value >= 0 && value <= 15) { _speed = value; }
-			}
-		}
-		
+		public int Angle { get; private set; }
+		public double Speed { get; private set;	}
 		private MovementState DroneMovement { get; set; }
-		
 		private bool ApproachedObject { get; set; }
 		
 		public string Message { get; private set; }
@@ -48,6 +26,8 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 			Speed = 0;
 			DroneMovement = MovementState.Stopped;
 			ApproachedObject = false;
+			
+			Message = "";
 			
 			LeftArm = new DroneArms();
 			RightArm = new DroneArms();
@@ -94,63 +74,89 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 			}
 		}
 		
-		public void ChangeAngle(int angle)
+		private bool SetAngle(int angle)
 		{
 			if (ApproachedObject)
 			{
-				return;
+				Message = "Não é possível girar o Drone ao estar próximo de um objeto.";
+				return false;
 			}
 			
-			if (angle >= 0 && angle <= 359)
+			if (angle < 0 || angle > 359)
 			{
-				Angle = angle;
+				Message = "Valor de Ângulo inválido.";
+				return false;
 			}
+			
+			Angle = angle;
+			return true;
 		}
 		
-		public void ChangeAngle(bool clockwise)
+		public bool ChangeAngle(int angle)
 		{
-			if (ApproachedObject)
-			{
-				return;
-			}
-			
+			return SetAngle(angle);
+		}
+		
+		public bool ChangeAngle(bool clockwise)
+		{
+			int angle = Angle;
 			if (clockwise)
 			{
-				Angle += 5;
+				angle += 5;
+				angle = angle % 360;
 			}
 			else
 			{
-				Angle -= 5;
+				angle -= 5;
+				if (angle < 0)
+				{
+					angle += 360;
+				}
+				
 			}
+			return SetAngle(angle);
 		}
 		
-		public void ChangeSpeed(double speed)
+		private bool SetSpeed(double speed)
 		{
 			if (ApproachedObject)
 			{
-				return;
+				Message = "Não é possível alterar a Velocidade ao estar próximo de um objeto.";
+				return false;
+			}
+			
+			if (speed < 0)
+			{
+				Message = "Valor de Velocidade abaixo do mínimo permitido.";
+				return false;
+			}
+			
+			if (speed > 15)
+			{
+				Message = "Valor de Velocidade acima do máximo permitido.";
+				return false;
 			}
 			
 			Speed = speed;
 			DefineMovementState();
+			return true;
 		}
 		
-		public void ChangeSpeed(bool increment)
+		public bool ChangeSpeed(double speed)
 		{
-			if (ApproachedObject)
-			{
-				return;
-			}
-			
+			return SetSpeed(speed);
+		}
+		
+		public bool ChangeSpeed(bool increment)
+		{
 			if (increment)
 			{
-				Speed += 0.5;
+				return SetSpeed(Speed + 0.5);
 			}
 			else
 			{
-				Speed -= 0.5;
+				return SetSpeed(Speed - 0.5);
 			}
-			DefineMovementState();
 		}
 		
 		private void DefineMovementState()
@@ -171,7 +177,10 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 			{
 				return "Parado";
 			}
-			return "Em movimento.";
+			else
+			{
+				return "Em movimento.";
+			}
 		}
 		
 		public void ApproachObject()
@@ -210,7 +219,10 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 			{
 				return "Próximo de um Objeto.";
 			}
-			return "Distante de Objetos.";
+			else
+			{
+				return "Distante de Objetos.";
+			}
 		}
 	}
 }

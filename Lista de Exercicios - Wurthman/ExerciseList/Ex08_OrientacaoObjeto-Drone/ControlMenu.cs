@@ -37,30 +37,30 @@ namespace Ex08_OrientacaoObjeto_Drone
 			Console.Write("--- CONTROLES ---");
 			
 			Console.SetCursorPosition(15, 6);
-			Console.Write("Aumentar Altura");
+			Console.Write("Subir 0.5 metros");
 			Console.SetCursorPosition(15, 7);
-			Console.Write("Diminuir Altura");
+			Console.Write("Descer 0.5 metros");
 			Console.SetCursorPosition(15, 8);
 			Console.Write("Definir Altura");
 			
 			Console.SetCursorPosition(15, 9);
-			Console.Write("Aumentar Ângulo");
+			Console.Write("Girar 5º sentido horário");
 			Console.SetCursorPosition(15, 10);
-			Console.Write("Diminuir Ângulo");
+			Console.Write("Girar 5º sentido antihorário");
 			Console.SetCursorPosition(15, 11);
 			Console.Write("Definir Ângulo");
 			
 			Console.SetCursorPosition(15, 12);
-			Console.Write("Aumentar Velocidade");
+			Console.Write("Acelerar 0.5 m/s");
 			Console.SetCursorPosition(15, 13);
-			Console.Write("Diminuir Velocidade");
+			Console.Write("Desacelerar 0.5 m/s");
 			Console.SetCursorPosition(15, 14);
 			Console.Write("Definir Velocidade");
 			
 			Console.SetCursorPosition(15, 15);
 			Console.Write("Aproximar de um objeto");
 			Console.SetCursorPosition(15, 16);
-			Console.Write("Distanciar de um objeto");
+			Console.Write("Distanciar do objeto");
 			
 			Console.SetCursorPosition(15, 17);
 			Console.Write("Acessar os Braços");
@@ -189,40 +189,64 @@ namespace Ex08_OrientacaoObjeto_Drone
 									}
 								case 3:
 									{
-										drone.ChangeAngle(true);
+										success = drone.ChangeAngle(true);
 										DrawDroneMenu(drone, menuOption);
+										if (!success)
+										{
+											ShowErrorMessage(drone);
+										}
 										break;
 									}
 								case 4:
 									{
-										drone.ChangeAngle(false);
+										success = drone.ChangeAngle(false);
 										DrawDroneMenu(drone, menuOption);
+										if (!success)
+										{
+											ShowErrorMessage(drone);
+										}
 										break;
 									}
 								case 5:
 									{
 										int angle = (int)DroneValueInput("Ângulo");
-										drone.ChangeAngle(angle);
+										success = drone.ChangeAngle(angle);
 										DrawDroneMenu(drone, menuOption);
+										if (!success)
+										{
+											ShowErrorMessage(drone);
+										}
 										break;
 									}
 								case 6:
 									{
-										drone.ChangeSpeed(true);
+										success = drone.ChangeSpeed(true);
 										DrawDroneMenu(drone, menuOption);
+										if (!success)
+										{
+											ShowErrorMessage(drone);
+										}
 										break;
 									}
 								case 7:
 									{
-										drone.ChangeSpeed(false);
+										success = drone.ChangeSpeed(false);
 										DrawDroneMenu(drone, menuOption);
+										if (!success)
+										{
+											ShowErrorMessage(drone);
+										}
 										break;
 									}
 								case 8:
 									{
 										double speed = DroneValueInput("Velocidade");
-										drone.ChangeSpeed(speed);
+										success = drone.ChangeSpeed(speed);
 										DrawDroneMenu(drone, menuOption);
+										if (!success)
+										{
+											ShowErrorMessage(drone);
+										}
 										break;
 									}
 								case 9:

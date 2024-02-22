@@ -222,5 +222,18 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 				return "Distante de Objetos.";
 			}
 		}
+		
+		public bool AccessDroneArms()
+		{
+			if (!ApproachedObject)
+			{
+				Message = "Os braços só podem ser usados próximo a um objeto.";
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+		}
 	}
 }

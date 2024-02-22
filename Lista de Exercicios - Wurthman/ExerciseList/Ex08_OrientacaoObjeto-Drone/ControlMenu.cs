@@ -109,12 +109,20 @@ namespace Ex08_OrientacaoObjeto_Drone
 			Console.Write("Digite o novo valor para {0}: " , property);
 			
 			int value;
-			int.TryParse(Console.ReadLine(), out value);
-			return value;
+			bool successConvert = int.TryParse(Console.ReadLine(), out value);
+			if (successConvert)
+			{
+				return value;
+			}
+			else
+			{
+				return -1;
+			}
 		}
 		
-		private void VerifyErrorAndShowMessage(DroneBody drone, bool success)
+		private void ShowMenuAndVerifySuccess(DroneBody drone, int menuOption, bool success)
 		{
+			DrawDroneMenu(drone, menuOption);
 			if (!success)
 			{
 				Console.SetCursorPosition(15, 19);
@@ -162,85 +170,76 @@ namespace Ex08_OrientacaoObjeto_Drone
 								case 0:
 									{
 										success = drone.ChangeHeight(true);
-										DrawDroneMenu(drone, menuOption);
-										VerifyErrorAndShowMessage(drone, success);
+										ShowMenuAndVerifySuccess(drone, menuOption, success);
 										break;
 									}
 								case 1:
 									{
 										success = drone.ChangeHeight(false);
-										DrawDroneMenu(drone, menuOption);
-										VerifyErrorAndShowMessage(drone, success);
+										ShowMenuAndVerifySuccess(drone, menuOption, success);
 										break;
 									}
 								case 2:
 									{
 										double height = DroneValueInput("Altura");
 										success = drone.ChangeHeight(height);
-										DrawDroneMenu(drone, menuOption);
-										VerifyErrorAndShowMessage(drone, success);
+										ShowMenuAndVerifySuccess(drone, menuOption, success);
 										break;
 									}
 								case 3:
 									{
 										success = drone.ChangeAngle(true);
-										DrawDroneMenu(drone, menuOption);
-										VerifyErrorAndShowMessage(drone, success);
+										ShowMenuAndVerifySuccess(drone, menuOption, success);
 										break;
 									}
 								case 4:
 									{
 										success = drone.ChangeAngle(false);
-										DrawDroneMenu(drone, menuOption);
-										VerifyErrorAndShowMessage(drone, success);
+										ShowMenuAndVerifySuccess(drone, menuOption, success);
 										break;
 									}
 								case 5:
 									{
 										int angle = (int)DroneValueInput("Ângulo");
 										success = drone.ChangeAngle(angle);
-										DrawDroneMenu(drone, menuOption);
-										VerifyErrorAndShowMessage(drone, success);
+										ShowMenuAndVerifySuccess(drone, menuOption, success);
 										break;
 									}
 								case 6:
 									{
 										success = drone.ChangeSpeed(true);
-										DrawDroneMenu(drone, menuOption);
-										VerifyErrorAndShowMessage(drone, success);
+										ShowMenuAndVerifySuccess(drone, menuOption, success);
 										break;
 									}
 								case 7:
 									{
 										success = drone.ChangeSpeed(false);
-										DrawDroneMenu(drone, menuOption);
-										VerifyErrorAndShowMessage(drone, success);
+										ShowMenuAndVerifySuccess(drone, menuOption, success);
 										break;
 									}
 								case 8:
 									{
 										double speed = DroneValueInput("Velocidade");
 										success = drone.ChangeSpeed(speed);
-										DrawDroneMenu(drone, menuOption);
-										VerifyErrorAndShowMessage(drone, success);
+										ShowMenuAndVerifySuccess(drone, menuOption, success);
 										break;
 									}
 								case 9:
 									{
 										success = drone.ApproachObject();
-										DrawDroneMenu(drone, menuOption);
-										VerifyErrorAndShowMessage(drone, success);
+										ShowMenuAndVerifySuccess(drone, menuOption, success);
 										break;
 									}
 								case 10:
 									{
 										success = drone.DistanceFromObject();
-										DrawDroneMenu(drone, menuOption);
-										VerifyErrorAndShowMessage(drone, success);
+										ShowMenuAndVerifySuccess(drone, menuOption, success);
 										break;
 									}
 								case 11:
 									{
+										success = drone.AccessDroneArms();
+										ShowMenuAndVerifySuccess(drone, menuOption, success);
 										break;
 									}
 							}

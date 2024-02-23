@@ -45,7 +45,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ControlMenu.cs" />
+    <Compile Include="ArmControlMenu.cs" />
+    <Compile Include="DroneControlMenu.cs" />
     <Compile Include="Drone\ArmState.cs" />
     <Compile Include="Drone\DroneArms.cs" />
     <Compile Include="Drone\DroneBody.cs" />

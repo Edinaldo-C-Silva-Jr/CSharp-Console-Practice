@@ -16,8 +16,8 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 		
 		public string Message { get; private set; }
 		
-		public DroneArms LeftArm { get; set; }
-		public DroneArms RightArm { get; set; }
+		public LeftDroneArm LeftArm { get; set; }
+		public RightDroneArm RightArm { get; set; }
 		
 		public DroneBody()
 		{
@@ -29,8 +29,8 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 			
 			Message = "";
 			
-			LeftArm = new DroneArms();
-			RightArm = new DroneArms();
+			LeftArm = new LeftDroneArm();
+			RightArm = new RightDroneArm();
 		}
 		
 		private bool SetHeight(double height)

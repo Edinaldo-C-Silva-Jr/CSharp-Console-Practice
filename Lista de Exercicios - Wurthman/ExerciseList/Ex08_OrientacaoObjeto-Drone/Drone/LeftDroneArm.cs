@@ -8,10 +8,6 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 {
 	public class LeftDroneArm : DroneArms
 	{
-		public LeftDroneArm()
-		{
-		}
-		
 		public void HitObject()
 		{
 			if (State == ArmState.Occupied)

@@ -1,90 +1,94 @@
 ﻿/*
- * Date: 18/02/2024
- * Time: 19:59
+ * Date: 22/02/2024
+ * Time: 23:14
  */
 using System;
-using System.Collections.Generic;
 using Ex08_OrientacaoObjeto_Drone.Drone;
 
 namespace Ex08_OrientacaoObjeto_Drone
 {
-	public class ControlMenu
+	public class ArmControlMenu
 	{
-		public ControlMenu()
-		{
-			
-		}
-		
-		private void DrawDroneStates(DroneBody drone)
+		private void DrawArmStates(LeftDroneArm left, RightDroneArm right)
 		{
 			Console.SetCursorPosition(33, 0);
-			Console.Write("--- DRONE ---");
+			Console.Write("--- BRAÇOS ---");
+			
 			Console.SetCursorPosition(15, 1);
-			Console.Write("Altura: " + drone.Height);
+			Console.Write("- ESQUERDO -");
 			Console.SetCursorPosition(15, 2);
-			Console.Write("Ângulo: " + drone.Angle);
+			Console.Write("Estado: " + left.State);
+			Console.SetCursorPosition(15, 3);
+			Console.Write("Cotovelo: " + left.Elbow);
+			Console.SetCursorPosition(15, 4);
+			Console.Write("Ângulo do Pulso: " + left.WristAngle);
+			
 			Console.SetCursorPosition(45, 1);
-			Console.Write("Velocidade: " + drone.Speed);
-			Console.SetCursorPosition(45, 2);
-			Console.Write("Movimento: " + drone.ShowMovementState());
-			Console.SetCursorPosition(25, 3);
-			Console.Write(drone.ShowApproachedObject());
+			Console.Write("- DIREITO -");
+			Console.SetCursorPosition(15, 2);
+			Console.Write("Estado: " + right.State);
+			Console.SetCursorPosition(15, 3);
+			Console.Write("Cotovelo: " + right.Elbow);
+			Console.SetCursorPosition(15, 4);
+			Console.Write("Ângulo do Pulso: " + right.WristAngle);
 		}
 		
-		private void DrawDroneOptions(int currentOption)
+		private void DrawArmOptions(int currentOption)
 		{
-			Console.SetCursorPosition(33, 5);
+			Console.SetCursorPosition(33, 6);
 			Console.Write("--- CONTROLES ---");
 			
-			Console.SetCursorPosition(15, 6);
-			Console.Write("Subir 0.5 metros");
 			Console.SetCursorPosition(15, 7);
-			Console.Write("Descer 0.5 metros");
+			Console.Write("Girar 5º horário");
 			Console.SetCursorPosition(15, 8);
-			Console.Write("Definir Altura");
-			
+			Console.Write("Girar 5º antihorário");
 			Console.SetCursorPosition(15, 9);
-			Console.Write("Girar 5º sentido horário");
-			Console.SetCursorPosition(15, 10);
-			Console.Write("Girar 5º sentido antihorário");
-			Console.SetCursorPosition(15, 11);
 			Console.Write("Definir Ângulo");
-			
+			Console.SetCursorPosition(15, 10);
+			Console.Write("Pegar / Soltar Objeto");
+			Console.SetCursorPosition(15, 11);
+			Console.Write("Armazenar Objeto");
 			Console.SetCursorPosition(15, 12);
-			Console.Write("Acelerar 0.5 m/s");
-			Console.SetCursorPosition(15, 13);
-			Console.Write("Desacelerar 0.5 m/s");
+			Console.Write("Bater com Martelo");
+			
+			Console.SetCursorPosition(45, 7);
+			Console.Write("Girar 5º horário");
+			Console.SetCursorPosition(45, 8);
+			Console.Write("Girar 5º antihorário");
+			Console.SetCursorPosition(45, 9);
+			Console.Write("Definir Ângulo");
+			Console.SetCursorPosition(45, 10);
+			Console.Write("Pegar / Soltar Objeto");
+			Console.SetCursorPosition(45, 11);
+			Console.Write("Armazenar Objeto");
+			Console.SetCursorPosition(45, 12);
+			Console.Write("Cortar Objeto");
+			Console.SetCursorPosition(45, 13);
+			Console.Write("Coletar com a Pá");
+			
 			Console.SetCursorPosition(15, 14);
-			Console.Write("Definir Velocidade");
+			Console.Write("Desativar braços e voltar ao corpo do Drone");
 			
-			Console.SetCursorPosition(15, 15);
-			Console.Write("Aproximar de um objeto");
-			Console.SetCursorPosition(15, 16);
-			Console.Write("Distanciar do objeto");
-			
-			Console.SetCursorPosition(15, 17);
-			Console.Write("Acessar os Braços");
-			
-			Console.SetCursorPosition(13, 6 + currentOption);
+			Console.SetCursorPosition(13, 7 + currentOption);
 			Console.Write(">");
 			
 			Console.SetCursorPosition(15, 23);
 			Console.Write("Setas: Mover     Enter: Escolher     Esc: Sair");
 		}
 		
-		private void DrawDroneMenu(DroneBody drone, int option)
+		private void DrawArmsMenu(LeftDroneArm left, RightDroneArm right, int option)
 		{
 			Console.Clear();
-			DrawDroneStates(drone);
-			DrawDroneOptions(option);
+			DrawArmStates(left, right);
+			DrawArmOptions(option);
 		}
 		
 		// Moves the "selection cursor" (the > that points at the current option) one option up
 		private int MoveSelectionUp(int currentOption)
 		{
-			Console.SetCursorPosition(13, 5 + currentOption); // Draws the cursor on the option above the currently selected
+			Console.SetCursorPosition(13, 6 + currentOption); // Draws the cursor on the option above the currently selected
 			Console.Write(">");
-			Console.SetCursorPosition(13, 6 + currentOption); // Erases the cursor on the current option
+			Console.SetCursorPosition(13, 7 + currentOption); // Erases the cursor on the current option
 			Console.Write(" ");
 			return currentOption - 1; // Returns the newly selected option
 		}
@@ -92,51 +96,19 @@ namespace Ex08_OrientacaoObjeto_Drone
 		// Moves the "selection cursor" one option down
 		private int MoveSelectionDown(int currentOption)
 		{
-			Console.SetCursorPosition(13, 6 + currentOption);
-			Console.Write(" ");
 			Console.SetCursorPosition(13, 7 + currentOption);
+			Console.Write(" ");
+			Console.SetCursorPosition(13, 8 + currentOption);
 			Console.Write(">");
 			return currentOption + 1;
 		}
 		
-		private double DroneValueInput(string property)
+		public void Start(DroneBody drone)
 		{
-			Console.SetCursorPosition(15, 19);
-			Console.Write(new String(' ', 200));
-			
-			Console.CursorVisible = true;
-			Console.SetCursorPosition(15, 19);
-			Console.Write("Digite o novo valor para {0}: " , property);
-			
-			int value;
-			bool successConvert = int.TryParse(Console.ReadLine(), out value);
-			if (successConvert)
-			{
-				return value;
-			}
-			else
-			{
-				return -1;
-			}
-		}
-		
-		private void ShowMenuAndVerifySuccess(DroneBody drone, int menuOption, bool success)
-		{
-			DrawDroneMenu(drone, menuOption);
-			if (!success)
-			{
-				Console.SetCursorPosition(15, 19);
-				Console.Write(drone.Message);
-			}
-		}
-		
-		public void Start()
-		{
-			DroneBody drone = new DroneBody();
 			int menuOption = 0;
 			ConsoleKeyInfo menuInput;
 			
-			DrawDroneMenu(drone, menuOption);
+			DrawArmsMenu(drone.LeftArm, drone.RightArm, menuOption);
 			
 			do
 			{
@@ -164,7 +136,7 @@ namespace Ex08_OrientacaoObjeto_Drone
 						}
 					case ConsoleKey.Enter:
 						{
-							bool success;
+							/*bool success;
 							switch (menuOption)
 							{
 								case 0:
@@ -242,17 +214,11 @@ namespace Ex08_OrientacaoObjeto_Drone
 										ShowMenuAndVerifySuccess(drone, menuOption, success);
 										break;
 									}
-							}
+							}*/
 							break;
 						}
 					case ConsoleKey.Escape:
 						{
-							Console.Clear();
-							Console.SetCursorPosition(30, 10);
-							Console.Write("Desligando Drone...");
-							Console.SetCursorPosition(24, 11);
-							Console.Write("Pressione Enter para encerrar...");
-							Console.ReadLine();
 							break;
 						}
 				}

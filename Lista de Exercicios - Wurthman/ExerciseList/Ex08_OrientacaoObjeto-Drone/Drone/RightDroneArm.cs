@@ -7,11 +7,7 @@ using System;
 namespace Ex08_OrientacaoObjeto_Drone.Drone
 {
 	public class RightDroneArm : DroneArms
-	{
-		public RightDroneArm()
-		{
-		}
-		
+	{	
 		public void CutObject()
 		{
 			if (State == ArmState.Occupied)

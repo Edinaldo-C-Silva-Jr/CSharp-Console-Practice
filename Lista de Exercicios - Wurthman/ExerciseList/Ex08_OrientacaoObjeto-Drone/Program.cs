@@ -11,7 +11,7 @@ namespace Ex08_OrientacaoObjeto_Drone
 	{
 		public static void Main(string[] args)
 		{
-			ControlMenu menu = new ControlMenu();
+			DroneControlMenu menu = new DroneControlMenu();
 			menu.Start();
 		}
 	}

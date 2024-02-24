@@ -9,6 +9,15 @@ namespace Ex08_OrientacaoObjeto_Drone
 {
 	public class ArmControlMenu
 	{
+		private int verticalPosition { get; set; }
+		private bool RightSide { get; set; }
+		
+		public ArmControlMenu()
+		{
+			verticalPosition = 0;
+			RightSide = false;
+		}
+		
 		private void DrawArmStates(LeftDroneArm left, RightDroneArm right)
 		{
 			Console.SetCursorPosition(33, 0);
@@ -25,11 +34,11 @@ namespace Ex08_OrientacaoObjeto_Drone
 			
 			Console.SetCursorPosition(45, 1);
 			Console.Write("- DIREITO -");
-			Console.SetCursorPosition(15, 2);
+			Console.SetCursorPosition(45, 2);
 			Console.Write("Estado: " + right.State);
-			Console.SetCursorPosition(15, 3);
+			Console.SetCursorPosition(45, 3);
 			Console.Write("Cotovelo: " + right.Elbow);
-			Console.SetCursorPosition(15, 4);
+			Console.SetCursorPosition(45, 4);
 			Console.Write("Ângulo do Pulso: " + right.WristAngle);
 		}
 		
@@ -66,11 +75,8 @@ namespace Ex08_OrientacaoObjeto_Drone
 			Console.SetCursorPosition(45, 13);
 			Console.Write("Coletar com a Pá");
 			
-			Console.SetCursorPosition(15, 14);
+			Console.SetCursorPosition(15, 15);
 			Console.Write("Desativar braços e voltar ao corpo do Drone");
-			
-			Console.SetCursorPosition(13, 7 + currentOption);
-			Console.Write(">");
 			
 			Console.SetCursorPosition(15, 23);
 			Console.Write("Setas: Mover     Enter: Escolher     Esc: Sair");
@@ -81,26 +87,123 @@ namespace Ex08_OrientacaoObjeto_Drone
 			Console.Clear();
 			DrawArmStates(left, right);
 			DrawArmOptions(option);
+			DrawSelectionCursor('>');
 		}
 		
-		// Moves the "selection cursor" (the > that points at the current option) one option up
+		private void DrawSelectionCursor(char cursor)
+		{
+			if (verticalPosition == 7)
+			{
+				Console.SetCursorPosition(13, 15);
+				Console.Write(cursor);
+			}
+			else
+			{
+				Console.SetCursorPosition(13 + (30 * Convert.ToInt32(RightSide)), 7 + verticalPosition);
+				Console.Write(cursor);
+			}
+		}
+		
 		private int MoveSelectionUp(int currentOption)
 		{
-			Console.SetCursorPosition(13, 6 + currentOption); // Draws the cursor on the option above the currently selected
-			Console.Write(">");
-			Console.SetCursorPosition(13, 7 + currentOption); // Erases the cursor on the current option
-			Console.Write(" ");
-			return currentOption - 1; // Returns the newly selected option
+			if (verticalPosition == 0)
+			{
+				return currentOption;
+			}
+			
+			DrawSelectionCursor(' ');
+			
+			if (verticalPosition == 7)
+			{
+				if (RightSide)
+				{
+					verticalPosition--;
+					currentOption = 12;
+				}
+				else
+				{
+					verticalPosition -= 2;
+					currentOption = 5;
+				}
+			}
+			else
+			{
+				currentOption--;
+				verticalPosition--;
+			}
+			
+			DrawSelectionCursor('>');
+			return currentOption;
 		}
 		
-		// Moves the "selection cursor" one option down
 		private int MoveSelectionDown(int currentOption)
 		{
-			Console.SetCursorPosition(13, 7 + currentOption);
-			Console.Write(" ");
-			Console.SetCursorPosition(13, 8 + currentOption);
-			Console.Write(">");
-			return currentOption + 1;
+			if (verticalPosition == 7)
+			{
+				return currentOption;
+			}
+			
+			DrawSelectionCursor(' ');
+			
+			if (verticalPosition == 5 && !RightSide)
+			{
+				verticalPosition = 7;
+				currentOption = 13;
+			}
+			else
+			{
+				verticalPosition++;
+				currentOption++;
+			}
+			
+			DrawSelectionCursor('>');
+			return currentOption;
+		}
+		
+		private int MoveSelectionLeft(int currentOption)
+		{
+			if (verticalPosition == 7)
+			{
+				return currentOption;
+			}
+			
+			DrawSelectionCursor(' ');
+			
+			if (RightSide)
+			{
+				if (verticalPosition == 6)
+				{
+					currentOption -= 7;
+					verticalPosition = 5;
+				}
+				else
+				{
+					currentOption -= 6;
+				}
+			}
+			RightSide = false;
+			
+			DrawSelectionCursor('>');
+			return currentOption;
+		}
+		
+		private int MoveSelectionRight(int currentOption)
+		{
+			if (verticalPosition == 7)
+			{
+				return currentOption;
+			}
+			
+			DrawSelectionCursor(' ');
+			
+			if(!RightSide)
+			{
+				currentOption += 6;
+			}
+			RightSide = true;
+			
+			DrawSelectionCursor('>');
+			return currentOption;
 		}
 		
 		public void Start(DroneBody drone)
@@ -119,21 +222,17 @@ namespace Ex08_OrientacaoObjeto_Drone
 				switch(menuInput.Key)
 				{
 					case ConsoleKey.UpArrow:
-						{
-							if (menuOption > 0)
-							{
-								menuOption = MoveSelectionUp(menuOption);
-							}
+							menuOption = MoveSelectionUp(menuOption);
 							break;
-						}
 					case ConsoleKey.DownArrow:
-						{
-							if (menuOption < 11)
-							{
-								menuOption = MoveSelectionDown(menuOption);
-							}
+							menuOption = MoveSelectionDown(menuOption);
 							break;
-						}
+					case ConsoleKey.LeftArrow:
+							menuOption = MoveSelectionLeft(menuOption);
+							break;
+					case ConsoleKey.RightArrow:
+							menuOption = MoveSelectionRight(menuOption);
+							break;
 					case ConsoleKey.Enter:
 						{
 							/*bool success;

@@ -210,6 +210,36 @@ namespace Ex08_OrientacaoObjeto_Drone
 			return currentOption;
 		}
 		
+		private int ArmValueInput()
+		{
+			Console.SetCursorPosition(15, 18);
+			Console.Write(new String(' ', 200));
+			
+			Console.CursorVisible = true;
+			Console.SetCursorPosition(15, 18);
+			Console.Write("Digite o novo valor para o Ângulo: ");
+			
+			double value;
+			bool successConvert = double.TryParse(Console.ReadLine(), out value);
+			if (successConvert)
+			{
+				return (int)value;
+			}
+			else
+			{
+				return -1;
+			}
+		}
+		
+		private void VerifySuccess(bool success, string message)
+		{
+			if (!success)
+			{
+				Console.SetCursorPosition(15, 18);
+				Console.Write(message);
+			}
+		}
+		
 		public void Start(LeftDroneArm leftArm, RightDroneArm rightArm)
 		{
 			leftArm.ChangeArmState();
@@ -229,39 +259,34 @@ namespace Ex08_OrientacaoObjeto_Drone
 				switch(menuInput.Key)
 				{
 					case ConsoleKey.UpArrow:
-							menuOption = MoveSelectionUp(menuOption);
-							break;
+						menuOption = MoveSelectionUp(menuOption);
+						break;
 					case ConsoleKey.DownArrow:
-							menuOption = MoveSelectionDown(menuOption);
-							break;
+						menuOption = MoveSelectionDown(menuOption);
+						break;
 					case ConsoleKey.LeftArrow:
-							menuOption = MoveSelectionLeft(menuOption);
-							break;
+						menuOption = MoveSelectionLeft(menuOption);
+						break;
 					case ConsoleKey.RightArrow:
-							menuOption = MoveSelectionRight(menuOption);
-							break;
+						menuOption = MoveSelectionRight(menuOption);
+						break;
 					case ConsoleKey.Enter:
 						{
+							bool success = true;
 							switch (menuOption)
 							{
 								case 0:
-									{
-										leftArm.ChangeElbowState();
-										DrawArmsMenu(leftArm, rightArm, menuOption);
-										break;
-									}
+									leftArm.ChangeElbowState();
+									break;
 								case 1:
-									{
-										break;
-									}
+									success = leftArm.ChangeWristAngle(true);
+									break;
 								case 2:
-									{
-										break;
-									}
+									success = leftArm.ChangeWristAngle(false);
+									break;
 								case 3:
-									{
-										break;
-									}
+									success = leftArm.ChangeWristAngle(ArmValueInput());
+									break;
 								case 4:
 									{
 										break;
@@ -275,23 +300,17 @@ namespace Ex08_OrientacaoObjeto_Drone
 										break;
 									}
 								case 7:
-									{
-										rightArm.ChangeElbowState();
-										DrawArmsMenu(leftArm, rightArm, menuOption);
-										break;
-									}
+									rightArm.ChangeElbowState();
+									break;
 								case 8:
-									{
-										break;
-									}
+									success = rightArm.ChangeWristAngle(true);
+									break;
 								case 9:
-									{
-										break;
-									}
+									success = rightArm.ChangeWristAngle(false);
+									break;
 								case 10:
-									{
-										break;
-									}
+									success = rightArm.ChangeWristAngle(ArmValueInput());
+									break;
 								case 11:
 									{
 										break;
@@ -305,6 +324,17 @@ namespace Ex08_OrientacaoObjeto_Drone
 										break;
 									}
 							}
+							
+							DrawArmsMenu(leftArm, rightArm, menuOption);
+							if (RightSide)
+							{
+								VerifySuccess(success, rightArm.Message);
+							}
+							else
+							{
+								VerifySuccess(success, leftArm.Message);
+							}
+							
 							break;
 						}
 					case ConsoleKey.Escape:

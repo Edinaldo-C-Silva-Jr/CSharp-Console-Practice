@@ -11,17 +11,7 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 		protected ArmState State { get; set; }
 		protected ElbowState Elbow { get; set; }
 		
-		private int _wristAngle;
-		public int WristAngle
-		{
-			get { return _wristAngle; }
-			private set
-			{
-				if (value < 0) { _wristAngle = value + 360; }
-				else if (value > 359) { _wristAngle = value - 360; }
-				else { _wristAngle = value; }
-			}
-		}
+		public int WristAngle { get; private set; }
 		public string Message { get; private set; }
 		
 		public DroneArms()
@@ -90,28 +80,41 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 			}
 		}
 		
-		public void ChangeWristAngle(int angle)
+		private bool SetWristAngle(int angle)
 		{
-			if (angle >= 0 && angle <= 359)
+			if (angle < 0 || angle > 359)
 			{
-				WristAngle = angle;
+				Message = "Valor inválido. O ângulo deve star entre 0 e 359.";
+				return false;
 			}
-			else
-			{
-				Console.WriteLine("Ângulo inválido!");
-			}
+			
+			WristAngle = angle;
+			return true;
 		}
 		
-		public void ChangeWristAngle(bool clockwise)
+		public bool ChangeWristAngle(int angle)
 		{
+			return SetWristAngle(angle);
+		}
+		
+		public bool ChangeWristAngle(bool clockwise)
+		{
+			int angle = WristAngle;
 			if (clockwise)
 			{
-				WristAngle += 5;
+				angle += 5;
+				angle = angle % 360;
 			}
 			else
 			{
-				WristAngle -= 5;
+				angle -= 5;
+				if (angle < 0)
+				{
+					angle += 360;
+				}
+				
 			}
+			return SetWristAngle(angle);
 		}
 		
 		public void TakeReleaseObject()

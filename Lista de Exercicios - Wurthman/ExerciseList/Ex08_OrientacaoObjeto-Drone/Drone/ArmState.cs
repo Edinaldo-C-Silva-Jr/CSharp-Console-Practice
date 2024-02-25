@@ -6,6 +6,9 @@ using System;
 
 namespace Ex08_OrientacaoObjeto_Drone.Drone
 {
+	/// <summary>
+	/// An enum that represents all possible states the arm of a drone can have.
+	/// </summary>
 	public enum ArmState
 	{
 		Resting,

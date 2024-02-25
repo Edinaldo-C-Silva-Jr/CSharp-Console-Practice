@@ -75,7 +75,7 @@ namespace Ex08_OrientacaoObjeto_Drone
 			Console.SetCursorPosition(45, 12);
 			Console.Write("Armazenar Objeto");
 			Console.SetCursorPosition(45, 13);
-			Console.Write("Cortar Objeto");
+			Console.Write("Cortar com tesoura");
 			Console.SetCursorPosition(45, 14);
 			Console.Write("Coletar com a Pá");
 			
@@ -288,17 +288,14 @@ namespace Ex08_OrientacaoObjeto_Drone
 									success = leftArm.ChangeWristAngle(ArmValueInput());
 									break;
 								case 4:
-									{
-										break;
-									}
+									success = leftArm.TakeReleaseObject();
+									break;
 								case 5:
-									{
-										break;
-									}
+									success = leftArm.StoreObject();
+									break;
 								case 6:
-									{
-										break;
-									}
+									success = leftArm.HitObject();
+									break;
 								case 7:
 									rightArm.ChangeElbowState();
 									break;
@@ -312,14 +309,18 @@ namespace Ex08_OrientacaoObjeto_Drone
 									success = rightArm.ChangeWristAngle(ArmValueInput());
 									break;
 								case 11:
-									{
-										break;
-									}
+									success = rightArm.TakeReleaseObject();
+									break;
 								case 12:
-									{
-										break;
-									}
+									success = rightArm.StoreObject();
+									break;
 								case 13:
+									success = rightArm.CutObject();
+									break;
+								case 14:
+									success = rightArm.CollectObject();
+									break;
+								case 15:
 									{
 										break;
 									}

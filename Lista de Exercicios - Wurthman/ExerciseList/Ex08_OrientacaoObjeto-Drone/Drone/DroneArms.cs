@@ -12,7 +12,7 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 		protected ElbowState Elbow { get; set; }
 		
 		public int WristAngle { get; private set; }
-		public string Message { get; private set; }
+		public string Message { get; protected set; }
 		
 		public DroneArms()
 		{
@@ -55,7 +55,7 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 		
 		public void ChangeElbowState()
 		{
-			if (State == ArmState.Active)
+			if (State != ArmState.Resting)
 			{
 				if (Elbow == ElbowState.Resting)
 				{
@@ -117,37 +117,47 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 			return SetWristAngle(angle);
 		}
 		
-		public void TakeReleaseObject()
+		public bool TakeReleaseObject()
 		{
 			if (State == ArmState.Occupied) // If the arm is occupied, holding an object...
 			{
 				State = ArmState.Active; // Let go of the object to free it.
+				return true;
 			}
 			else
 			{
 				if (Elbow == ElbowState.Contracted) // If the arm is free and the elbow contracted...
 				{
 					State = ArmState.Occupied; // Take an object, occupying the arm.
+					return true;
 				}
 				else
 				{
-					Console.WriteLine("O cotovelo deve estar contraído para pegar um objeto.");
+					Message = "O cotovelo deve estar contraído para pegar um objeto.";
+					return false;
 				}
 			}
 		}
 		
-		public void StoreObject()
+		public bool StoreObject()
 		{
 			if (State == ArmState.Occupied) // If the arm is occupied holding an object...
 			{
 				if (Elbow == ElbowState.Resting) // And the elbow is resting...
 				{
 					State = ArmState.Active; // Store the object, freeing the arm.
+					return true;
+				}
+				else
+				{
+					Message = "O cotovelo deve estar em repouso para armazenar um objeto.";
+					return false;
 				}
 			}
 			else
 			{
-				Console.WriteLine("O braço não possui nenhum objeto para armazenar.");
+				Message = "O braço não possui nenhum objeto para armazenar.";
+				return false;
 			}
 		}
 	}

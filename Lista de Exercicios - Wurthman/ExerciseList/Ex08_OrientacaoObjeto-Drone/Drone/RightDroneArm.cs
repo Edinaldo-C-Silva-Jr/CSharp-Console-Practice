@@ -8,35 +8,39 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 {
 	public class RightDroneArm : DroneArms
 	{	
-		public void CutObject()
+		public bool CutObject()
 		{
 			if (State == ArmState.Occupied)
 			{
-				return;
+				Message = "O braço não pode usar a tesoura enquanto segura um objeto.";
+				return false;
 			}
 			
 			if (Elbow == ElbowState.Resting)
 			{
-				return;
+				Message = "O cotovelo deve estar contraído para usar a tesoura.";
+				return false;
 			}
 			
-			Console.WriteLine("Drone cortou objeto.");
+			return true;
 		}
 		
-		public void DigObject()
+		public bool CollectObject()
 		{
 			if (State == ArmState.Occupied)
 			{
-				return;
+				Message = "O braço não pode usar a pá enquanto segura um objeto.";
+				return false;
 			}
 			
-			if (Elbow == ElbowState.Contracted)
+			if (Elbow == ElbowState.Resting)
 			{
-				return;
+				Message = "O cotovelo deve estar contraído para usar a pá.";
+				return false;
 			}
 			
-			Console.WriteLine("Drone coletou objeto.");
 			State = ArmState.Occupied;
+			return true;
 		}
 	}
 }

@@ -8,19 +8,21 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 {
 	public class LeftDroneArm : DroneArms
 	{
-		public void HitObject()
+		public bool HitObject()
 		{
 			if (State == ArmState.Occupied)
 			{
-				return;
+				Message = "O braço não pode usar o martelo enquanto segura um objeto.";
+				return false;
 			}
 			
 			if (Elbow == ElbowState.Resting)
 			{
-				return;
+				Message = "O cotovelo deve estar contraído para usar o martelo.";
+				return false;
 			}
 			
-			Console.WriteLine("Drone martelou objeto.");
+			return true;
 		}
 	}
 }

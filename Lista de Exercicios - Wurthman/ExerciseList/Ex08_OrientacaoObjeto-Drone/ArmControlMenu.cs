@@ -206,12 +206,12 @@ namespace Ex08_OrientacaoObjeto_Drone
 			return currentOption;
 		}
 		
-		public void Start(DroneBody drone)
+		public void Start(LeftDroneArm leftArm, RightDroneArm rightArm)
 		{
 			int menuOption = 0;
 			ConsoleKeyInfo menuInput;
 			
-			DrawArmsMenu(drone.LeftArm, drone.RightArm, menuOption);
+			DrawArmsMenu(leftArm, rightArm, menuOption);
 			
 			do
 			{
@@ -308,6 +308,18 @@ namespace Ex08_OrientacaoObjeto_Drone
 										break;
 									}
 								case 11:
+									{
+										success = drone.AccessDroneArms();
+										ShowMenuAndVerifySuccess(drone, menuOption, success);
+										break;
+									}
+								case 12:
+									{
+										success = drone.AccessDroneArms();
+										ShowMenuAndVerifySuccess(drone, menuOption, success);
+										break;
+									}
+								case 13:
 									{
 										success = drone.AccessDroneArms();
 										ShowMenuAndVerifySuccess(drone, menuOption, success);

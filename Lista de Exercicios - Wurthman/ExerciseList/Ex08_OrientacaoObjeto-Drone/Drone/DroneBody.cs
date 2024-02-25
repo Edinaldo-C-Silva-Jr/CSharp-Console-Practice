@@ -41,15 +41,9 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 				return false;
 			}
 			
-			if (height < 0.5)
+			if (height < 0.5 || height > 25)
 			{
-				Message = "Valor de Altura abaixo do mínimo permitido.";
-				return false;
-			}
-			
-			if (height > 25)
-			{
-				Message = "Valor de Altura acima do máximo permitido.";
+				Message = "Valor inválido. A Altura deve estar entre 0.5 e 25.";
 				return false;
 			}
 			
@@ -84,7 +78,7 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 			
 			if (angle < 0 || angle > 359)
 			{
-				Message = "Valor de Ângulo inválido.";
+				Message = "Valor inválido. O ângulo deve star entre 0 e 359.";
 				return false;
 			}
 			
@@ -125,15 +119,9 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 				return false;
 			}
 			
-			if (speed < 0)
+			if (speed < 0 || speed > 15)
 			{
-				Message = "Valor de Velocidade abaixo do mínimo permitido.";
-				return false;
-			}
-			
-			if (speed > 15)
-			{
-				Message = "Valor de Velocidade acima do máximo permitido.";
+				Message = "Valor inválido. A Velocidade deve estar entre 0 e 15.";
 				return false;
 			}
 			
@@ -232,6 +220,8 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 			}
 			else
 			{
+				ArmControlMenu armsMenu = new ArmControlMenu();
+				armsMenu.Start(LeftArm, RightArm);
 				return true;
 			}
 		}

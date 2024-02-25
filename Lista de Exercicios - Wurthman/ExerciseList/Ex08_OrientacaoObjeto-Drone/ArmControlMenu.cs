@@ -9,12 +9,12 @@ namespace Ex08_OrientacaoObjeto_Drone
 {
 	public class ArmControlMenu
 	{
-		private int verticalPosition { get; set; }
+		private int VerticalPosition { get; set; }
 		private bool RightSide { get; set; }
 		
 		public ArmControlMenu()
 		{
-			verticalPosition = 0;
+			VerticalPosition = 0;
 			RightSide = false;
 		}
 		
@@ -26,18 +26,18 @@ namespace Ex08_OrientacaoObjeto_Drone
 			Console.SetCursorPosition(15, 1);
 			Console.Write("- ESQUERDO -");
 			Console.SetCursorPosition(15, 2);
-			Console.Write("Estado: " + left.State);
+			Console.Write("Estado: " + left.ShowArmState());
 			Console.SetCursorPosition(15, 3);
-			Console.Write("Cotovelo: " + left.Elbow);
+			Console.Write("Cotovelo: " + left.ShowElbowState());
 			Console.SetCursorPosition(15, 4);
 			Console.Write("Ângulo do Pulso: " + left.WristAngle);
 			
 			Console.SetCursorPosition(45, 1);
 			Console.Write("- DIREITO -");
 			Console.SetCursorPosition(45, 2);
-			Console.Write("Estado: " + right.State);
+			Console.Write("Estado: " + right.ShowArmState());
 			Console.SetCursorPosition(45, 3);
-			Console.Write("Cotovelo: " + right.Elbow);
+			Console.Write("Cotovelo: " + right.ShowElbowState());
 			Console.SetCursorPosition(45, 4);
 			Console.Write("Ângulo do Pulso: " + right.WristAngle);
 		}
@@ -48,34 +48,38 @@ namespace Ex08_OrientacaoObjeto_Drone
 			Console.Write("--- CONTROLES ---");
 			
 			Console.SetCursorPosition(15, 7);
-			Console.Write("Girar 5º horário");
+			Console.Write("Mudar Estado Cotovelo");
 			Console.SetCursorPosition(15, 8);
-			Console.Write("Girar 5º antihorário");
+			Console.Write("Girar 5º horário");
 			Console.SetCursorPosition(15, 9);
-			Console.Write("Definir Ângulo");
+			Console.Write("Girar 5º antihorário");
 			Console.SetCursorPosition(15, 10);
-			Console.Write("Pegar / Soltar Objeto");
+			Console.Write("Definir Ângulo");
 			Console.SetCursorPosition(15, 11);
-			Console.Write("Armazenar Objeto");
+			Console.Write("Pegar / Soltar Objeto");
 			Console.SetCursorPosition(15, 12);
+			Console.Write("Armazenar Objeto");
+			Console.SetCursorPosition(15, 13);
 			Console.Write("Bater com Martelo");
 			
 			Console.SetCursorPosition(45, 7);
-			Console.Write("Girar 5º horário");
+			Console.Write("Mudar Estado Cotovelo");
 			Console.SetCursorPosition(45, 8);
-			Console.Write("Girar 5º antihorário");
+			Console.Write("Girar 5º horário");
 			Console.SetCursorPosition(45, 9);
-			Console.Write("Definir Ângulo");
+			Console.Write("Girar 5º antihorário");
 			Console.SetCursorPosition(45, 10);
-			Console.Write("Pegar / Soltar Objeto");
+			Console.Write("Definir Ângulo");
 			Console.SetCursorPosition(45, 11);
-			Console.Write("Armazenar Objeto");
+			Console.Write("Pegar / Soltar Objeto");
 			Console.SetCursorPosition(45, 12);
-			Console.Write("Cortar Objeto");
+			Console.Write("Armazenar Objeto");
 			Console.SetCursorPosition(45, 13);
+			Console.Write("Cortar Objeto");
+			Console.SetCursorPosition(45, 14);
 			Console.Write("Coletar com a Pá");
 			
-			Console.SetCursorPosition(15, 15);
+			Console.SetCursorPosition(15, 16);
 			Console.Write("Desativar braços e voltar ao corpo do Drone");
 			
 			Console.SetCursorPosition(15, 23);
@@ -92,44 +96,44 @@ namespace Ex08_OrientacaoObjeto_Drone
 		
 		private void DrawSelectionCursor(char cursor)
 		{
-			if (verticalPosition == 7)
+			if (VerticalPosition == 8)
 			{
-				Console.SetCursorPosition(13, 15);
+				Console.SetCursorPosition(13, 16);
 				Console.Write(cursor);
 			}
 			else
 			{
-				Console.SetCursorPosition(13 + (30 * Convert.ToInt32(RightSide)), 7 + verticalPosition);
+				Console.SetCursorPosition(13 + (30 * Convert.ToInt32(RightSide)), 7 + VerticalPosition);
 				Console.Write(cursor);
 			}
 		}
 		
 		private int MoveSelectionUp(int currentOption)
 		{
-			if (verticalPosition == 0)
+			if (VerticalPosition == 0)
 			{
 				return currentOption;
 			}
 			
 			DrawSelectionCursor(' ');
 			
-			if (verticalPosition == 7)
+			if (VerticalPosition == 8)
 			{
 				if (RightSide)
 				{
-					verticalPosition--;
-					currentOption = 12;
+					VerticalPosition--;
+					currentOption = 14;
 				}
 				else
 				{
-					verticalPosition -= 2;
-					currentOption = 5;
+					VerticalPosition -= 2;
+					currentOption = 6;
 				}
 			}
 			else
 			{
 				currentOption--;
-				verticalPosition--;
+				VerticalPosition--;
 			}
 			
 			DrawSelectionCursor('>');
@@ -138,21 +142,21 @@ namespace Ex08_OrientacaoObjeto_Drone
 		
 		private int MoveSelectionDown(int currentOption)
 		{
-			if (verticalPosition == 7)
+			if (VerticalPosition == 8)
 			{
 				return currentOption;
 			}
 			
 			DrawSelectionCursor(' ');
 			
-			if (verticalPosition == 5 && !RightSide)
+			if (VerticalPosition == 6 && !RightSide)
 			{
-				verticalPosition = 7;
-				currentOption = 13;
+				VerticalPosition = 8;
+				currentOption = 15;
 			}
 			else
 			{
-				verticalPosition++;
+				VerticalPosition++;
 				currentOption++;
 			}
 			
@@ -162,7 +166,7 @@ namespace Ex08_OrientacaoObjeto_Drone
 		
 		private int MoveSelectionLeft(int currentOption)
 		{
-			if (verticalPosition == 7)
+			if (VerticalPosition == 8)
 			{
 				return currentOption;
 			}
@@ -171,14 +175,14 @@ namespace Ex08_OrientacaoObjeto_Drone
 			
 			if (RightSide)
 			{
-				if (verticalPosition == 6)
+				if (VerticalPosition == 7)
 				{
-					currentOption -= 7;
-					verticalPosition = 5;
+					currentOption -= 8;
+					VerticalPosition = 6;
 				}
 				else
 				{
-					currentOption -= 6;
+					currentOption -= 7;
 				}
 			}
 			RightSide = false;
@@ -189,7 +193,7 @@ namespace Ex08_OrientacaoObjeto_Drone
 		
 		private int MoveSelectionRight(int currentOption)
 		{
-			if (verticalPosition == 7)
+			if (VerticalPosition == 8)
 			{
 				return currentOption;
 			}
@@ -198,7 +202,7 @@ namespace Ex08_OrientacaoObjeto_Drone
 			
 			if(!RightSide)
 			{
-				currentOption += 6;
+				currentOption += 7;
 			}
 			RightSide = true;
 			
@@ -208,6 +212,9 @@ namespace Ex08_OrientacaoObjeto_Drone
 		
 		public void Start(LeftDroneArm leftArm, RightDroneArm rightArm)
 		{
+			leftArm.ChangeArmState();
+			rightArm.ChangeArmState();
+			
 			int menuOption = 0;
 			ConsoleKeyInfo menuInput;
 			
@@ -235,97 +242,69 @@ namespace Ex08_OrientacaoObjeto_Drone
 							break;
 					case ConsoleKey.Enter:
 						{
-							/*bool success;
 							switch (menuOption)
 							{
 								case 0:
 									{
-										success = drone.ChangeHeight(true);
-										ShowMenuAndVerifySuccess(drone, menuOption, success);
+										leftArm.ChangeElbowState();
+										DrawArmsMenu(leftArm, rightArm, menuOption);
 										break;
 									}
 								case 1:
 									{
-										success = drone.ChangeHeight(false);
-										ShowMenuAndVerifySuccess(drone, menuOption, success);
 										break;
 									}
 								case 2:
 									{
-										double height = DroneValueInput("Altura");
-										success = drone.ChangeHeight(height);
-										ShowMenuAndVerifySuccess(drone, menuOption, success);
 										break;
 									}
 								case 3:
 									{
-										success = drone.ChangeAngle(true);
-										ShowMenuAndVerifySuccess(drone, menuOption, success);
 										break;
 									}
 								case 4:
 									{
-										success = drone.ChangeAngle(false);
-										ShowMenuAndVerifySuccess(drone, menuOption, success);
 										break;
 									}
 								case 5:
 									{
-										int angle = (int)DroneValueInput("Ângulo");
-										success = drone.ChangeAngle(angle);
-										ShowMenuAndVerifySuccess(drone, menuOption, success);
 										break;
 									}
 								case 6:
 									{
-										success = drone.ChangeSpeed(true);
-										ShowMenuAndVerifySuccess(drone, menuOption, success);
 										break;
 									}
 								case 7:
 									{
-										success = drone.ChangeSpeed(false);
-										ShowMenuAndVerifySuccess(drone, menuOption, success);
+										rightArm.ChangeElbowState();
+										DrawArmsMenu(leftArm, rightArm, menuOption);
 										break;
 									}
 								case 8:
 									{
-										double speed = DroneValueInput("Velocidade");
-										success = drone.ChangeSpeed(speed);
-										ShowMenuAndVerifySuccess(drone, menuOption, success);
 										break;
 									}
 								case 9:
 									{
-										success = drone.ApproachObject();
-										ShowMenuAndVerifySuccess(drone, menuOption, success);
 										break;
 									}
 								case 10:
 									{
-										success = drone.DistanceFromObject();
-										ShowMenuAndVerifySuccess(drone, menuOption, success);
 										break;
 									}
 								case 11:
 									{
-										success = drone.AccessDroneArms();
-										ShowMenuAndVerifySuccess(drone, menuOption, success);
 										break;
 									}
 								case 12:
 									{
-										success = drone.AccessDroneArms();
-										ShowMenuAndVerifySuccess(drone, menuOption, success);
 										break;
 									}
 								case 13:
 									{
-										success = drone.AccessDroneArms();
-										ShowMenuAndVerifySuccess(drone, menuOption, success);
 										break;
 									}
-							}*/
+							}
 							break;
 						}
 					case ConsoleKey.Escape:

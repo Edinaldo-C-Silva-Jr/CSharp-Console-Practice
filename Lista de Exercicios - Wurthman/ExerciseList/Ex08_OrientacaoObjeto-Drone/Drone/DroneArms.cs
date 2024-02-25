@@ -8,8 +8,8 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 {
 	public class DroneArms
 	{
-		public ArmState State { get; protected set; }
-		public ElbowState Elbow { get; protected set; }
+		protected ArmState State { get; set; }
+		protected ElbowState Elbow { get; set; }
 		
 		private int _wristAngle;
 		public int WristAngle
@@ -22,6 +22,7 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 				else { _wristAngle = value; }
 			}
 		}
+		public string Message { get; private set; }
 		
 		public DroneArms()
 		{
@@ -30,26 +31,39 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 			WristAngle = 0;
 		}
 		
-		public void ChangeState(bool approached)
+		public bool ChangeArmState()
 		{
-			if (approached)
+			bool changed = true;
+			switch(State)
 			{
-				switch(State)
-				{
-					case ArmState.Resting:
-						State = ArmState.Active;
-						break;
-					case ArmState.Active:
-						State = ArmState.Resting;
-						break;
-					case ArmState.Occupied:
-						Console.WriteLine("Mão é possível desativar o braço enquanto ele está ocupado!");
-						break;
-				}
+				case ArmState.Resting:
+					State = ArmState.Active;
+					break;
+				case ArmState.Active:
+					State = ArmState.Resting;
+					break;
+				case ArmState.Occupied:
+					Message = "Não é possível desativar um braço enquanto ele está ocupado!";
+					changed = false;
+					break;
+			}
+			return changed;
+		}
+		
+		public string ShowArmState()
+		{
+			switch(State)
+			{
+				case ArmState.Resting:
+					return "Inativo";
+				case ArmState.Active:
+					return "Ativo";
+				default:
+					return "Ocupado";
 			}
 		}
 		
-		public void ChangeElbow()
+		public void ChangeElbowState()
 		{
 			if (State == ArmState.Active)
 			{
@@ -61,6 +75,18 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 				{
 					Elbow = ElbowState.Resting;
 				}
+			}
+		}
+		
+		public string ShowElbowState()
+		{
+			if (Elbow == ElbowState.Resting)
+			{
+				return "Em Repouso";
+			}
+			else
+			{
+				return "Contraído";
 			}
 		}
 		
@@ -113,7 +139,7 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 			{
 				if (Elbow == ElbowState.Resting) // And the elbow is resting...
 				{
-					State = ArmState.Active; // Store the object, freeing the arm. 
+					State = ArmState.Active; // Store the object, freeing the arm.
 				}
 			}
 			else

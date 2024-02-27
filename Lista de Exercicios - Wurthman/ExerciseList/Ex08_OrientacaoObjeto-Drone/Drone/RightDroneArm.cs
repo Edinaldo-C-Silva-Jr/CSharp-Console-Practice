@@ -22,6 +22,7 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 				return false;
 			}
 			
+			Message = "O braço cortou o objeto com a tesoura.";
 			return true;
 		}
 		
@@ -39,6 +40,7 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 				return false;
 			}
 			
+			Message = "O braço coletou o objeto com a pá.";
 			State = ArmState.Occupied;
 			return true;
 		}

@@ -22,6 +22,7 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 				return false;
 			}
 			
+			Message = "O braço bateu com o martelo no objeto.";
 			return true;
 		}
 	}

@@ -26,18 +26,22 @@ namespace Ex08_OrientacaoObjeto_Drone
 			Console.SetCursorPosition(15, 1);
 			Console.Write("- ESQUERDO -");
 			Console.SetCursorPosition(15, 2);
-			Console.Write("Estado: " + left.ShowArmState());
+			Console.Write("Estado: ");
+			WriteColoredText(left.ShowArmState(), ConsoleColor.Cyan);
 			Console.SetCursorPosition(15, 3);
-			Console.Write("Cotovelo: " + left.ShowElbowState());
+			Console.Write("Cotovelo: ");
+			WriteColoredText(left.ShowElbowState(), ConsoleColor.Cyan);
 			Console.SetCursorPosition(15, 4);
 			Console.Write("Ângulo do Pulso: " + left.WristAngle);
 			
 			Console.SetCursorPosition(45, 1);
 			Console.Write("- DIREITO -");
 			Console.SetCursorPosition(45, 2);
-			Console.Write("Estado: " + right.ShowArmState());
+			Console.Write("Estado: ");
+			WriteColoredText(right.ShowArmState(), ConsoleColor.Cyan);
 			Console.SetCursorPosition(45, 3);
-			Console.Write("Cotovelo: " + right.ShowElbowState());
+			Console.Write("Cotovelo: ");
+			WriteColoredText(right.ShowElbowState(), ConsoleColor.Cyan);
 			Console.SetCursorPosition(45, 4);
 			Console.Write("Ângulo do Pulso: " + right.WristAngle);
 		}
@@ -83,7 +87,7 @@ namespace Ex08_OrientacaoObjeto_Drone
 			Console.Write("Desativar braços e voltar ao corpo do Drone");
 			
 			Console.SetCursorPosition(15, 23);
-			Console.Write("Setas: Mover     Enter: Escolher     Esc: Sair");
+			Console.Write("Setas: Mover     Enter: Escolher");
 		}
 		
 		private void DrawArmsMenu(LeftDroneArm left, RightDroneArm right, int option)
@@ -231,19 +235,128 @@ namespace Ex08_OrientacaoObjeto_Drone
 			}
 		}
 		
-		private void VerifySuccess(bool success, string message)
+		private void ShowMessage(bool success, string message)
 		{
-			if (!success)
+			Console.SetCursorPosition(15, 18);
+			Console.Write(new String(' ', 200));
+			
+			Console.SetCursorPosition(15, 18);
+			
+			if (success)
 			{
-				Console.SetCursorPosition(15, 18);
-				Console.Write(message);
+				WriteColoredText(message, ConsoleColor.Green);
 			}
+			else
+			{
+				WriteColoredText(message, ConsoleColor.Red);
+			}
+		}
+		
+		private void WriteColoredText(string text, ConsoleColor color)
+		{
+			Console.ForegroundColor = color;
+			Console.Write(text);
+			Console.ForegroundColor = ConsoleColor.Gray;
+		}
+		
+		private void EnterKeySelection(int menuOption, LeftDroneArm leftArm, RightDroneArm rightArm)
+		{
+			bool success = true;
+			switch (menuOption)
+			{
+				case 0:
+					leftArm.ChangeElbowState();
+					break;
+				case 1:
+					success = leftArm.ChangeWristAngle(true);
+					break;
+				case 2:
+					success = leftArm.ChangeWristAngle(false);
+					break;
+				case 3:
+					success = leftArm.ChangeWristAngle(ArmValueInput());
+					break;
+				case 4:
+					success = leftArm.TakeReleaseObject();
+					break;
+				case 5:
+					success = leftArm.StoreObject();
+					break;
+				case 6:
+					success = leftArm.HitObject();
+					break;
+				case 7:
+					rightArm.ChangeElbowState();
+					break;
+				case 8:
+					success = rightArm.ChangeWristAngle(true);
+					break;
+				case 9:
+					success = rightArm.ChangeWristAngle(false);
+					break;
+				case 10:
+					success = rightArm.ChangeWristAngle(ArmValueInput());
+					break;
+				case 11:
+					success = rightArm.TakeReleaseObject();
+					break;
+				case 12:
+					success = rightArm.StoreObject();
+					break;
+				case 13:
+					success = rightArm.CutObject();
+					break;
+				case 14:
+					success = rightArm.CollectObject();
+					break;
+				case 15:
+					success = DeactivateArms(leftArm, rightArm);
+					break;
+			}
+			
+			DrawArmsMenu(leftArm, rightArm, menuOption);
+			
+			if (RightSide)
+			{
+				ShowMessage(success, rightArm.Message);
+				rightArm.ClearMessage();
+			}
+			else
+			{
+				ShowMessage(success, leftArm.Message);
+				leftArm.ClearMessage();
+			}
+			
+		}
+		
+		private bool DeactivateArms(LeftDroneArm left, RightDroneArm right)
+		{
+			bool deactivated = true;
+			
+			if (!left.DeactivateArm())
+			{
+				deactivated = false;
+				RightSide = false;
+			}
+			if (!right.DeactivateArm())
+			{
+				deactivated = false;
+				RightSide = true;
+			}
+			
+			if (!deactivated)
+			{
+				left.ActivateArm();
+				right.ActivateArm();
+			}
+			
+			return deactivated;
 		}
 		
 		public void Start(LeftDroneArm leftArm, RightDroneArm rightArm)
 		{
-			leftArm.ChangeArmState();
-			rightArm.ChangeArmState();
+			leftArm.ActivateArm();
+			rightArm.ActivateArm();
 			
 			int menuOption = 0;
 			ConsoleKeyInfo menuInput;
@@ -271,80 +384,11 @@ namespace Ex08_OrientacaoObjeto_Drone
 						menuOption = MoveSelectionRight(menuOption);
 						break;
 					case ConsoleKey.Enter:
-						{
-							bool success = true;
-							switch (menuOption)
-							{
-								case 0:
-									leftArm.ChangeElbowState();
-									break;
-								case 1:
-									success = leftArm.ChangeWristAngle(true);
-									break;
-								case 2:
-									success = leftArm.ChangeWristAngle(false);
-									break;
-								case 3:
-									success = leftArm.ChangeWristAngle(ArmValueInput());
-									break;
-								case 4:
-									success = leftArm.TakeReleaseObject();
-									break;
-								case 5:
-									success = leftArm.StoreObject();
-									break;
-								case 6:
-									success = leftArm.HitObject();
-									break;
-								case 7:
-									rightArm.ChangeElbowState();
-									break;
-								case 8:
-									success = rightArm.ChangeWristAngle(true);
-									break;
-								case 9:
-									success = rightArm.ChangeWristAngle(false);
-									break;
-								case 10:
-									success = rightArm.ChangeWristAngle(ArmValueInput());
-									break;
-								case 11:
-									success = rightArm.TakeReleaseObject();
-									break;
-								case 12:
-									success = rightArm.StoreObject();
-									break;
-								case 13:
-									success = rightArm.CutObject();
-									break;
-								case 14:
-									success = rightArm.CollectObject();
-									break;
-								case 15:
-									{
-										break;
-									}
-							}
-							
-							DrawArmsMenu(leftArm, rightArm, menuOption);
-							if (RightSide)
-							{
-								VerifySuccess(success, rightArm.Message);
-							}
-							else
-							{
-								VerifySuccess(success, leftArm.Message);
-							}
-							
-							break;
-						}
-					case ConsoleKey.Escape:
-						{
-							break;
-						}
+						EnterKeySelection(menuOption, leftArm, rightArm);
+						break;
 				}
 			}
-			while(menuInput.Key != ConsoleKey.Escape);
+			while(leftArm.ShowArmState() != "Inativo" || rightArm.ShowArmState() != "Inativo");
 		}
 	}
 }

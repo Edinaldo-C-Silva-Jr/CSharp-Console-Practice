@@ -4,7 +4,7 @@
  */
 using System;
 using System.Collections.Generic;
-using Ex08_OrientacaoObjeto_Drone.Drone;
+using Ex08_OrientacaoObjeto_Drone.Drone.Body;
 
 namespace Ex08_OrientacaoObjeto_Drone
 {

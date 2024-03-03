@@ -3,8 +3,9 @@
  * Time: 20:34
  */
 using System;
+using Ex08_OrientacaoObjeto_Drone.Drone.Arms;
 
-namespace Ex08_OrientacaoObjeto_Drone.Drone
+namespace Ex08_OrientacaoObjeto_Drone.Drone.Body
 {
 	/// <summary>
 	/// A class that represents the Drone that is being controlled by the application.

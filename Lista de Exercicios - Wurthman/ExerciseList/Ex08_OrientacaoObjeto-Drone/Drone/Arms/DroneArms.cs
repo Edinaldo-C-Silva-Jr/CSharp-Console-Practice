@@ -4,7 +4,7 @@
  */
 using System;
 
-namespace Ex08_OrientacaoObjeto_Drone.Drone
+namespace Ex08_OrientacaoObjeto_Drone.Drone.Arms
 {
 	/// <summary>
 	/// A class that represents an arm of the Drone.

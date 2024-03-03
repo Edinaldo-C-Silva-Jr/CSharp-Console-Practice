@@ -47,13 +47,15 @@
   <ItemGroup>
     <Compile Include="ArmControlMenu.cs" />
     <Compile Include="DroneControlMenu.cs" />
-    <Compile Include="Drone\ArmState.cs" />
-    <Compile Include="Drone\DroneArms.cs" />
-    <Compile Include="Drone\DroneBody.cs" />
-    <Compile Include="Drone\ElbowState.cs" />
-    <Compile Include="Drone\LeftDroneArm.cs" />
-    <Compile Include="Drone\MovementState.cs" />
-    <Compile Include="Drone\RightDroneArm.cs" />
+    <Compile Include="Drone\Arms\ArmState.cs" />
+    <Compile Include="Drone\Arms\DroneArms.cs" />
+    <Compile Include="Drone\Arms\ElbowState.cs" />
+    <Compile Include="Drone\Arms\LeftDroneArm.cs" />
+    <Compile Include="Drone\Arms\RightDroneArm.cs" />
+    <Compile Include="Drone\Body\DroneBody.cs" />
+    <Compile Include="Drone\Body\MovementState.cs" />
+    <Compile Include="Drone\Camera\CameraState.cs" />
+    <Compile Include="Drone\Camera\DroneCamera.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -62,6 +64,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Drone" />
+    <Folder Include="Drone\Camera" />
+    <Folder Include="Drone\Arms" />
+    <Folder Include="Drone\Body" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

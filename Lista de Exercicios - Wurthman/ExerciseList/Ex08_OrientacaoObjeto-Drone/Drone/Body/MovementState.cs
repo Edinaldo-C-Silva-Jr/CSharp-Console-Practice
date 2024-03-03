@@ -4,7 +4,7 @@
 */
 using System;
 
-namespace Ex08_OrientacaoObjeto_Drone.Drone
+namespace Ex08_OrientacaoObjeto_Drone.Drone.Body
 {
 	/// <summary>
 	/// An enum that represents all possible movement states the drone can have.

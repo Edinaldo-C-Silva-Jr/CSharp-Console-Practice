@@ -4,7 +4,7 @@
 */
 using System;
 
-namespace Ex08_OrientacaoObjeto_Drone.Drone
+namespace Ex08_OrientacaoObjeto_Drone.Drone.Arms
 {
 	/// <summary>
 	/// A class that represents the Drone's right arm, which works like a standard drone arm, but with some unique tools.

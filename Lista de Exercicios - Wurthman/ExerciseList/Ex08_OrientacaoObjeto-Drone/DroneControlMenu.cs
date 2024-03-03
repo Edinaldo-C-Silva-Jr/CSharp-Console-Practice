@@ -30,9 +30,9 @@ namespace Ex08_OrientacaoObjeto_Drone
 			WriteColoredText(drone.Speed.ToString(), ConsoleColor.Cyan);
 			Console.SetCursorPosition(45, 2);
 			Console.Write("Movimento: ");
-			WriteColoredText(drone.ShowMovementState(), ConsoleColor.Cyan);
+			WriteColoredText(drone.GetMovementState(), ConsoleColor.Cyan);
 			Console.SetCursorPosition(25, 3);
-			WriteColoredText(drone.ShowApproachedObject(), ConsoleColor.Cyan);
+			WriteColoredText(drone.GetApproachedObject(), ConsoleColor.Cyan);
 		}
 		
 		/// <summary>

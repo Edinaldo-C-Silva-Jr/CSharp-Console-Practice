@@ -10,7 +10,7 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone.Camera
 	{
 		private int HorizontalAngle { get; set; }
 		private int VerticalAngle { get; set; }
-		
+		private CameraState State { get; set; }
 		private string Message { get; set; }
 		
 		public DroneCamera()
@@ -18,6 +18,17 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone.Camera
 			HorizontalAngle = 0;
 			VerticalAngle = 0;
 			Message = "";
+			State = CameraState.PhotoMode;
+		}
+		
+		/// <summary>
+		/// Returns the message relating to the drone's last action, and then clears it.
+		/// </summary>
+		public string GetMessage()
+		{
+			string text = Message;
+			Message = "";
+			return text;
 		}
 		
 		#region Horizontal Angle
@@ -126,6 +137,88 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone.Camera
 		}
 		#endregion
 		
+		/// <summary>
+		/// Changes the camera mode between Photo and Video modes.
+		/// </summary>
+		/// <returns>Whether the mode was changed or not. It fails if the camera is currently recording.</returns>
+		public bool ChangeCameraMode()
+		{
+			if (State == CameraState.Recording)
+			{
+				Message = "Não é possível mudar o modo enquanto a câmera está gravando.";
+				return false;
+			}
+			
+			if (State == CameraState.PhotoMode)
+			{
+				State = CameraState.VideoMode;
+				Message = "Modo da câmera: Gravar vídeos.";
+			}
+			else
+			{
+				State = CameraState.PhotoMode;
+				Message = "Modo da câmera: Tirar fotos.";
+			}
+			return true;
+		}
 		
+		/// <summary>
+		/// Returns the current camera state as a string.
+		/// </summary>
+		/// <returns>A string describing the camera's current state.</returns>
+		public string GetCameraMode()
+		{
+			switch(State)
+			{
+				case CameraState.PhotoMode:
+					return "Capturar Fotos.";
+				case CameraState.VideoMode:
+					return "Gravar Vídeos.";
+				default:
+					return "Gravando vídeo...";
+			}
+		}
+		
+		/// <summary>
+		/// Simulates the camera taking a picture. The camera needs to be in Photo mode to be able to take pictures.
+		/// </summary>
+		/// <returns>Whether the camera successfully took a picture or not.</returns>
+		public bool TakePicture()
+		{
+			if (State != CameraState.PhotoMode)
+			{
+				Message = "A câmera deve estar no modo de Captura de Fotos para tirar fotos.";
+				return false;
+			}
+			
+			Message = "O drone capturou uma foto.";
+			return true;
+		}
+		
+		/// <summary>
+		/// Simulates the camera recording a video. The camera needs to be in Video mode to be able to record.
+		/// If the camera is already recording, this ends the recording and saves the video.
+		/// </summary>
+		/// <returns>Whether the camera successfully started recording a video.</returns>
+		public bool ToggleRecordingVideo()
+		{
+			if (State == CameraState.PhotoMode)
+			{
+				Message = "A câmera deve estar no modo de Gravar Vídeos para gravar um vídeo.";
+				return false;
+			}
+			
+			if (State == CameraState.VideoMode)
+			{
+				State = CameraState.Recording;
+				Message = "O drone iniciou a gravação de um vídeo.";
+			}
+			else
+			{
+				State = CameraState.VideoMode;
+				Message = "A grvação foi finalizada e o vídeo foi salvo.";
+			}
+			return true;
+		}
 	}
 }

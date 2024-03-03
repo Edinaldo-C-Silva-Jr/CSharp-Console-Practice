@@ -4,6 +4,7 @@
  */
 using System;
 using Ex08_OrientacaoObjeto_Drone.Drone.Arms;
+using Ex08_OrientacaoObjeto_Drone.Drone.Camera;
 
 namespace Ex08_OrientacaoObjeto_Drone.Drone.Body
 {
@@ -46,12 +47,17 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone.Body
 		/// <summary>
 		/// The drone's left arm.
 		/// </summary>
-		public LeftDroneArm LeftArm { get; set; }
+		private LeftDroneArm LeftArm { get; set; }
 		
 		/// <summary>
 		/// The drone's right arm.
 		/// </summary>
-		public RightDroneArm RightArm { get; set; }
+		private RightDroneArm RightArm { get; set; }
+		
+		/// <summary>
+		/// The drone's HD camera.
+		/// </summary>
+		private DroneCamera Camera { get; set; }
 		#endregion
 		
 		/// <summary>
@@ -69,6 +75,7 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone.Body
 			
 			LeftArm = new LeftDroneArm();
 			RightArm = new RightDroneArm();
+			Camera = new DroneCamera();
 		}
 		
 		/// <summary>
@@ -287,7 +294,7 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone.Body
 		/// Shows the current movement state of the drone as a string.
 		/// </summary>
 		/// <returns>A string describing the current movement state of the drone.</returns>
-		public string ShowMovementState()
+		public string GetMovementState()
 		{
 			if (DroneMovement == MovementState.Stopped)
 			{
@@ -341,7 +348,7 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone.Body
 		/// Shows whether the drone is close to an object or not, as a string.
 		/// </summary>
 		/// <returns>A string describing if the drone is close to an object.</returns>
-		public string ShowApproachedObject()
+		public string GetApproachedObject()
 		{
 			if (ApproachedObject)
 			{

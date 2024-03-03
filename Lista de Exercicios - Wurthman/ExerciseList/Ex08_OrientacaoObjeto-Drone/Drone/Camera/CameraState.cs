@@ -11,7 +11,6 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone.Camera
 	/// </summary>
 	public enum CameraState
 	{
-		Idle,
 		PhotoMode,
 		VideoMode,
 		Recording

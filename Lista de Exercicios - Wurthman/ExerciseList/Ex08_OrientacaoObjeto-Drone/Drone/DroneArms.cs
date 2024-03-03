@@ -11,13 +11,14 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 	/// </summary>
 	public class DroneArms
 	{
+		#region Properties
 		/// <summary>
 		/// The current state of the Drone's arm, which defines whether it's active, resting or occupied.
 		/// </summary>
 		protected ArmState State { get; set; }
 		
 		/// <summary>
-		/// The current state of the arm's elbow, which can be either resting or contracted. 
+		/// The current state of the arm's elbow, which can be either resting or contracted.
 		/// </summary>
 		protected ElbowState Elbow { get; set; }
 		
@@ -29,7 +30,8 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 		/// <summary>
 		/// The message tied to the last action performed by the arm, that describes whether it was successful or failed.
 		/// </summary>
-		public string Message { get; protected set; }
+		protected string Message { get; set; }
+		#endregion
 		
 		/// <summary>
 		/// Default constructor, sets the default values to the arm's states and angle.
@@ -42,19 +44,24 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 		}
 		
 		/// <summary>
-		/// Clears the message value for this arm.
+		/// Returns the message relating to the drone's last action, and then clears it.
 		/// </summary>
-		public void ClearMessage()
+		public string GetMessage()
 		{
+			string text = Message;
 			Message = "";
+			return text;
 		}
 		
 		/// <summary>
-		/// Changes the arm state to Active. 
+		/// Changes the arm state to Active.
 		/// </summary>
 		public void ActivateArm()
 		{
-			State = ArmState.Active;
+			if (State == ArmState.Resting)
+			{
+				State = ArmState.Active;
+			}
 		}
 		
 		/// <summary>
@@ -68,7 +75,7 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 			if (State == ArmState.Occupied)
 			{
 				deactivated = false;
-				Message = "Não é possível desativar um braço enquanto ele está ocupado!";
+				Message = "Não é possível desativar um braço enquanto ele está ocupado.";
 			}
 			else
 			{
@@ -155,9 +162,9 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone
 		{
 			return SetWristAngle(angle);
 		}
-		 
+		
 		/// <summary>
-		/// Changes the angle of the arm's wrist, by either incrementing or decrementing 5 degrees.
+		/// Changes the angle of the arm's wrist, by either incrementing or decrementing 5 degrees. The angle rolls over if past 0 or 359.
 		/// </summary>
 		/// <param name="clockwise">Whether to increment or decrement the angle.</param>
 		public void ChangeWristAngle(bool clockwise)

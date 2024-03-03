@@ -393,17 +393,15 @@ namespace Ex08_OrientacaoObjeto_Drone
 					break;
 			}
 			
-			DrawArmsMenu(leftArm, rightArm, menuOption);
+			DrawArmsMenu(leftArm, rightArm);
 			
 			if (RightSide)
 			{
-				ShowMessage(success, rightArm.Message);
-				rightArm.ClearMessage();
+				ShowMessage(success, rightArm.GetMessage());
 			}
 			else
 			{
-				ShowMessage(success, leftArm.Message);
-				leftArm.ClearMessage();
+				ShowMessage(success, leftArm.GetMessage());
 			}
 			
 		}
@@ -452,7 +450,7 @@ namespace Ex08_OrientacaoObjeto_Drone
 			int menuOption = 0;
 			ConsoleKeyInfo menuInput;
 			
-			DrawArmsMenu(leftArm, rightArm, menuOption);
+			DrawArmsMenu(leftArm, rightArm);
 			
 			do
 			{

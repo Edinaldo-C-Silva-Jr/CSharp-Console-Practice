@@ -70,19 +70,16 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone.Arms
 		/// <returns>Whether the arm was deactivated or not.</returns>
 		public bool DeactivateArm()
 		{
-			bool deactivated = true;
-			
 			if (State == ArmState.Occupied)
 			{
-				deactivated = false;
 				Message = "Não é possível desativar um braço enquanto ele está ocupado.";
+				return false;
 			}
 			else
 			{
 				State = ArmState.Resting;
+				return true;
 			}
-			
-			return deactivated;
 		}
 		
 		/// <summary>

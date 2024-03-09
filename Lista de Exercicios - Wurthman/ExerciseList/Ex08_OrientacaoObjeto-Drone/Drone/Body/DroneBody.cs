@@ -363,7 +363,7 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone.Body
 		/// <summary>
 		/// Gives access to the drone's arms, by instancing the arm menu and starting it.
 		/// </summary>
-		/// <returns>Whether the drone successfulyl accessed its arms or not.</returns>
+		/// <returns>Whether the drone successfully accessed its arms or not.</returns>
 		public bool AccessDroneArms()
 		{
 			if (!ApproachedObject)
@@ -375,6 +375,25 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone.Body
 			{
 				ArmControlMenu armsMenu = new ArmControlMenu();
 				armsMenu.Start(LeftArm, RightArm);
+				return true;
+			}
+		}
+		
+		/// <summary>
+		/// Gives access to the drone's camera, by instancing the camera menu and starting it.
+		/// </summary>
+		/// <returns>Whether the drone successfully accessed its camera or not.</returns>
+		public bool AccessDroneCamera()
+		{
+			if (DroneMovement == MovementState.Moving) // Since only one menu can be active at a time, it's best to not access the camera menu with the drone still moving.
+			{
+				Message = "A câmera só pode ser usada quando o Drone está parado.";
+				return false;
+			}
+			else
+			{
+				CameraControlMenu cameraMenu = new CameraControlMenu();
+				cameraMenu.Start(Camera);
 				return true;
 			}
 		}

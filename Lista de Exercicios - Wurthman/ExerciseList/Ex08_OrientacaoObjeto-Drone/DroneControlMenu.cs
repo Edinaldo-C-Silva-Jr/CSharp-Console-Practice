@@ -8,6 +8,9 @@ using Ex08_OrientacaoObjeto_Drone.Drone.Body;
 
 namespace Ex08_OrientacaoObjeto_Drone
 {
+	/// <summary>
+	/// A menu to handle all the interactions with the Drone. It provides a visual interface for using all functionalities of the Drone.
+	/// </summary>
 	public class DroneControlMenu
 	{
 		#region Drawing the Menu
@@ -71,6 +74,8 @@ namespace Ex08_OrientacaoObjeto_Drone
 			
 			Console.SetCursorPosition(15, 17);
 			Console.Write("Acessar os Braços");
+			Console.SetCursorPosition(15, 18);
+			Console.Write("Acessar a Câmera");
 			
 			Console.SetCursorPosition(15, 23);
 			Console.Write("Setas: Mover     Enter: Escolher     Esc: Sair");
@@ -126,9 +131,9 @@ namespace Ex08_OrientacaoObjeto_Drone
 		/// <returns>The newly selected option.</returns>
 		private int MoveSelectionDown(int currentOption)
 		{
-			if (currentOption == 11)
+			if (currentOption == 12)
 			{
-				return 11;
+				return 12;
 			}
 			
 			DrawSelectionCursor(' ', currentOption);
@@ -145,10 +150,10 @@ namespace Ex08_OrientacaoObjeto_Drone
 		/// <param name="message">The message to show.</param>
 		private void ShowMessage(bool success, string message)
 		{
-			Console.SetCursorPosition(15, 19);
+			Console.SetCursorPosition(15, 20);
 			Console.Write(new String(' ', 200)); // Clears the screen of previous messages.
 			
-			Console.SetCursorPosition(15, 19);
+			Console.SetCursorPosition(15, 20);
 			
 			if (success)
 			{
@@ -179,11 +184,11 @@ namespace Ex08_OrientacaoObjeto_Drone
 		/// <returns>The value entered for the property, or -1 if the input is not a valid number.</returns>
 		private double DroneValueInput(string property)
 		{
-			Console.SetCursorPosition(15, 19);
+			Console.SetCursorPosition(15, 20);
 			Console.Write(new String(' ', 200));
 			
 			Console.CursorVisible = true;
-			Console.SetCursorPosition(15, 19);
+			Console.SetCursorPosition(15, 20);
 			Console.Write("Digite o novo valor para {0}: " , property);
 			
 			double value;
@@ -243,6 +248,9 @@ namespace Ex08_OrientacaoObjeto_Drone
 					break;
 				case 11:
 					success = drone.AccessDroneArms();
+					break;
+				case 12:
+					success = drone.AccessDroneCamera();
 					break;
 			}
 			DrawDroneMenu(drone, menuOption);

@@ -8,11 +8,31 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone.Camera
 {
 	public class DroneCamera
 	{
-		private int HorizontalAngle { get; set; }
-		private int VerticalAngle { get; set; }
-		private CameraState State { get; set; }
-		private string Message { get; set; }
+		#region Properties
+		/// <summary>
+		/// The camera's horizontal angle of rotation.
+		/// </summary>
+		public int HorizontalAngle { get; set; }
 		
+		/// <summary>
+		/// The camera's vertical angle of rotation.
+		/// </summary>
+		public int VerticalAngle { get; set; }
+		
+		/// <summary>
+		/// The current state of the camera.
+		/// </summary>
+		private CameraState State { get; set; }
+		
+		/// <summary>
+		/// The message tied to the last action performed by the camera, that describes whether it was successful or failed.
+		/// </summary>
+		private string Message { get; set; }
+		#endregion
+		
+		/// <summary>
+		/// Default constructor, which sets the default values for all camera properties.
+		/// </summary>
 		public DroneCamera()
 		{
 			HorizontalAngle = 0;
@@ -170,6 +190,8 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone.Camera
 		{
 			switch(State)
 			{
+				case CameraState.Inactive:
+					return "Inativo.";
 				case CameraState.PhotoMode:
 					return "Capturar Fotos.";
 				case CameraState.VideoMode:
@@ -187,7 +209,7 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone.Camera
 		{
 			if (State != CameraState.PhotoMode)
 			{
-				Message = "A câmera deve estar no modo de Captura de Fotos para tirar fotos.";
+				Message = "A câmera deve estar no modo Captura de Fotos para tirar fotos.";
 				return false;
 			}
 			
@@ -204,7 +226,7 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone.Camera
 		{
 			if (State == CameraState.PhotoMode)
 			{
-				Message = "A câmera deve estar no modo de Gravar Vídeos para gravar um vídeo.";
+				Message = "A câmera deve estar no modo Gravar Vídeos para gravar um vídeo.";
 				return false;
 			}
 			
@@ -219,6 +241,32 @@ namespace Ex08_OrientacaoObjeto_Drone.Drone.Camera
 				Message = "A grvação foi finalizada e o vídeo foi salvo.";
 			}
 			return true;
+		}
+		
+		/// <summary>
+		/// Activates the camera, setting it to Photo Mode by default.
+		/// </summary>
+		public void ActivateCamera()
+		{
+			State = CameraState.PhotoMode;
+		}
+		
+		/// <summary>
+		/// Deactivates the camera, setting it to Inactive mode.
+		/// </summary>
+		/// <returns>Whether the camera was deactivated or not. It can't be deactivated while recording a video.</returns>
+		public bool DeactivateCamera()
+		{
+			if (State == CameraState.Recording)
+			{
+				Message = "Não é possível desligar a câmera durante a gravação de um vídeo.";
+				return false;
+			}
+			else
+			{
+				State = CameraState.Inactive;
+				return true;
+			}
 		}
 	}
 }
